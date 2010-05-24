@@ -60,8 +60,25 @@ class windowJustonefile():
         """
         Run search in a new thread
         """
+        
+        # On créé un nouveau thread
+        s = search.Search(path)
 
-        self.list_search.append(search.Search(path))
+        # On ajoute une barre de progression ainsi qu'un label pour la
+        # recherche.
+        s.label = gtk.Label(path)
+        s.pb = gtk.ProgressBar()
+
+        # On les ajoutes au calque principale
+        vbox = self.interface.get_object('vbox_p')
+        vbox.pack_end(s.pb)
+        vbox.pack_end(s.label)
+
+        # Et on les active
+        s.label.show()
+        s.pb.show()
+
+        self.list_search.append(s)
 
         self.list_search[-1].start()
 
@@ -74,7 +91,8 @@ class windowJustonefile():
         
         for s in self.list_search:
 
-            pb = self.interface.get_object('progressbar')
+            pb = s.pb
+            pb.set_text(s.action)
 
             if s.progress == -1:
                 # On met la barre en mode attente
@@ -83,8 +101,6 @@ class windowJustonefile():
 
                 pb.set_fraction(float(s.progress))
 
-            label = self.interface.get_object('label_action')
-            label.set_text(s.action)
 
             if s.finished:
                 print 'Recherche terminée !'

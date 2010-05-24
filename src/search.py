@@ -56,6 +56,10 @@ class Search(threading.Thread):
         self.progress = 0
         self.action = 'Initilizing'
         self.finished = False   # True when the search is completed
+        
+        # Les widget associés à la recherche
+        self.label = None
+        self.pb = None
 
 
 
