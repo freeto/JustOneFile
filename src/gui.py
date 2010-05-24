@@ -102,7 +102,7 @@ class windowJustonefile():
                 pb.set_fraction(float(s.progress))
 
 
-        # On donne la main à un autre processus
+        # On donne la main à un autre thread
         time.sleep(0.01)
         
         return True
@@ -153,8 +153,13 @@ class windowJustonefile():
         - `widget`: The widget who call this function
         """
 
-        for s in self.list_search:
-            print s
+        i = 0
+        while i < len(self.list_search):
+            # Pour caque éléments de la liste, on regarde si il est finit
+            # et on agi en conséquence
+
+            s = self.list_search[i]
+            
             if s.finished:
                 # On enlève les widgets du conteneur et on enlève les
                 # recherches de la liste
@@ -162,3 +167,8 @@ class windowJustonefile():
                 vbox = self.interface.get_object('vbox_p')
                 vbox.remove(s.pb)
                 vbox.remove(s.label)
+
+                self.list_search.remove(s)
+
+            else:
+                i += 1
