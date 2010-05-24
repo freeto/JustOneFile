@@ -102,13 +102,9 @@ class windowJustonefile():
                 pb.set_fraction(float(s.progress))
 
 
-            if s.finished:
-                print 'Recherche terminée !'
-
-                # On l'enlève de la liste
-                self.list_search.remove(s)
-
+        # On donne la main à un autre processus
         time.sleep(0.01)
+        
         return True
 
         
@@ -147,3 +143,22 @@ class windowJustonefile():
 
         # Et on lance le processus
         self.start_search(path)
+
+
+    def on_button_clean_clicked(self, widget):
+        """
+        Call when button 'button_clean' is clicked
+        
+        Arguments:
+        - `widget`: The widget who call this function
+        """
+
+        for s in self.list_search:
+            print s
+            if s.finished:
+                # On enlève les widgets du conteneur et on enlève les
+                # recherches de la liste
+
+                vbox = self.interface.get_object('vbox_p')
+                vbox.remove(s.pb)
+                vbox.remove(s.label)
