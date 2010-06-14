@@ -25,17 +25,14 @@ Gui class with functions
 """
 
 
-import pygtk, gtk, os, subprocess, gobject, threading, time
+import pygtk, gtk, os, subprocess, gobject, multiprocessing, time
 
-gobject.threads_init() # Sinon PyGtk bug
-
-
-from src import search
+from src import algorithm, search
 
 
-class windowJustonefile():
+class WindowJustonefile():
     """
-    A Fdupes gui
+    The JustOneFile GUI
     """
     
     def __init__(self):
@@ -49,65 +46,61 @@ class windowJustonefile():
 
         self.interface.connect_signals(self)
 
-        # Une liste des recherche en cour (thread)
+        # La liste des recherches
         self.list_search = []
 
-        gobject.timeout_add(200, self.update_search_info)
+        gobject.timeout_add(200, self.update_searchs_infos)
 
 
 
-    def start_search(self, path):
+    def update_searchs_infos(self):
         """
-        Run search in a new thread
+        Update infos of all search's
         """
-        
-        # On créé un nouveau thread
-        s = search.Search(path)
 
-        # On ajoute une barre de progression ainsi qu'un label pour la
-        # recherche.
-        s.label = gtk.Label(path)
-        s.pb = gtk.ProgressBar()
-
-        # On les ajoutes au calque principale
-        vbox = self.interface.get_object('vbox_p')
-        vbox.pack_end(s.pb)
-        vbox.pack_end(s.label)
-
-        # Et on les active
-        s.label.show()
-        s.pb.show()
-
-        self.list_search.append(s)
-
-        self.list_search[-1].start()
-
-
-
-    def update_search_info(self):
-        """
-        Get searchs info and display its
-        """
-        
         for s in self.list_search:
+            s.update_infos()
+            
+            # On met à jour l'interface
+            s.tab.set_pb(s.progress, s.action)
 
-            pb = s.pb
-            pb.set_text(s.action)
+            title = str(int(s.progress * 100)) + '%'
+            s.tab.set_title(title)
 
-            if s.progress == -1:
-                # On met la barre en mode attente
-                pb.pulse()
-            else:
-
-                pb.set_fraction(float(s.progress))
-
-
-        # On donne la main à un autre thread
-        time.sleep(0.01)
-        
         return True
-
         
+
+
+    def new_search(self, path):
+        """
+        Create a new searh
+        
+        Arguments:
+        - `path`: The path of the new search
+        """
+        
+        # Chaque recherche est associée à un onglet.
+        new_search = search.Search(path)
+
+        self.list_search.append(new_search)
+        
+        self.add_tab(new_search.tab)
+        new_search.start()
+
+    
+    def add_tab(self, tab):
+        """
+        Add a tab to the notebook
+        
+        Arguments:
+        - `tab`: A TabSearch object
+        """
+
+        notebook = self.interface.get_object('notebook')
+
+        notebook.append_page(tab.main_box, tab.label_title)
+        
+
         
     # -----------------------
     # Signal function
@@ -116,14 +109,14 @@ class windowJustonefile():
     def on_windowFdupes_destroy(self, widget):
         """
         Call when window is destroy
-        Exit to the gtk main loop and close all threads
+        Exit to the gtk main loop and send a clase signal to all process
         
         Arguments:
         - `widget`: The widget who call this function
         """
-
+        
         for s in self.list_search:
-            s.finished = True
+            s.terminate()
 
         gtk.main_quit()
         
@@ -135,14 +128,10 @@ class windowJustonefile():
         Arguments:
         - `widget`: The widget who call this function
         """
-        
-        # On prend le chemin et on le formate
-        path = self.interface.get_object('entry_path').get_text()
-        path = os.path.normpath(path)
-        path = os.path.abspath(path)
 
-        # Et on lance le processus
-        self.start_search(path)
+        path = self.interface.get_object('entry_path').get_text()
+
+        self.new_search(path)
 
 
     def on_button_clean_clicked(self, widget):
@@ -153,22 +142,81 @@ class windowJustonefile():
         - `widget`: The widget who call this function
         """
 
-        i = 0
-        while i < len(self.list_search):
-            # Pour caque éléments de la liste, on regarde si il est finit
-            # et on agi en conséquence
 
-            s = self.list_search[i]
+
+# -----------------------
+# TabSearch class
+# -----------------------
+
+
+class TabSearch():
+    """
+    Function of a search's tab
+    """
+    
+    def __init__(self, title='Recherche'):
+        """
+        Initilize the tab's search
+        
+        Arguments:
+        - `title`: The tab's title
+        """
+        
+        # On contruit l'onglet à partir du fichier Glade
+        # On prend juste les widgets qu'il y a dans la fenetre
+
+        self.interface = gtk.Builder()
+        self.interface.add_from_file('tab_search.glade')
+
+        self.interface.connect_signals(self)
+
+        # Le calque principal s'appelle 'main_box'
+        self.main_box = self.interface.get_object('main_box')
+        self.main_box.unparent()
+
+        self.label_title = gtk.Label(title)
+
+
+    def set_pb(self, progress, text):
+        """
+        Set the progress bar infos
+        
+        Arguments:
+        - `progress`: The progress bar fraction
+        - `text`: The progress bar text
+        """
+        
+        pb = self.interface.get_object('pb_progress')
+
+        if progress == -1:
+            # On met la barre en mode attente
+            pb.pulse()
+        else:
+            pb.set_fraction(float(progress))
+
+        pb.set_text(text)
+
             
-            if s.finished:
-                # On enlève les widgets du conteneur et on enlève les
-                # recherches de la liste
+    def set_label(self, text):
+        """
+        Set the label_search_path text
+        
+        Arguments:
+        - `text`: The new text of the label
+        """
+        
+        label = self.interface.get_object('label_search_path')
+        label.set_text(text)
 
-                vbox = self.interface.get_object('vbox_p')
-                vbox.remove(s.pb)
-                vbox.remove(s.label)
 
-                self.list_search.remove(s)
+    def set_title(self, title):
+        """
+        Set the new title of the tab's search
+        
+        Arguments:
+        - `title`: The new title of the tab's search
+        """
+        
+        self.label_title.set_text(title)
+        
 
-            else:
-                i += 1

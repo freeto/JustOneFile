@@ -21,219 +21,95 @@
 #	MA 02110-1301, USA.
 
 """
-Algorithme for search duplicates files
+Class for manage algorithm and communicate with her
 """
 
+import gtk, multiprocessing, Queue
 
-import threading, os, hashlib, time
-
+from src import algorithm, tab_search
 
 # -----------------------
-# Cette classe est comme un thread.
+# La Recherche contient l'algorithm et des fonctions
+# pour communiquer avec lui, ainsi que ces informations associées
+# Une recherche contient donc :
+#  - l'état d'avencement de l'algo
+#  - Des fonctions pour communiquer avec l'algo
+#  - L'onglet associé avec la recherche
 # -----------------------
 
-class Search(threading.Thread):
+
+class Search():
     """
-    Algorithm and controls functions
+    Contain functions for communicate with the algorithm.
     """
     
-    def __init__(self, path, option={}):
+    def __init__(self, path):
         """
-	Initilize algorithm variables
+        Initialize attributs and algorithm
         
         Arguments:
-        - `path`: The path who want to search duplicates
-        - `option`: Options for searching
+        - `path`: The path who want to search duplicates files
         """
 
-        # Appeller la méthode start du thread appellera la méthode self.run()
+        self.path = path
 
-        threading.Thread.__init__(self)
+        self.progress = 0.0
+        self.action = 'Initilize'
+        self.step = 0
+        self.done = False
 
-        self._path = path
-        self._option = option
+        # L'onglet associé
+        self.tab = tab_search.TabSearch()
 
-        self.progress = 0
-        self.action = 'Initilizing'
-        self.finished = False   # True when the search is completed
+        self._queue_send = multiprocessing.Queue()
+
+        self.algorithm = algorithm.Algorithm(self._queue_send, path)
         
-        # Les widget associés à la recherche
-        self.label = None
-        self.pb = None
 
-
-
-
-    def _get_all_file_path(self, dir_path):
+    
+    def _get_last_entry(self):
         """
-        Return a list containing all file path of file in
-        a directory.
-
-        Arguments:
-        - `dir_path`: The dir path
+        Return the last entry of the pipe
         """
 
-        list_files_path = []
-
-
-        # On parcour l'arbre des dossiers récursivement et on stock tout les fichiers
-        # recontrés dans une liste
-        for elem_path in self._get_listdir(dir_path):
-
-            # On contruit le chemin absolu.
-            abs_path = dir_path + '/' + elem_path
-
-            # Si c'est un fichier, on l'ajoute à la liste, si c'est un dossier,
-            # on le parcour avec cette fonction.
-            if os.path.isfile(abs_path):
-                list_files_path.append(abs_path)
-
-            elif os.path.isdir(abs_path):
-                list_files_path += self._get_all_file_path(abs_path)
-
-        return list_files_path
-
-
-
-    def _get_content(self, file_path):
-        """
-        Return Content of file @file_path
-
-        Arguments:
-        - `file_path`: the file path
-        """
-
-        # On prend un descripteur de fichier pour pouvoir tester si le fichier
-        # est bloquant ou pas (comme par exemple '/dev/null')
-        try:
-            file = os.open(file_path, os.O_RDONLY|os.O_NONBLOCK)
-        except:
-            print "Impossible d'ouvrir le fichier", file_path
+        if self._queue_send.empty():
             return False
 
-        # On convertit le descripteur de fichier en object file
-        file = os.fdopen(file)
+        # Tant qu'il y à une entrée, on contenu de recevoir ..
+        while not self._queue_send.empty():
+            infos = self._queue_send.get()
 
-        # Il se peut que l'on a le droit d'écrire dessus mais pas de le lire
-        try:
-            content = file.read()
-        except:
-            print "Impossible de lire le fichier", file_path
-            file.close()
-            return False
-
-        file.close()
-
-        return content
+        return infos
+        
 
 
-
-    def run(self):
+    def update_infos(self):
         """
-        Call when thread is started.
-        Return a list of duplicate file.
+        Update informations
         """
 
-        self.action = 'Make files list'
-        self.progress = -1
+        infos = self._get_last_entry()
 
-        list_all_files_path = self._get_all_file_path(self._path)
+        if not infos: return
 
-
-        # On tri la liste par la taille ds fichiers
-        self.action = 'Sort files list'
-        self.progress = 0
-
-        dico_filesize = {}
-        list_len = len(list_all_files_path)
-        i = 0
-
-        for file_path in list_all_files_path:
-            # Calcul de la progression de la tache
-            i += 1
-            self.progress = float(i) / float(list_len)
-            
-            # On prend sa taille
-            try:
-                file_size = os.path.getsize(file_path)
-            except:
-                print "Impossible d'agir sur le fichier", file_path
-                continue
-
-            # Et on ajoute le nom du fichier associer à sa taille dans le dico
-            if not dico_filesize.has_key(file_size):
-                dico_filesize[file_size] = []
-
-            dico_filesize[file_size].append(file_path)
-            
-            if self.finished: return None
-
-            time.sleep(0.01)
+        self.progress = infos['progress']
+        self.action = infos['action']
+        self.step = infos['action']
+        self.done = infos['done']
 
 
-        # On fait un test sur les fichiers de meme taille.
-        self.action = 'Searching duplicates files'
-        self.progress = 0
 
-        dico_md5 = {}
-        list_len = len(dico_filesize.values())
-        i = 0
-
-        for list_file in dico_filesize.values():
-
-            i += 1
-            self.progress = float(i) / float(list_len)
-
-            # Si la liste contient plus d'un item, il convient de faire une 
-            # somme md5 pour vérifier si les fichiers sont bien identiques.
-
-            if len(list_file) > 1:
-                for file_path in list_file:
-                    # On prend le contenu du fichier
-                    content = self._get_content(file_path)
-
-                    if content == False:
-                        continue
-
-                    md5_sum = hashlib.md5( content ).hexdigest()
-
-                    if not dico_md5.has_key(md5_sum):
-                        dico_md5[md5_sum] = []
-
-                    dico_md5[md5_sum].append(file_path)
-
-
-                time.sleep(0.01)
-            
-            if self.finished: return None
-
-
-        # On contruit la liste des doublons
-        list_dbl = []
-        for item in dico_md5.values():
-            if len(item) > 1:
-                list_dbl.append(item)
-
-        # Pour que la variable soit accéssible de l'extérieur ..
-        self.list_dbl = list_dbl
-
-        # La recherche est finit, on stop le thread
-        self.action = 'Finished'
-        self.progress = 1.0
-
-        self.finished = True
-
-
-    def _get_listdir(self, dir_path):
+    def start(self):
         """
-        Return a list containing all elements in the @dir_path
-
-        Arguments:
-        - `dir_path`: The dir path where you want get
+        Run algorithm
         """
+        
+        self.algorithm.start()
 
-        try:
-            return os.listdir(dir_path)
-        except:
-            print "Impossible d'acceder au dossier", dir_path
-            return []
+
+    def terminate(self):
+        """
+        Terminate processus
+        """
+        
+        self.algorithm.terminate()

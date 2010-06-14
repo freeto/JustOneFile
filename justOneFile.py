@@ -31,7 +31,7 @@ from src import gui
 
 if __name__ == '__main__':
     # On charge l'interface
-    window = gui.windowJustonefile()
+    window = gui.WindowJustonefile()
 
     # Et on lance la boucle gtk
     gtk.main()
