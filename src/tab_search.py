@@ -56,6 +56,7 @@ class TabSearch():
         self.label_title = gtk.Label(title)
 
 
+
     def set_pb(self, progress, text):
         """
         Set the progress bar infos
@@ -97,5 +98,4 @@ class TabSearch():
         """
         
         self.label_title.set_text(title)
-        
 

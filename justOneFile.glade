@@ -52,28 +52,6 @@
             <property name="position">1</property>
           </packing>
         </child>
-        <child>
-          <object class="GtkVBox" id="vbox_p">
-            <property name="visible">True</property>
-            <property name="orientation">vertical</property>
-            <child>
-              <object class="GtkButton" id="button_clean">
-                <property name="label" translatable="yes">Enlever les recherche termin&#xE9;es</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_button_clean_clicked"/>
-              </object>
-              <packing>
-                <property name="position">0</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
       </object>
     </child>
   </object>

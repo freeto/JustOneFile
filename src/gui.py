@@ -79,7 +79,6 @@ class WindowJustonefile():
         - `path`: The path of the new search
         """
         
-        # Chaque recherche est associée à un onglet.
         new_search = search.Search(path)
 
         self.list_search.append(new_search)
@@ -87,18 +86,19 @@ class WindowJustonefile():
         self.add_tab(new_search.tab)
         new_search.start()
 
-    
+
     def add_tab(self, tab):
         """
         Add a tab to the notebook
         
         Arguments:
-        - `tab`: A TabSearch object
+        - `tab`: The tab to add
         """
-
+        
         notebook = self.interface.get_object('notebook')
 
         notebook.append_page(tab.main_box, tab.label_title)
+
         
 
         
@@ -132,91 +132,3 @@ class WindowJustonefile():
         path = self.interface.get_object('entry_path').get_text()
 
         self.new_search(path)
-
-
-    def on_button_clean_clicked(self, widget):
-        """
-        Call when button 'button_clean' is clicked
-        
-        Arguments:
-        - `widget`: The widget who call this function
-        """
-
-
-
-# -----------------------
-# TabSearch class
-# -----------------------
-
-
-class TabSearch():
-    """
-    Function of a search's tab
-    """
-    
-    def __init__(self, title='Recherche'):
-        """
-        Initilize the tab's search
-        
-        Arguments:
-        - `title`: The tab's title
-        """
-        
-        # On contruit l'onglet à partir du fichier Glade
-        # On prend juste les widgets qu'il y a dans la fenetre
-
-        self.interface = gtk.Builder()
-        self.interface.add_from_file('tab_search.glade')
-
-        self.interface.connect_signals(self)
-
-        # Le calque principal s'appelle 'main_box'
-        self.main_box = self.interface.get_object('main_box')
-        self.main_box.unparent()
-
-        self.label_title = gtk.Label(title)
-
-
-    def set_pb(self, progress, text):
-        """
-        Set the progress bar infos
-        
-        Arguments:
-        - `progress`: The progress bar fraction
-        - `text`: The progress bar text
-        """
-        
-        pb = self.interface.get_object('pb_progress')
-
-        if progress == -1:
-            # On met la barre en mode attente
-            pb.pulse()
-        else:
-            pb.set_fraction(float(progress))
-
-        pb.set_text(text)
-
-            
-    def set_label(self, text):
-        """
-        Set the label_search_path text
-        
-        Arguments:
-        - `text`: The new text of the label
-        """
-        
-        label = self.interface.get_object('label_search_path')
-        label.set_text(text)
-
-
-    def set_title(self, title):
-        """
-        Set the new title of the tab's search
-        
-        Arguments:
-        - `title`: The new title of the tab's search
-        """
-        
-        self.label_title.set_text(title)
-        
-
