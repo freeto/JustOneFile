@@ -45,37 +45,97 @@ class WindowJustonefile():
         self.interface.connect_signals(self)
         
         # Initialisation des widgets de la fenetre
-        self.init_treemenu()
+        self.init_treeview_menu()
+        self.init_treeview_dbl()
+        self.init_treeview_files()
 
 
 
-    def init_treemenu(self):
+    def init_treeview_menu(self):
         """
         Init the window's treeview menu
         """
         
-        # Le treemenu est en fait le treeview a gauche qui sert de menu.
+        # Le treeview_menu est en fait le treeview a gauche qui sert de menu.
         # A ne pas confondre avec le menu du haut.
 
-        menu = self.interface.get_object('treeview_menu')
+        self.tree_menu = self.interface.get_object('treeview_menu')
 
         # On créé le modèle du menu
         self.modele_treemenu = gtk.TreeStore(str)
-        menu.set_model(self.modele_treemenu)
+        self.tree_menu.set_model(self.modele_treemenu)
+
+        # On créée la colone (texte)
+        cell = gtk.CellRendererText()
+        col = gtk.TreeViewColumn("Colone à virée", cell, text=0)
+        col.set_expand(True)
+        self.tree_menu.append_column(col)
+
+        # On modifie ces propriétés
+        self.tree_menu.set_headers_visible(False)
 
         # Et on le remplit
         self.modele_treemenu.append(None, ['Accueil'])
         self.modele_treemenu.append(None, ['Préférence'])
         self.modele_treemenu.append(None, ['Aide'])
 
+
+
+    def init_treeview_dbl(self):
+        """
+        Init the treeview of duplicates files list display.
+        """
+        
+        self.tree_dbl = self.interface.get_object('treeview_dbl')
+
+        # On créé le modèle du treeview
+        self.modele_treedbl = gtk.ListStore(str)
+        self.tree_dbl.set_model(self.modele_treedbl)
+
         # On créée la colone (texte)
         cell = gtk.CellRendererText()
-        col = gtk.TreeViewColumn("Colone à virée", cell, text=0)
+        col = gtk.TreeViewColumn("Doublons", cell, text=0)
         col.set_expand(True)
-        menu.append_column(col)
+        self.tree_dbl.append_column(col)
 
-        # On modifie ces propriétés
-        menu.set_headers_visible(False)
+        # Et on le remplit
+        self.modele_treedbl.append(['Un fichier'])
+
+
+
+    def init_treeview_files(self):
+        """
+        Init the treeview of duplicates files list display.
+        """
+        
+        self.tree_files = self.interface.get_object('treeview_files')
+
+        # On créé le modèle du treeview
+        self.modele_treefiles = gtk.ListStore(str, 'gboolean')
+        self.tree_files.set_model(self.modele_treefiles)
+
+        
+        # -----------------------
+        # Colone 1
+        # -----------------------
+
+        cell = gtk.CellRendererText()
+        col = gtk.TreeViewColumn("Fichiers", cell, text=0)
+        col.set_expand(True)
+        self.tree_files.append_column(col)
+
+        # -----------------------
+        # Colone 2
+        # -----------------------
+
+        cell = gtk.CellRendererToggle()
+        cell.set_property('activatable', True)
+
+        col = gtk.TreeViewColumn("", cell, text=0)
+        self.tree_files.append_column(col)
+
+        # Et on le remplit
+        self.modele_treefiles.append(['Un fichier', True])
 
 
 
