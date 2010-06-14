@@ -2,7 +2,9 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
-  <object class="GtkWindow" id="window1">
+  <object class="GtkWindow" id="windowJustonefile">
+    <property name="visible">True</property>
+    <signal name="destroy" handler="on_windowJustonefile_destroy"/>
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
@@ -154,10 +156,9 @@
                 <property name="hscrollbar_policy">automatic</property>
                 <property name="vscrollbar_policy">automatic</property>
                 <child>
-                  <object class="GtkTreeView" id="treeview1">
+                  <object class="GtkTreeView" id="treeview_menu">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="model">liststore1</property>
                   </object>
                 </child>
               </object>
@@ -430,5 +431,4 @@
       </object>
     </child>
   </object>
-  <object class="GtkListStore" id="liststore1"/>
 </interface>
