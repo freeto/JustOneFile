@@ -68,10 +68,14 @@ class WindowJustonefile():
         self.modele_treemenu.append(None, ['Préférence'])
         self.modele_treemenu.append(None, ['Aide'])
 
+        # On créée la colone (texte)
         cell = gtk.CellRendererText()
         col = gtk.TreeViewColumn("Colone à virée", cell, text=0)
         col.set_expand(True)
         menu.append_column(col)
+
+        # On modifie ces propriétés
+        menu.set_headers_visible(False)
 
 
 
