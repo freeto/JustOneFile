@@ -216,10 +216,6 @@ class Algorithm(multiprocessing.Process):
             
             
 
-            if self.done: return
-
-            
-
         # -----------------------
         # On recherche les fichiers qui ont une meme somme md5
         # -----------------------
@@ -263,9 +259,6 @@ class Algorithm(multiprocessing.Process):
                         dico_md5[md5_sum] = []
 
                     dico_md5[md5_sum].append(file_path)
-
-            
-            if self.done: return
 
 
         # On contruit la liste des doublons
