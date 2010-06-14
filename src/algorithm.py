@@ -274,8 +274,6 @@ class Algorithm(multiprocessing.Process):
             if len(item) > 1:
                 list_dbl.append(item)
 
-        # Pour que la variable soit accéssible de l'extérieur ..
-        self.list_dbl = list_dbl
 
         # La recherche est finie !
         self.action = 'Finished'
