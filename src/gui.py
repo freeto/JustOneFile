@@ -58,6 +58,8 @@ class WindowJustonefile():
         Update infos of all search's
         """
 
+        need_remove = []
+
         for s in self.list_search:
             s.update_infos()
             
@@ -66,7 +68,13 @@ class WindowJustonefile():
 
             title = str(int(s.progress * 100)) + '%'
             s.tab.set_title(title)
+
+            if s.done: need_remove.append(s)
             
+        # On enlève les recherche qui sont finient
+        for s in need_remove:
+            s.join()
+            self.list_search.remove(s)
 
         return True
         
