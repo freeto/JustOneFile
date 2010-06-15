@@ -156,6 +156,25 @@ class Algorithm(multiprocessing.Process):
             return []
 
 
+    def get_size(self, file_path):
+        """
+        Return size of a file
+        
+        Arguments:
+        - `file_path`: The file to get size
+        """
+
+        # On prend sa taille
+        try:
+            file_size = os.path.getsize(file_path)
+        except:
+            print "Impossible d'agir sur le fichier", file_path
+            return False
+
+        return file_size
+        
+
+
 
     # -----------------------
     # Run function
@@ -189,35 +208,42 @@ class Algorithm(multiprocessing.Process):
         self.action = 'Sort files list'
         self.progress = 0
 
+        self.update_infos()
+
         dico_filesize = {}
+        allfiles_size = 0
         list_len = len(list_all_files_paths)
         i = 0
 
         for file_path in list_all_files_paths:
-            self.update_infos()
+            # On prend la taille du fichier
+            file_size = self.get_size(file_path)
+            if not file_size: continue
 
-            # Calcul de la progression de la tache
-            i += 1
-            self.progress = float(i) / float(list_len)
-            
-            # On prend sa taille
-            try:
-                file_size = os.path.getsize(file_path)
-            except:
-                print "Impossible d'agir sur le fichier", file_path
-                continue
+            allfiles_size += file_size
 
             # Et on ajoute le nom du fichier associer à sa taille dans le dico
             if not dico_filesize.has_key(file_size):
                 dico_filesize[file_size] = []
 
             dico_filesize[file_size].append(file_path)
+
+            # Calcul de la progression de la tache
+            i += 1
+            self.progress = float(i) / float(list_len)
+
+            self.update_infos()
             
 
         # On enlève les éléments qui sont unique, pour garder que les fichiers
         # qui ont au moin un autre fichier de meme taille.
 
-        list_filesize = [x for x in dico_filesize.values() if len(x) > 1]
+        list_filesize = []
+        for item in dico_filesize.values():
+            if len(item) > 1:
+                list_filesize.append(item)
+            else:
+                allfiles_size -= self.get_size(item[0])
             
 
         # -----------------------
@@ -226,28 +252,19 @@ class Algorithm(multiprocessing.Process):
 
         self.action = 'Searching duplicates files'
         self.progress = 0
-
+        progress = 0
         
+        self.update_infos()
+
         dico_md5 = {}
-        list_len = len(list_filesize)
-        i = 0
-        last_p = 0
 
         for list_file in list_filesize:
-
-            i += 1
-            self.progress = float(i) / float(list_len)
             
-            # On envoie les infos tout les 1% pour éviter la lenteur
-            if int(self.progress * 100) > last_p:
-                self.update_infos()
-                last_p = int(self.progress * 100)
-            
-
             # Si la liste contient plus d'un item, il convient de faire une 
             # somme md5 pour vérifier si les fichiers sont bien identiques.
 
             for file_path in list_file:
+
                 md5_sum = self.get_md5sum(file_path)
 
                 # Si l'entré dans le dico n'éxiste pas encore, on la créée
@@ -255,6 +272,11 @@ class Algorithm(multiprocessing.Process):
                     dico_md5[md5_sum] = []
 
                 dico_md5[md5_sum].append(file_path)
+
+                # On fait la progression
+                progress += self.get_size(file_path)
+                self.progress = float(progress) / float(allfiles_size)
+                self.update_infos()
 
         
         # On contruit la liste des doublons
