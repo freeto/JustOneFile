@@ -90,7 +90,7 @@ class Algorithm(multiprocessing.Process):
 
         # On parcour l'arbre des dossiers récursivement et on stock tout les fichiers
         # recontrés dans une liste
-        for elem_path in self._get_listdir(dir_path):
+        for elem_path in self.get_listdir(dir_path):
 
             # On contruit le chemin absolu.
             abs_path = dir_path + '/' + elem_path
@@ -107,14 +107,14 @@ class Algorithm(multiprocessing.Process):
 
 
 
-    def get_content(self, file_path):
+    def get_md5sum(self, file_path):
         """
-        Return Content of file @file_path
-
+        Return md5 sum of a file
+        
         Arguments:
-        - `file_path`: The file's path
+        - `file_path`: The path of the file
         """
-
+        
         # On prend un descripteur de fichier pour pouvoir tester si le fichier
         # est bloquant ou pas (comme par exemple '/dev/null')
         try:
@@ -126,21 +126,22 @@ class Algorithm(multiprocessing.Process):
         # On convertit le descripteur de fichier en object file
         file_obj = os.fdopen(file_des)
 
-        # Il se peut que l'on a le droit d'écrire dessus mais pas de le lire
-        try:
-            content = file_obj.read()
-        except:
-            print "Impossible de lire le fichier", file_path
-            file_obj.close()
-            return False
+        md5_string = ""
+        content = True
+
+        while content:
+            content = file_obj.read(1024 * 1024)
+            md5_string += hashlib.md5( content ).hexdigest()
 
         file_obj.close()
 
-        return content
+        # On fait la somme md5 de la somme md5 des lignes du fichier
+        return hashlib.md5( md5_string ).hexdigest()
+        
 
 
 
-    def _get_listdir(self, dir_path):
+    def get_listdir(self, dir_path):
         """
         Return a list containing all elements in the @dir_path
 
@@ -247,12 +248,7 @@ class Algorithm(multiprocessing.Process):
             # somme md5 pour vérifier si les fichiers sont bien identiques.
 
             for file_path in list_file:
-                # On prend le contenu du fichier
-                content = self.get_content(file_path)
-
-                if content == False: continue
-
-                md5_sum = hashlib.md5( content ).hexdigest()
+                md5_sum = self.get_md5sum(file_path)
 
                 # Si l'entré dans le dico n'éxiste pas encore, on la créée
                 if not md5_sum in dico_md5:
@@ -268,9 +264,10 @@ class Algorithm(multiprocessing.Process):
         # La recherche est finie !
         self.action = 'Finished'
         self.progress = 1.0
-        print 'Terminated !'
         self.done = True
 
         self.update_infos()
+
+        print 'Terminated !'
 
         return

@@ -66,6 +66,7 @@ class WindowJustonefile():
 
             title = str(int(s.progress * 100)) + '%'
             s.tab.set_title(title)
+            
 
         return True
         
