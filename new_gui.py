@@ -131,7 +131,7 @@ class WindowJustonefile():
         cell = gtk.CellRendererToggle()
         cell.set_property('activatable', True)
 
-        col = gtk.TreeViewColumn("", cell, text=0)
+        col = gtk.TreeViewColumn("", cell)
         self.tree_files.append_column(col)
 
         # Et on le remplit
