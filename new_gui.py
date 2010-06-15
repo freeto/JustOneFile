@@ -46,8 +46,6 @@ class WindowJustonefile():
         
         # Initialisation des widgets de la fenetre
         self.init_treeview_menu()
-        self.init_treeview_dbl()
-        self.init_treeview_files()
 
 
 
@@ -78,65 +76,6 @@ class WindowJustonefile():
         self.modele_treemenu.append(None, ['Accueil'])
         self.modele_treemenu.append(None, ['Préférence'])
         self.modele_treemenu.append(None, ['Aide'])
-
-
-
-    def init_treeview_dbl(self):
-        """
-        Init the treeview of duplicates files list display.
-        """
-        
-        self.tree_dbl = self.interface.get_object('treeview_dbl')
-
-        # On créé le modèle du treeview
-        self.modele_treedbl = gtk.ListStore(str)
-        self.tree_dbl.set_model(self.modele_treedbl)
-
-        # On créée la colone (texte)
-        cell = gtk.CellRendererText()
-        col = gtk.TreeViewColumn("Doublons", cell, text=0)
-        col.set_expand(True)
-        self.tree_dbl.append_column(col)
-
-        # Et on le remplit
-        self.modele_treedbl.append(['Un fichier'])
-
-
-
-    def init_treeview_files(self):
-        """
-        Init the treeview of duplicates files list display.
-        """
-        
-        self.tree_files = self.interface.get_object('treeview_files')
-
-        # On créé le modèle du treeview
-        self.modele_treefiles = gtk.ListStore(str, 'gboolean')
-        self.tree_files.set_model(self.modele_treefiles)
-
-        
-        # -----------------------
-        # Colone 1
-        # -----------------------
-
-        cell = gtk.CellRendererText()
-        col = gtk.TreeViewColumn("Fichiers", cell, text=0)
-        col.set_expand(True)
-        self.tree_files.append_column(col)
-
-        # -----------------------
-        # Colone 2
-        # -----------------------
-
-        cell = gtk.CellRendererToggle()
-        cell.set_property('activatable', True)
-
-        col = gtk.TreeViewColumn("", cell)
-        self.tree_files.append_column(col)
-
-        # Et on le remplit
-        self.modele_treefiles.append(['Un fichier', True])
-
 
 
     # -----------------------
