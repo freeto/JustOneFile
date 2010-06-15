@@ -76,34 +76,19 @@ class Algorithm(multiprocessing.Process):
 
         
 
-    def get_all_files_paths(self, dir_path):
+    def gen_all_files_paths(self, dir_path):
         """
-        Return a list containing all file path of file in
-        a directory.
-
+        Generates all files path
+        
         Arguments:
-        - `dir_path`: The dir path
+        - `dir_path`: The base directories
         """
+        
+        # On explore toute l'arborescence
+        for dirpath, dirnames, filenames in os.walk(dir_path):
+            for file_name in filenames:
+                yield dirpath + '/' + file_name
 
-        list_files_path = []
-
-
-        # On parcour l'arbre des dossiers récursivement et on stock tout les fichiers
-        # recontrés dans une liste
-        for elem_path in self.get_listdir(dir_path):
-
-            # On contruit le chemin absolu.
-            abs_path = dir_path + '/' + elem_path
-
-            # Si c'est un fichier, on l'ajoute à la liste, si c'est un dossier,
-            # on le parcour avec cette fonction.
-            if os.path.isfile(abs_path):
-                list_files_path.append(abs_path)
-
-            elif os.path.isdir(abs_path):
-                list_files_path += self.get_all_files_paths(abs_path)
-
-        return list_files_path
 
 
 
@@ -187,35 +172,22 @@ class Algorithm(multiprocessing.Process):
         Return a list of duplicate's file.
         """
         
-        # -----------------------
-        # On fait la liste des fichiers
-        # -----------------------
-
-        self.step = 1
-        self.action = 'Making files list'
-        self.progress = -1
-        
-        self.update_infos()
-
-        list_all_files_paths = self.get_all_files_paths(self.path)
-
 
         # -----------------------
         # On garde que les fichiers qui ont la meme taille
         # -----------------------
 
-        self.step = 2
-        self.action = 'Sort files list'
-        self.progress = 0
+        self.step = 1
+        self.action = 'Build file list'
+        self.progress = -1
 
         self.update_infos()
 
         dico_filesize = {}
         allfiles_size = 0
-        list_len = len(list_all_files_paths)
         i = 0
 
-        for file_path in list_all_files_paths:
+        for file_path in self.gen_all_files_paths(self.path):
             # On prend la taille du fichier
             file_size = self.get_size(file_path)
             if not file_size: continue
@@ -227,12 +199,6 @@ class Algorithm(multiprocessing.Process):
                 dico_filesize[file_size] = []
 
             dico_filesize[file_size].append(file_path)
-
-            # Calcul de la progression de la tache
-            i += 1
-            self.progress = float(i) / float(list_len)
-
-            self.update_infos()
             
 
         # On enlève les éléments qui sont unique, pour garder que les fichiers
