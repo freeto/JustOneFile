@@ -232,7 +232,7 @@ class Algorithm(multiprocessing.Process):
         i = 0
         last_p = 0
 
-        for list_file in dico_filesize.values():
+        for list_file in list_filesize:
 
             i += 1
             self.progress = float(i) / float(list_len)
@@ -250,23 +250,19 @@ class Algorithm(multiprocessing.Process):
                 # On prend le contenu du fichier
                 content = self.get_content(file_path)
 
-                if content == False:
-                    continue
+                if content == False: continue
 
                 md5_sum = hashlib.md5( content ).hexdigest()
 
-                # Si l'entré dans le dico n'éxiste pas encore, on a créée
-                if not dico_md5.has_key(md5_sum):
+                # Si l'entré dans le dico n'éxiste pas encore, on la créée
+                if not md5_sum in dico_md5:
                     dico_md5[md5_sum] = []
 
                 dico_md5[md5_sum].append(file_path)
 
-
+        
         # On contruit la liste des doublons
-        list_dbl = []
-        for item in dico_md5.values():
-            if len(item) > 1:
-                list_dbl.append(item)
+        list_dbl = [item for item in dico_md5.values() if len(item) > 1]
 
 
         # La recherche est finie !
@@ -275,6 +271,6 @@ class Algorithm(multiprocessing.Process):
         print 'Terminated !'
         self.done = True
 
-        self.update_infos()        
+        self.update_infos()
 
         return
