@@ -107,9 +107,9 @@ class Search():
         self.algorithm.start()
 
 
-    def terminate(self):
+    def join(self):
         """
-        Terminate processus
+        Join processus
         """
         
-        self.algorithm.terminate()
+        self.algorithm.join()

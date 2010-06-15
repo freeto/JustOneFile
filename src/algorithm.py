@@ -115,7 +115,9 @@ class Algorithm(multiprocessing.Process):
         content = True
 
         while content:
-            content = file_obj.read(1024 * 1024)
+            content = file_obj.read(1048576)
+            if not content: break
+
             md5_string += hashlib.md5( content ).hexdigest()
 
         file_obj.close()
@@ -244,6 +246,11 @@ class Algorithm(multiprocessing.Process):
                 self.progress = float(progress) / float(allfiles_size)
                 self.update_infos()
 
+
+        self.action = 'Making duplicates list'
+        self.progress = -1
+        
+        self.update_infos()
         
         # On contruit la liste des doublons
         list_dbl = [item for item in dico_md5.values() if len(item) > 1]
