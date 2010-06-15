@@ -49,7 +49,7 @@ class WindowJustonefile():
         # La liste des recherches
         self.list_search = []
 
-        gobject.timeout_add(200, self.update_searchs_infos)
+        gobject.timeout_add(700, self.update_searchs_infos)
 
 
 
