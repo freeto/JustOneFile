@@ -211,9 +211,12 @@ class Algorithm(multiprocessing.Process):
                 dico_filesize[file_size] = []
 
             dico_filesize[file_size].append(file_path)
-
-            # On envoie les informations
             
+
+        # On enlève les éléments qui sont unique, pour garder que les fichiers
+        # qui ont au moin un autre fichier de meme taille.
+
+        list_filesize = [x for x in dico_filesize.values() if len(x) > 1]
             
 
         # -----------------------
@@ -224,9 +227,8 @@ class Algorithm(multiprocessing.Process):
         self.progress = 0
 
         
-
         dico_md5 = {}
-        list_len = len(dico_filesize.values())
+        list_len = len(list_filesize)
         i = 0
         last_p = 0
 
@@ -244,21 +246,20 @@ class Algorithm(multiprocessing.Process):
             # Si la liste contient plus d'un item, il convient de faire une 
             # somme md5 pour vérifier si les fichiers sont bien identiques.
 
-            if len(list_file) > 1:
-                for file_path in list_file:
-                    # On prend le contenu du fichier
-                    content = self.get_content(file_path)
+            for file_path in list_file:
+                # On prend le contenu du fichier
+                content = self.get_content(file_path)
 
-                    if content == False:
-                        continue
+                if content == False:
+                    continue
 
-                    md5_sum = hashlib.md5( content ).hexdigest()
+                md5_sum = hashlib.md5( content ).hexdigest()
 
-                    # Si l'entré dans le dico n'éxiste pas encore, on a créée
-                    if not dico_md5.has_key(md5_sum):
-                        dico_md5[md5_sum] = []
+                # Si l'entré dans le dico n'éxiste pas encore, on a créée
+                if not dico_md5.has_key(md5_sum):
+                    dico_md5[md5_sum] = []
 
-                    dico_md5[md5_sum].append(file_path)
+                dico_md5[md5_sum].append(file_path)
 
 
         # On contruit la liste des doublons
