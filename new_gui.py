@@ -46,6 +46,8 @@ class WindowJustonefile():
         
         # Initialisation des widgets de la fenetre
         self.init_treeview_menu()
+        self.init_treeview_dbl()
+        self.init_toolbar()
 
 
 
@@ -76,6 +78,82 @@ class WindowJustonefile():
         self.modele_treemenu.append(None, ['Accueil'])
         self.modele_treemenu.append(None, ['Préférence'])
         self.modele_treemenu.append(None, ['Aide'])
+
+
+    def init_treeview_dbl(self):
+        """
+        Initilize the treeview of duplicates files
+        """
+        
+        # Ce treeview contient la liste des fichiers en doubles sous forme
+        # D'arbre.
+
+        self.tree_dbl = self.interface.get_object('treeview_dbl')
+
+        # On créé le modèle du menu
+        self.modele_treedbl = gtk.TreeStore(str)
+        self.tree_dbl.set_model(self.modele_treedbl)
+
+        # On créée la colone (texte)
+        cell = gtk.CellRendererText()
+        col = gtk.TreeViewColumn("Doublons", cell, text=0)
+        col.set_expand(True)
+        self.tree_dbl.append_column(col)
+
+        # Et on le remplit
+        iter = self.modele_treedbl.append(None, ['Fichier 1.txt'])
+        self.modele_treedbl.append(iter, ['Autre fichier 1.txt'])
+        iter = self.modele_treedbl.append(None, ['background.jpg'])
+        self.modele_treedbl.append(iter, ['arbres.jpg'])
+
+
+
+    def init_toolbar(self):
+        """
+        Input buttons in toolbar
+        """
+        
+        toolbar = self.interface.get_object("toolbar")
+
+        # On ajoute les boutons
+
+        tb = gtk.ToolButton(gtk.STOCK_NEW)
+        tb.set_tooltip_text('Nouvelle recherche')
+        tb.connect("clicked", gtk.main_quit)
+        tb.show()
+        toolbar.insert(tb, -1)
+
+        tb = gtk.ToolButton(gtk.STOCK_REMOVE)
+        tb.set_tooltip_text('Supprime la recherche')
+        tb.connect("clicked", gtk.main_quit)
+        tb.show()
+        toolbar.insert(tb, -1)
+
+        sep = gtk.SeparatorToolItem()
+        sep.show()
+        toolbar.insert(sep, -1)
+
+        tb = gtk.ToolButton(gtk.STOCK_PREFERENCES)
+        tb.set_tooltip_text('Préférences')
+        tb.connect("clicked", gtk.main_quit)
+        tb.show()
+        toolbar.insert(tb, -1)
+
+        tb = gtk.ToolButton(gtk.STOCK_HELP)
+        tb.set_tooltip_text('Aide')
+        tb.connect("clicked", gtk.main_quit)
+        tb.show()
+        toolbar.insert(tb, -1)
+
+        sep = gtk.SeparatorToolItem()
+        sep.show()
+        toolbar.insert(sep, -1)
+
+        tb = gtk.ToolButton(gtk.STOCK_QUIT)
+        tb.set_tooltip_text('Quitter JustOneFile')
+        tb.connect("clicked", gtk.main_quit)
+        tb.show()
+        toolbar.insert(tb, -1)
 
 
     # -----------------------
