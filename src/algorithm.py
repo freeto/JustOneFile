@@ -53,7 +53,6 @@ class Algorithm(multiprocessing.Process):
         
         self.progress = 0.0
         self.action = 'Initialisation'
-        self.step = 0
         self.done = False
 
 
@@ -67,7 +66,6 @@ class Algorithm(multiprocessing.Process):
         infos = {}
         infos['progress'] = self.progress
         infos['action'] = self.action
-        infos['step'] = self.step
         infos['done'] = self.done
 
         self.queue_send.put(infos)
@@ -179,7 +177,6 @@ class Algorithm(multiprocessing.Process):
         # On garde que les fichiers qui ont la meme taille
         # -----------------------
 
-        self.step = 1
         self.action = 'Build file list'
         self.progress = -1
 
@@ -245,6 +242,7 @@ class Algorithm(multiprocessing.Process):
                 progress += self.get_size(file_path)
                 self.progress = float(progress) / float(allfiles_size)
                 self.update_infos()
+                
 
 
         self.action = 'Making duplicates list'
@@ -254,7 +252,7 @@ class Algorithm(multiprocessing.Process):
         
         # On contruit la liste des doublons
         list_dbl = [item for item in dico_md5.values() if len(item) > 1]
-
+        
 
         # La recherche est finie !
         self.action = 'Finished'
