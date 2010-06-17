@@ -43,11 +43,16 @@ class WindowJustonefile():
         self.interface.add_from_file('new_gui.glade')
 
         self.interface.connect_signals(self)
+
+        # Initilisation des variables
+        self.vbox_tree_search = self.interface.get_object('vbox_tree_search')
+        self.vbox_search = self.interface.get_object('vbox_search')
         
         # Initialisation des widgets de la fenetre
         self.init_treeview_menu()
         self.init_treeview_dbl()
         self.init_toolbar()
+        self.init_panel()
 
 
 
@@ -156,6 +161,63 @@ class WindowJustonefile():
         toolbar.insert(tb, -1)
 
 
+    def init_panel(self):
+        """
+        Initilize the panel
+        """
+        
+        # On construit le panneau et on le place dans une variable
+        panel_interface = gtk.Builder()
+        panel_interface.add_from_file('panel.glade')
+
+        panel_interface.connect_signals(self)
+
+        # On récupère le calque principale
+        self.panel = panel_interface.get_object('box_main')
+        self.panel.unparent()
+        
+        self.panel_visiblity = False
+
+        # Créé le Self.Hpaned et on met les 2 calques dedans
+        self.hpaned = gtk.HPaned()
+        self.hpaned.set_name('hpaned_panel')
+
+        self.hpaned.show()
+
+
+    def set_panel_visibility(self, visibility):
+        """
+        Display or not the panel
+        
+        Arguments:
+        - `visibility`: True if the panel will be visible.
+        """
+
+        # Le panneau est dans un fichier glade à part
+        # Le panneau doit etre dans un 'paned' si il est visible.
+
+        if visibility:
+            # On ajoute le panneau
+            self.vbox_search.remove(self.vbox_tree_search)
+
+            self.hpaned.pack1(self.vbox_tree_search, True, False)
+            self.hpaned.pack2(self.panel, True, False)
+
+            # Et on ajoute le HPaned au calque self.vbox_search
+            self.vbox_search.pack_start(self.hpaned)
+
+        else:
+            # On enlève le panneau
+            self.vbox_search.remove(self.hpaned)
+            
+            # On ajoute le calque vbox_tree_search
+            self.vbox_tree_search.reparent(self.vbox_search)
+
+
+            
+
+
+
     # -----------------------
     # Signaux
     # -----------------------
@@ -171,6 +233,23 @@ class WindowJustonefile():
         
         gtk.main_quit()
 
+
+
+    def on_button_panel_clicked(self, widget):
+        """
+        Call when the panel button is clicked
+        Set the visibility of the panel
+        
+        Arguments:
+        - `widget`: The widget who send the signal
+        """
+        
+        if self.panel_visiblity:
+            self.set_panel_visibility(False)
+            self.panel_visiblity = False
+        else:
+            self.set_panel_visibility(True)
+            self.panel_visiblity = True            
 
 
 
