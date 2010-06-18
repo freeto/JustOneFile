@@ -44,15 +44,15 @@ class WindowJustonefile():
 
         self.interface.connect_signals(self)
 
-        # Initilisation des variables
-        self.vbox_tree_search = self.interface.get_object('vbox_tree_search')
-        self.vbox_search = self.interface.get_object('vbox_search')
         
         # Initialisation des widgets de la fenetre
         self.init_treeview_menu()
         self.init_treeview_dbl()
         self.init_toolbar()
         self.init_panel()
+
+        # C'est l'interface qui s'occupe de gérer la visibilité du panel, mais 
+        # c'est la classe Panel qui soccupe d'ajouter des 'layouts'.
 
 
 
@@ -161,28 +161,22 @@ class WindowJustonefile():
         toolbar.insert(tb, -1)
 
 
+
     def init_panel(self):
         """
         Initilize the panel
         """
         
-        # On construit le panneau et on le place dans une variable
-        panel_interface = gtk.Builder()
-        panel_interface.add_from_file('panel.glade')
-
-        panel_interface.connect_signals(self)
-
-        # On récupère le calque principale
-        self.panel = panel_interface.get_object('box_main')
-        self.panel.unparent()
+        # (Le panneau est déja dans le fichier .glade)
+        self._hpaned = self.interface.get_object('hpaned_panel')
+        self._hpaned_parent = self._hpaned.get_parent()
+        self._hpaned_child1 = self._hpaned.get_child1()
+        self._hpaned_child2 = self._hpaned.get_child2()
         
+        # Le panneau est invisible par defaut.
         self.panel_visiblity = False
+        self.set_panel_visibility(False)
 
-        # Créé le Self.Hpaned et on met les 2 calques dedans
-        self.hpaned = gtk.HPaned()
-        self.hpaned.set_name('hpaned_panel')
-
-        self.hpaned.show()
 
 
     def set_panel_visibility(self, visibility):
@@ -193,25 +187,24 @@ class WindowJustonefile():
         - `visibility`: True if the panel will be visible.
         """
 
-        # Le panneau est dans un fichier glade à part
-        # Le panneau doit etre dans un 'paned' si il est visible.
+        # On met ou on enlève le hpaned, avec les calques correspondants.
 
         if visibility:
             # On ajoute le panneau
-            self.vbox_search.remove(self.vbox_tree_search)
+            self._hpaned_parent.remove(self._hpaned_child1)
 
-            self.hpaned.pack1(self.vbox_tree_search, True, False)
-            self.hpaned.pack2(self.panel, True, False)
+            self._hpaned.pack1(self._hpaned_child1, True, False)
+            self._hpaned.pack2(self._hpaned_child2, True, False)
 
-            # Et on ajoute le HPaned au calque self.vbox_search
-            self.vbox_search.pack_start(self.hpaned)
+            # Et on ajoute le HPaned au calque self._hpaned_parent
+            self._hpaned_parent.pack_start(self._hpaned)
 
         else:
             # On enlève le panneau
-            self.vbox_search.remove(self.hpaned)
+            self._hpaned_parent.remove(self._hpaned)
             
             # On ajoute le calque vbox_tree_search
-            self.vbox_tree_search.reparent(self.vbox_search)
+            self._hpaned_child1.reparent(self._hpaned_parent)
 
 
             
@@ -250,6 +243,7 @@ class WindowJustonefile():
         else:
             self.set_panel_visibility(True)
             self.panel_visiblity = True            
+
 
 
 
