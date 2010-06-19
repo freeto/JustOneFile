@@ -73,7 +73,7 @@ class Panel():
         """
 
         self._box = box
-        self._gui = gui
+        self.gui = gui
         self.list_layouts = []
         self.list_all_layouts = _layout_module.keys()
         self.list_unused_layouts = self.list_all_layouts
@@ -90,19 +90,20 @@ class Panel():
 
         if not layout_name in self.list_all_layouts:
             print 'Ajouter un layout : Nom invalide'
-            return False
+            return
 
-        l = _layout_module[layout_name].Layout(self._gui, layout_name)
-        self.list_layouts.append(l)
+        l = _layout_module[layout_name].Layout(self.gui, layout_name)
+        self.list_layouts.append(layout_name)
         self.list_unused_layouts.remove(layout_name)
 
         # On ajoute ensuite le layout au panneau
         self._box.pack_start(self.format_mainbox(l.main_box, layout_name))
-        return True
+
+        self.update_cblayout()
         
 
 
-    def remove_layout(self, widget, layout_name):
+    def remove_layout(self, widget, layout_name, box):
         """
         Call when 'button_close_layout' was clicked
         Remove the layout named 'name'
@@ -110,9 +111,21 @@ class Panel():
         Arguments:
         - `widget`: The widget who send the signal.
         - `layout_name`: The name of the layout to remove
+        - `box`: The main_box of the layout.
         """
         
-        print 'remove layout', layout_name
+        if not layout_name in self.list_layouts:
+            print "Suppression d'un layout : Nom invalide"
+            return
+
+        # On enlève le box
+        self._box.remove(box)
+
+        # On met à jour les listes
+        self.list_layouts.remove(layout_name)
+        self.list_unused_layouts.append(layout_name)
+        
+        self.update_cblayout()
         
 
 
@@ -136,18 +149,45 @@ class Panel():
         layout_content_box = self.header.get_object('layout_content')
         layout_content_box.pack_start(main_box)
 
+        main_box = self.header.get_object('main_box')
+        main_box.unparent()
+
         # On connect le signal du bouton de fermeture du layout a la fonction 
         # coresspondante.
         button_close = self.header.get_object('button_close_layout')
-        button_close.connect('clicked', self.remove_layout, layout_name)
+        button_close.connect('clicked', self.remove_layout, layout_name, main_box)
 
         # On change le titre du layout :
         titre = self.header.get_object('label_layout_title')
         titre.set_text(layout_name.capitalize())
 
-        main_box = self.header.get_object('main_box')
-        main_box.unparent()
         return main_box
 
-        
 
+  
+    def update_cblayout(self):
+        """
+        Update the content of the combobox layout.
+        """
+        
+        cb = self.gui.get_object('cb_layout')
+        cb_model = cb.get_model()
+
+        # On met à jour le modèle avec les layout restant non encore utilisés
+        cb_model.clear()
+
+        if not self.list_unused_layouts: # Plus de layout à ajouté
+            # On affiche un message et on désactive le bouton
+            cb_model.append(['Aucun panneau inutilisé'])
+            cb.set_sensitive(False)
+            self.gui.get_object('button_add_layout').set_sensitive(False)
+
+        else:
+            # On active la cb et le bouton et on ajoute dans le modèle de la cb
+            # tout les layouts restants.
+            cb.set_sensitive(True)
+            self.gui.get_object('button_add_layout').set_sensitive(True)
+            for l_name in self.list_unused_layouts:
+                cb_model.append([l_name.capitalize()])
+
+        cb.set_active(0)        

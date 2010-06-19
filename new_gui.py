@@ -185,36 +185,7 @@ class WindowJustonefile():
         cb.set_model(cb_model)
         cb.pack_start(case, True)
         cb.add_attribute(case, 'text', 0)
-        self.update_cblayout()
-
-
-
-    def update_cblayout(self):
-        """
-        Update the content of the combobox layout.
-        """
-        
-        cb = self.interface.get_object('cb_layout')
-        cb_model = cb.get_model()
-
-        # On met à jour le modèle avec les layout restant non encore utilisés
-        cb_model.clear()
-
-        if not self.panel.list_unused_layouts: # Plus de layout à ajouté
-            # On affiche un message et on désactive le bouton
-            cb_model.append(['Aucun panneau inutilisé'])
-            cb.set_sensitive(False)
-            self.interface.get_object('button_add_layout').set_sensitive(False)
-
-        else:
-            # On active la cb et le bouton et on ajoute dans le modèle de la cb
-            # tout les layouts restants.
-            cb.set_sensitive(True)
-            self.interface.get_object('button_add_layout').set_sensitive(True)
-            for l_name in self.panel.list_unused_layouts:
-                cb_model.append([l_name.capitalize()])
-
-        cb.set_active(0)        
+        self.panel.update_cblayout()
 
 
 
@@ -296,9 +267,9 @@ class WindowJustonefile():
         cb_model = cb.get_model()
 
         layout_name = (cb_model[cb.get_active()][0]).lower()
-        if not self.panel.add_layout(layout_name): return
-        
-        self.update_cblayout()
+        self.panel.add_layout(layout_name)
+
+
 
 
 # -----------------------
