@@ -25,7 +25,7 @@ A layout for panel, survey display file survey and file informations
 """
 
 from src import layout
-print layout
+print dir(layout)
 
 # Ce layout pour le panneau permet d'afficher un aperçu du fichier actuelement
 # selectionné, et affiche quelques informations sur ce dernier.

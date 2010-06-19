@@ -25,28 +25,7 @@ Gui class with functions
 """
 
 import pygtk, gtk, os
-
-
-def import_all_attr(name):
-    """
-    Import all attributs from a mudule named 'name'
-    
-    Arguments:
-    - `name`: The module name's
-    """
-    
-    m = __import__(name)
-    for n in name.split('.')[1:]:
-        m = getattr(m, n)
-    return m
-
-
-# On import tout les layouts
-_path_layout = 'src/layouts/'
-_layout_module = []
-for layout_dir in os.listdir(_path_layout):
-    if os.path.isdir(_path_layout+layout_dir):
-        _layout_module.append(import_all_attr('src.layouts.'+layout_dir+'.'+layout_dir))
+from src import panel
 
 
 class WindowJustonefile():
@@ -58,7 +37,7 @@ class WindowJustonefile():
         """
         Initialize 
         """
-        
+
         # On contruit le fenetre à partie du fichier glade
         self.interface = gtk.Builder()
         self.interface.add_from_file('new_gui.glade')
@@ -195,6 +174,8 @@ class WindowJustonefile():
         # Le panneau est invisible par defaut.
         self.panel_visiblity = False
         self.set_panel_visibility(False)
+        self.panel = panel.Panel(self._hpaned_child2, self.interface)
+        self.panel.add_layout('survey')
 
 
 

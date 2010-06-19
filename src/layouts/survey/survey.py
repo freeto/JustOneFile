@@ -25,12 +25,11 @@ A layout for panel, survey display file survey and file informations
 """
 
 from src import layout
-print dir(layout)
 
 # Ce layout pour le panneau permet d'afficher un aperçu du fichier actuelement
 # selectionné, et affiche quelques informations sur ce dernier.
 
-class Survey(layout.Layout):
+class Layout(layout.Layout):
     """
     Survey layout class
     """
@@ -45,5 +44,7 @@ class Survey(layout.Layout):
         """
 
         layout.Layout.__init__(self, gui, name)
+
+        # On initialize les variables
         self.current_filepath = ''
 
