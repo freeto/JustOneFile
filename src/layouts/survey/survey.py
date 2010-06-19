@@ -47,6 +47,7 @@ class Layout(layout.Layout):
 
         # On connect les signaux pour savoir quand actualiser le layout
         self.gui.get_object('entry_search').connect('changed', self.update)
+        self.update(None)
 
 
     def update(self, widget):
@@ -56,7 +57,10 @@ class Layout(layout.Layout):
         Arguments:
         - `widget`: The widget who send the signal
         """
-        self.interface.get_object('label_file_name').set_text(widget.get_text())
+
+        file_name = self.gui.get_object('entry_search').get_text()
+        if not file_name: file_name = 'Fichier.py'
+        self.interface.get_object('label_file_name').set_label('<i>'+file_name+'</i>')
 
 
 
