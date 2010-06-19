@@ -205,8 +205,10 @@ class WindowJustonefile():
             cb_model.append(['Aucun panneau inutilisé'])
             cb.set_sensitive(False)
             self.interface.get_object('button_add_layout').set_sensitive(False)
+
         else:
-            # On active la cb et le bouton et
+            # On active la cb et le bouton et on ajoute dans le modèle de la cb
+            # tout les layouts restants.
             cb.set_sensitive(True)
             self.interface.get_object('button_add_layout').set_sensitive(True)
             for l_name in self.panel.list_unused_layouts:
@@ -294,7 +296,7 @@ class WindowJustonefile():
         cb_model = cb.get_model()
 
         layout_name = (cb_model[cb.get_active()][0]).lower()
-        self.panel.add_layout(layout_name)
+        if not self.panel.add_layout(layout_name): return
         
         self.update_cblayout()
 

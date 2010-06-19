@@ -79,6 +79,7 @@ class Panel():
         self.list_unused_layouts = self.list_all_layouts
 
 
+
     def add_layout(self, layout_name):
         """
         Adding a layout to the panel
@@ -96,4 +97,57 @@ class Panel():
         self.list_unused_layouts.remove(layout_name)
 
         # On ajoute ensuite le layout au panneau
-        self._box.pack_start(l.main_box)
+        self._box.pack_start(self.format_mainbox(l.main_box, layout_name))
+        return True
+        
+
+
+    def remove_layout(self, widget, layout_name):
+        """
+        Call when 'button_close_layout' was clicked
+        Remove the layout named 'name'
+        
+        Arguments:
+        - `widget`: The widget who send the signal.
+        - `layout_name`: The name of the layout to remove
+        """
+        
+        print 'remove layout', layout_name
+        
+
+
+
+    def format_mainbox(self, main_box, layout_name):
+        """
+        Format the main box for the panel display.
+        
+        Arguments:
+        - `main_box`: The main box to format 
+        - `layout_name`: The name of the layout
+        """
+        
+        # On lui ajoute une entete contenant le nom du layout et un bouton
+        # fermer. Le modèle de l'entete est dans un fichier glade.
+        self.header = gtk.Builder()
+        self.header.add_from_file('src/layouts/layout.glade')
+        self.header.connect_signals(self)
+
+        # On place le containeur principale du layout dans le box conçu pour.
+        layout_content_box = self.header.get_object('layout_content')
+        layout_content_box.pack_start(main_box)
+
+        # On connect le signal du bouton de fermeture du layout a la fonction 
+        # coresspondante.
+        button_close = self.header.get_object('button_close_layout')
+        button_close.connect('clicked', self.remove_layout, layout_name)
+
+        # On change le titre du layout :
+        titre = self.header.get_object('label_layout_title')
+        titre.set_text(layout_name.capitalize())
+
+        main_box = self.header.get_object('main_box')
+        main_box.unparent()
+        return main_box
+
+        
+

@@ -56,6 +56,13 @@ class Layout():
         self.interface = gtk.Builder()
         self.interface.add_from_file('src/layouts/'+name+'/'+name+'.glade')
         self.interface.connect_signals(self)
-        
-        self.main_box = self.interface.get_object('main_box')
+
+        self.main_box = self.interface.get_object('main_box')        
         self.main_box.unparent()
+        
+
+
+        
+
+        
+
