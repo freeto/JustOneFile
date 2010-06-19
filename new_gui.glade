@@ -323,6 +323,7 @@
                                   <object class="GtkImage" id="image2">
                                     <property name="visible">True</property>
                                     <property name="stock">gtk-add</property>
+                                    <property name="icon-size">1</property>
                                   </object>
                                 </child>
                               </object>

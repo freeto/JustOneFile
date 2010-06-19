@@ -24,8 +24,29 @@
 Gui class with functions
 """
 
+import pygtk, gtk, os
 
-import pygtk, gtk
+
+def import_all_attr(name):
+    """
+    Import all attributs from a mudule named 'name'
+    
+    Arguments:
+    - `name`: The module name's
+    """
+    
+    m = __import__(name)
+    for n in name.split('.')[1:]:
+        m = getattr(m, n)
+    return m
+
+
+# On import tout les layouts
+_path_layout = 'src/layouts/'
+_layout_module = []
+for layout_dir in os.listdir(_path_layout):
+    if os.path.isdir(_path_layout+layout_dir):
+        _layout_module.append(import_all_attr('src.layouts.'+layout_dir+'.'+layout_dir))
 
 
 class WindowJustonefile():
@@ -35,15 +56,13 @@ class WindowJustonefile():
     
     def __init__(self):
         """
-	Initialize compenants
+        Initialize 
         """
-
+        
         # On contruit le fenetre à partie du fichier glade
         self.interface = gtk.Builder()
         self.interface.add_from_file('new_gui.glade')
-
         self.interface.connect_signals(self)
-
         
         # Initialisation des widgets de la fenetre
         self.init_treeview_menu()
