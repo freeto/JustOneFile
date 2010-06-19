@@ -176,7 +176,7 @@ class WindowJustonefile():
         self.set_panel_visibility(False)
         self.panel = panel.Panel(self._hpaned_child2, self.interface)
         # On ajoute le calque par defaut
-        self.panel.add_layout('survey')
+        # self.panel.add_layout('survey')
 
         # On contruit la combox et on la met à jour
         cb = self.interface.get_object('cb_layout')
@@ -199,10 +199,19 @@ class WindowJustonefile():
 
         # On met à jour le modèle avec les layout restant non encore utilisés
         cb_model.clear()
-        if not self.panel.list_unused_layouts:
+
+        if not self.panel.list_unused_layouts: # Plus de layout à ajouté
+            # On affiche un message et on désactive le bouton
             cb_model.append(['Aucun panneau inutilisé'])
-        for l_name in self.panel.list_unused_layouts:
-            cb_model.append([l_name.capitalize()])
+            cb.set_sensitive(False)
+            self.interface.get_object('button_add_layout').set_sensitive(False)
+        else:
+            # On active la cb et le bouton et
+            cb.set_sensitive(True)
+            self.interface.get_object('button_add_layout').set_sensitive(True)
+            for l_name in self.panel.list_unused_layouts:
+                cb_model.append([l_name.capitalize()])
+
         cb.set_active(0)        
 
 
@@ -273,6 +282,26 @@ class WindowJustonefile():
             self.panel_visiblity = True            
 
 
+    def on_button_add_layout_clicked(self, widget):
+        """
+        Add a layout to the panel
+        
+        Arguments:
+        - `widget`: The widget who send the signal.
+        """
+        
+        cb = self.interface.get_object('cb_layout')
+        cb_model = cb.get_model()
+
+        layout_name = (cb_model[cb.get_active()][0]).lower()
+        self.panel.add_layout(layout_name)
+        
+        self.update_cblayout()
+
+
+# -----------------------
+# Ifmain
+# -----------------------
 
 
 if __name__ == '__main__':
