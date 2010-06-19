@@ -175,7 +175,35 @@ class WindowJustonefile():
         self.panel_visiblity = False
         self.set_panel_visibility(False)
         self.panel = panel.Panel(self._hpaned_child2, self.interface)
+        # On ajoute le calque par defaut
         self.panel.add_layout('survey')
+
+        # On contruit la combox et on la met à jour
+        cb = self.interface.get_object('cb_layout')
+        cb_model = gtk.ListStore(str)
+        case = gtk.CellRendererText()
+        cb.set_model(cb_model)
+        cb.pack_start(case, True)
+        cb.add_attribute(case, 'text', 0)
+        self.update_cblayout()
+
+
+
+    def update_cblayout(self):
+        """
+        Update the content of the combobox layout.
+        """
+        
+        cb = self.interface.get_object('cb_layout')
+        cb_model = cb.get_model()
+
+        # On met à jour le modèle avec les layout restant non encore utilisés
+        cb_model.clear()
+        if not self.panel.list_unused_layouts:
+            cb_model.append(['Aucun panneau inutilisé'])
+        for l_name in self.panel.list_unused_layouts:
+            cb_model.append([l_name.capitalize()])
+        cb.set_active(0)        
 
 
 

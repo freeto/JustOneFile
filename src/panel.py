@@ -76,6 +76,7 @@ class Panel():
         self._gui = gui
         self.list_layouts = []
         self.list_all_layouts = _layout_module.keys()
+        self.list_unused_layouts = self.list_all_layouts
 
 
     def add_layout(self, layout_name):
@@ -92,6 +93,7 @@ class Panel():
 
         l = _layout_module[layout_name].Layout(self._gui, layout_name)
         self.list_layouts.append(l)
+        self.list_unused_layouts.remove(layout_name)
 
         # On ajoute ensuite le layout au panneau
         self._box.pack_start(l.main_box)
