@@ -45,6 +45,18 @@ class Layout(layout.Layout):
 
         layout.Layout.__init__(self, gui, name)
 
-        # On initialize les variables
-        self.current_filepath = ''
+        # On connect les signaux pour savoir quand actualiser le layout
+        self.gui.get_object('entry_search').connect('changed', self.update)
+
+
+    def update(self, widget):
+        """
+        Update the gui
+        
+        Arguments:
+        - `widget`: The widget who send the signal
+        """
+        self.interface.get_object('label_file_name').set_text(widget.get_text())
+
+
 
