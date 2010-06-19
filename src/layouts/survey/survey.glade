@@ -8,7 +8,7 @@
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkImage" id="image1">
+          <object class="GtkImage" id="file_survey">
             <property name="visible">True</property>
             <property name="stock">gtk-missing-image</property>
           </object>
@@ -21,43 +21,49 @@
             <property name="visible">True</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkLabel" id="label1">
+              <object class="GtkLabel" id="label_file_name">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">label</property>
               </object>
               <packing>
+                <property name="expand">False</property>
+                <property name="padding">4</property>
                 <property name="position">0</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label2">
+              <object class="GtkLabel" id="label_file_type">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">label</property>
               </object>
               <packing>
+                <property name="expand">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label3">
+              <object class="GtkLabel" id="label_file_path">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">label</property>
               </object>
               <packing>
+                <property name="expand">False</property>
                 <property name="position">2</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label4">
+              <object class="GtkLabel" id="label_file_lastdate">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">label</property>
               </object>
               <packing>
+                <property name="expand">False</property>
                 <property name="position">3</property>
               </packing>
             </child>
           </object>
           <packing>
+            <property name="expand">False</property>
             <property name="position">1</property>
           </packing>
         </child>
