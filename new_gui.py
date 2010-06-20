@@ -25,7 +25,6 @@ Gui class with functions
 """
 
 import pygtk, gtk, os
-from src import panel
 
 
 class WindowJustonefile():
@@ -47,10 +46,6 @@ class WindowJustonefile():
         self.init_treeview_menu()
         self.init_treeview_dbl()
         self.init_toolbar()
-        self.init_panel()
-
-        # C'est l'interface qui s'occupe de gérer la visibilité du panel, mais 
-        # c'est la classe Panel qui soccupe d'ajouter des 'layouts'.
 
 
 
@@ -160,66 +155,6 @@ class WindowJustonefile():
 
 
 
-    def init_panel(self):
-        """
-        Initilize the panel
-        """
-        
-        # (Le panneau est déja dans le fichier .glade)
-        self._hpaned = self.interface.get_object('hpaned_panel')
-        self._hpaned_parent = self._hpaned.get_parent()
-        self._hpaned_child1 = self._hpaned.get_child1()
-        self._hpaned_child2 = self._hpaned.get_child2()
-        
-        # Le panneau est invisible par defaut.
-        self.panel_visiblity = False
-        self.set_panel_visibility(False)
-        self.panel = panel.Panel(self._hpaned_child2, self.interface)
-        # On ajoute le calque par defaut
-        # self.panel.add_layout('survey')
-
-        # On contruit la combox et on la met à jour
-        cb = self.interface.get_object('cb_layout')
-        cb_model = gtk.ListStore(str)
-        case = gtk.CellRendererText()
-        cb.set_model(cb_model)
-        cb.pack_start(case, True)
-        cb.add_attribute(case, 'text', 0)
-        self.panel.update_cblayout()
-
-
-
-    def set_panel_visibility(self, visibility):
-        """
-        Display or not the panel
-        
-        Arguments:
-        - `visibility`: True if the panel will be visible.
-        """
-
-        # On met ou on enlève le hpaned, avec les calques correspondants.
-
-        if visibility:
-            # On ajoute le panneau
-            self._hpaned_parent.remove(self._hpaned_child1)
-
-            self._hpaned.pack1(self._hpaned_child1, True, False)
-            self._hpaned.pack2(self._hpaned_child2, True, False)
-
-            # Et on ajoute le HPaned au calque self._hpaned_parent
-            self._hpaned_parent.pack_start(self._hpaned)
-
-        else:
-            # On enlève le panneau
-            self._hpaned_parent.remove(self._hpaned)
-            
-            # On ajoute le calque vbox_tree_search
-            self._hpaned_child1.reparent(self._hpaned_parent)
-
-
-            
-
-
 
     # -----------------------
     # Signaux
@@ -235,40 +170,6 @@ class WindowJustonefile():
         """
         
         gtk.main_quit()
-
-
-
-    def on_button_panel_clicked(self, widget):
-        """
-        Call when the panel button is clicked
-        Set the visibility of the panel
-        
-        Arguments:
-        - `widget`: The widget who send the signal
-        """
-        
-        if self.panel_visiblity:
-            self.set_panel_visibility(False)
-            self.panel_visiblity = False
-        else:
-            self.set_panel_visibility(True)
-            self.panel_visiblity = True            
-
-
-    def on_button_add_layout_clicked(self, widget):
-        """
-        Add a layout to the panel
-        
-        Arguments:
-        - `widget`: The widget who send the signal.
-        """
-        
-        cb = self.interface.get_object('cb_layout')
-        cb_model = cb.get_model()
-
-        layout_name = (cb_model[cb.get_active()][0]).lower()
-        self.panel.add_layout(layout_name)
-
 
 
 
