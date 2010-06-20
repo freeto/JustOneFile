@@ -46,6 +46,7 @@ class WindowJustonefile():
         self.init_treeview_menu()
         self.init_treeview_dbl()
         self.init_toolbar()
+        self.init_statusbar()
 
 
 
@@ -153,6 +154,16 @@ class WindowJustonefile():
         tb.show()
         toolbar.insert(tb, -1)
 
+
+    def init_statusbar(self):
+        """
+        Initialize the windows status bar
+        """
+        
+        sb = self.interface.get_object('statusbar')
+        self.sb_context = sb.get_context_id('Search status bar')
+        
+        sb.push(self.sb_context, 'Message de test pour la statusbar')
 
 
 
