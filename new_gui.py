@@ -163,7 +163,7 @@ class WindowJustonefile():
         sb = self.interface.get_object('statusbar')
         self.sb_context = sb.get_context_id('Search status bar')
         
-        sb.push(self.sb_context, 'Message de test pour la statusbar')
+        sb.push(self.sb_context, 'Construction de la liste ... (63 %)')
 
 
 
