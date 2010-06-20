@@ -161,6 +161,9 @@ class WindowJustonefile():
         """
         
         sb = self.interface.get_object('statusbar')
+
+        # Context à modifier, un context pour une recherche + contexte pour les
+        # actions du programme (enregistrer ...)
         self.sb_context = sb.get_context_id('Search status bar')
         
         sb.push(self.sb_context, 'Construction de la liste ... (63 %)')

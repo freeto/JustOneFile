@@ -357,16 +357,29 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkProgressBar" id="progressbar2">
+                  <object class="GtkAlignment" id="alignment1">
                     <property name="visible">True</property>
-                    <property name="fraction">0.63</property>
+                    <property name="top_padding">2</property>
+                    <child>
+                      <object class="GtkProgressBar" id="pb_sb">
+                        <property name="width_request">100</property>
+                        <property name="height_request">14</property>
+                        <property name="visible">True</property>
+                        <property name="show_text">True</property>
+                        <property name="fraction">0.63</property>
+                        <property name="text" translatable="yes">63 %</property>
+                      </object>
+                    </child>
                   </object>
                   <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
               </object>
               <packing>
+                <property name="expand">False</property>
                 <property name="position">2</property>
               </packing>
             </child>
