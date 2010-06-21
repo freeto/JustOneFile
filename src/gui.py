@@ -40,7 +40,7 @@ class WindowJustonefile():
 	Initialize compenants
         """
 
-        # On contruit le fenetre à partie du fichier glade
+        # On contruit la fenetre à partir du fichier glade
         self.interface = gtk.Builder()
         self.interface.add_from_file('justOneFile.glade')
 
