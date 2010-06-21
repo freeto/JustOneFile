@@ -85,7 +85,7 @@ class WindowJustonefile():
         """
         
         # Ce treeview contient la liste des fichiers en doubles sous forme
-        # D'arbre.
+        # d'arbre.
 
         self.tree_dbl = self.interface.get_object('treeview_dbl')
 
