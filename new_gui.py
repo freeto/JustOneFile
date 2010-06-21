@@ -116,38 +116,45 @@ class WindowJustonefile():
 
         # On ajoute les boutons
 
+        # Bouton nouvelle recherche
         tb = gtk.ToolButton(gtk.STOCK_NEW)
         tb.set_tooltip_text('Nouvelle recherche')
         tb.connect("clicked", gtk.main_quit)
         tb.show()
         toolbar.insert(tb, -1)
 
+        # Bouton suprimme recherche
         tb = gtk.ToolButton(gtk.STOCK_REMOVE)
         tb.set_tooltip_text('Supprime la recherche')
         tb.connect("clicked", gtk.main_quit)
         tb.show()
         toolbar.insert(tb, -1)
 
+        # Séparateur
         sep = gtk.SeparatorToolItem()
         sep.show()
         toolbar.insert(sep, -1)
 
+        # Bouton préférences
         tb = gtk.ToolButton(gtk.STOCK_PREFERENCES)
         tb.set_tooltip_text('Préférences')
         tb.connect("clicked", gtk.main_quit)
         tb.show()
         toolbar.insert(tb, -1)
 
+        # Bouton aide
         tb = gtk.ToolButton(gtk.STOCK_HELP)
         tb.set_tooltip_text('Aide')
         tb.connect("clicked", gtk.main_quit)
         tb.show()
         toolbar.insert(tb, -1)
 
+        # Séparateur
         sep = gtk.SeparatorToolItem()
         sep.show()
         toolbar.insert(sep, -1)
 
+        # Bouton quitter
         tb = gtk.ToolButton(gtk.STOCK_QUIT)
         tb.set_tooltip_text('Quitter JustOneFile')
         tb.connect("clicked", gtk.main_quit)
