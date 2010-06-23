@@ -173,7 +173,7 @@ class WindowJustonefile():
         # actions du programme (enregistrer ...)
         self.sb_context = sb.get_context_id('Search status bar')
         
-        sb.push(self.sb_context, 'Construction de la liste ... (63 %)')
+        sb.push(self.sb_context, 'Construction de la liste ...')
 
 
 
