@@ -70,6 +70,8 @@ class Algorithm(multiprocessing.Process):
 
         self.queue_send.put(infos)
 
+        # On retourne 'True' pour indiquer à gobject que la fonction c'est bien
+        # déroulée, sinon sa bloque le programme.
         return True
 
         
@@ -82,9 +84,13 @@ class Algorithm(multiprocessing.Process):
         - `dir_path`: The base directories
         """
         
-        # On explore toute l'arborescence
+        # On explore toute l'arborescence à l'aide de la fonction os.walk()
+        # elle explore toute l'arborécense des fichier à partie d'un chemin
+        # donner.
         for dirpath, dirnames, filenames in os.walk(dir_path):
             for file_name in filenames:
+                # Cette fonction est un générateur, elle donne a chaque 'appel'
+                # le chemin d'un fichier à tester.
                 yield dirpath + '/' + file_name
 
 
@@ -109,36 +115,25 @@ class Algorithm(multiprocessing.Process):
         # On convertit le descripteur de fichier en object file
         file_obj = os.fdopen(file_des)
 
+        # On lit le fichier par block de 1 Mo (1024*1024), pour éviter de prendre 
+        # trop de RAM.
+
         md5_string = ""
         content = True
 
         while content:
-            content = file_obj.read(1048576)
+            content = file_obj.read(1048576) # 1048576 = 1024*1024
             if not content: break
 
+            # On Hash le block, et on place tout sa dans une variable qui contient 
+            # à la suite les sommes md5 de tout les blocks
             md5_string += hashlib.md5( content ).hexdigest()
 
         file_obj.close()
 
-        # On fait la somme md5 de la somme md5 des lignes du fichier
+        # On retourne la somme md5 de la chaine qui contient toutes les sommes md5
         return hashlib.md5( md5_string ).hexdigest()
         
-
-
-
-    def get_listdir(self, dir_path):
-        """
-        Return a list containing all elements in the @dir_path
-
-        Arguments:
-        - `dir_path`: The dir path where you want get
-        """
-
-        try:
-            return os.listdir(dir_path)
-        except:
-            print "Impossible d'acceder au dossier", dir_path
-            return []
 
 
     def get_size(self, file_path):
@@ -149,7 +144,7 @@ class Algorithm(multiprocessing.Process):
         - `file_path`: The file to get size
         """
 
-        # On prend sa taille
+        # On prend sa taille si on peut
         try:
             file_size = os.path.getsize(file_path)
         except:
@@ -171,29 +166,52 @@ class Algorithm(multiprocessing.Process):
 
         Return a list of duplicate's file.
         """
-        
+
+        # Cette fonction 'run', elle est en fait appellé implicitement lorsque
+        # l'on lance la fonction start. la fonction start met
+        # cette classe dans un nouveau processus et appelle la fonction run()
+        # de cette dernière. A partir de maintenant donc, pour communiquer,
+        # c'est avec des queue.
+        # C'est la fonction update_infos() qui est chargé d'envoyer l'état de 
+        # l'algo dans la queue.
 
         # -----------------------
-        # On garde que les fichiers qui ont la meme taille
+        # Fonctionement de l'algorithme
+        # 
+        # 1 - On fait un tableau organisé des fichiers qui ont la meme taille.
+        #     Tout les fichiers qui ont une taille unique sur l'ensemble des
+        #     fichiers à tester sont donc obligatoirement unique, il n'y à pas
+        #     besoin de les tester avec une somme md5.
+        # 
+        # 2 - On recherche les fichiers qui ont une meme somme md5.
+        #     Si il ont une meme somme md5, alors ce sont des doublons.
+        #     Ont les stock dans un tableau et on enverat régulièrement des infos 
+        #     dans la queue.
+        # -----------------------
+
+
+        # -----------------------
+        # 1 - On garde que les fichiers qui ont la meme taille.
         # -----------------------
 
         self.action = 'Build file list'
-        self.progress = -1
+        self.progress = -1      # Met la bare en mode 'activité'
 
         self.update_infos()
 
+        # Associe une taille (keys) à un/des chemins de fichiers
         dico_filesize = {}
-        allfiles_size = 0
-        i = 0
+        allfiles_size = 0       # La taille de l'ensemble des fichiers à testé
 
+        # On parcour l'arbre des fichiers ...
         for file_path in self.gen_all_files_paths(self.path):
-            # On prend la taille du fichier
             file_size = self.get_size(file_path)
             if not file_size: continue
 
             allfiles_size += file_size
 
-            # Et on ajoute le nom du fichier associer à sa taille dans le dico
+            # si la clé n'éxiste pas encore, on la créée et on indique que la 
+            # valeur sera une liste.
             if not dico_filesize.has_key(file_size):
                 dico_filesize[file_size] = []
 
@@ -205,7 +223,7 @@ class Algorithm(multiprocessing.Process):
 
         list_filesize = []
         for item in dico_filesize.values():
-            if len(item) > 1:
+            if len(item) > 1:    # Si plusieurs fichiers ont la meme taille ..
                 list_filesize.append(item)
             else:
                 allfiles_size -= self.get_size(item[0])
@@ -222,11 +240,11 @@ class Algorithm(multiprocessing.Process):
         self.update_infos()
 
         dico_md5 = {}
+        list_dbl = []           # La liste des doublons
 
         for list_file in list_filesize:
             
-            # Si la liste contient plus d'un item, il convient de faire une 
-            # somme md5 pour vérifier si les fichiers sont bien identiques.
+            # Si la liste 
 
             for file_path in list_file:
 
@@ -238,23 +256,27 @@ class Algorithm(multiprocessing.Process):
 
                 dico_md5[md5_sum].append(file_path)
 
-                # On fait la progression
+                # On fait la progression en fonction de la taille.
                 progress += self.get_size(file_path)
                 self.progress = float(progress) / float(allfiles_size)
                 self.update_infos()
                 
+            # On cherche les doublons
+            for item in dico_md5.values():
+                if len(item) > 1: # Doublons !
+                    list_dbl.append(item)
+                    self.update_infos()
+
+            dico_md5 = {}
+            print list_dbl
 
 
-        self.action = 'Making duplicates list'
-        self.progress = -1
-        
-        self.update_infos()
-        
-        # On contruit la liste des doublons
-        list_dbl = [item for item in dico_md5.values() if len(item) > 1]
-        
 
-        # La recherche est finie !
+
+        # -----------------------
+        # Recherche finit
+        # -----------------------
+
         self.action = 'Finished'
         self.progress = 1.0
         self.done = True
@@ -262,5 +284,4 @@ class Algorithm(multiprocessing.Process):
         self.update_infos()
 
         print 'Terminated !'
-
         return
