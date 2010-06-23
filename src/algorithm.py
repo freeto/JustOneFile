@@ -267,14 +267,17 @@ class Algorithm(multiprocessing.Process):
                     list_dbl.append(item)
                     self.update_infos()
 
-            dico_md5 = {}
             print list_dbl
+
+            # On remet les listes à 0
+            dico_md5 = {}
+            list_dbl = []
 
 
 
 
         # -----------------------
-        # Recherche finit
+        # Recherche finie
         # -----------------------
 
         self.action = 'Finished'
