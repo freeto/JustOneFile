@@ -333,11 +333,12 @@
                   </object>
                   <packing>
                     <property name="resize">True</property>
-                    <property name="shrink">True</property>
+                    <property name="shrink">False</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkVBox" id="vbox3">
+                    <property name="width_request">200</property>
                     <property name="visible">True</property>
                     <property name="orientation">vertical</property>
                     <child>
