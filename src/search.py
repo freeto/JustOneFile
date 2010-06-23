@@ -113,3 +113,11 @@ class Search():
         """
         
         self.algorithm.join()
+
+
+    def terminate(self):
+        """
+        Terminate algorithm
+        """
+        
+        self.algorithm.terminate()
