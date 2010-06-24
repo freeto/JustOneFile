@@ -188,6 +188,13 @@ class WindowJustonefile():
         tb.show()
         toolbar.insert(tb, -1)
         
+        # Bouton Valider
+        tb = gtk.ToolButton(gtk.STOCK_APPLY)
+        tb.set_tooltip_text('Valider')
+        #tb.connect("clicked", gtk.main_quit)
+        tb.show()
+        toolbar.insert(tb, -1)
+        
         # Séparateur
         sep = gtk.SeparatorToolItem()
         sep.show()
