@@ -10,7 +10,6 @@
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <child>
           <object class="GtkMenuBar" id="menubar1">
             <property name="visible">True</property>
@@ -190,7 +189,24 @@
                 <child>
                   <object class="GtkVBox" id="vbox_tree_search">
                     <property name="visible">True</property>
-                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkScrolledWindow" id="scrolledwindow2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="hscrollbar_policy">automatic</property>
+                        <property name="vscrollbar_policy">automatic</property>
+                        <property name="shadow_type">in</property>
+                        <child>
+                          <object class="GtkTreeView" id="treeview_dbl">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
                     <child>
                       <object class="GtkHBox" id="hbox2">
                         <property name="visible">True</property>
@@ -221,7 +237,6 @@
                         <child>
                           <object class="GtkVSeparator" id="vseparator1">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -272,7 +287,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="button2">
-                                <property name="label" translatable="yes">gtk-cancel</property>
+                                <property name="label">gtk-cancel</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -286,7 +301,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="button1">
-                                <property name="label" translatable="yes">gtk-ok</property>
+                                <property name="label">gtk-ok</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -309,24 +324,6 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="padding">5</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkScrolledWindow" id="scrolledwindow2">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
-                        <property name="shadow_type">in</property>
-                        <child>
-                          <object class="GtkTreeView" id="treeview_dbl">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                          </object>
-                        </child>
-                      </object>
-                      <packing>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -340,7 +337,6 @@
                   <object class="GtkVBox" id="vbox3">
                     <property name="width_request">200</property>
                     <property name="visible">True</property>
-                    <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkLabel" id="label2">
                         <property name="visible">True</property>
@@ -415,7 +411,6 @@
             <child>
               <object class="GtkVBox" id="vbox2">
                 <property name="visible">True</property>
-                <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkHSeparator" id="hseparator1">
                     <property name="visible">True</property>

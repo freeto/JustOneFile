@@ -134,8 +134,9 @@ class WindowJustonefile():
         sep = gtk.SeparatorToolItem()
         sep.show()
         toolbar.insert(sep, -1)
-
-        # Bouton préférences
+	
+	
+	# Bouton préférences
         tb = gtk.ToolButton(gtk.STOCK_PREFERENCES)
         tb.set_tooltip_text('Préférences')
         tb.connect("clicked", gtk.main_quit)
@@ -153,14 +154,59 @@ class WindowJustonefile():
         sep = gtk.SeparatorToolItem()
         sep.show()
         toolbar.insert(sep, -1)
-
+	"""
         # Bouton quitter
         tb = gtk.ToolButton(gtk.STOCK_QUIT)
         tb.set_tooltip_text('Quitter JustOneFile')
         tb.connect("clicked", gtk.main_quit)
         tb.show()
+        toolbar.insert(tb, -1) """
+        
+        # Bouton Doublon Precedent
+        tb = gtk.ToolButton(gtk.STOCK_GOTO_FIRST)
+        tb.set_tooltip_text('Doublon précédent')
+        #tb.connect("clicked", gtk.main_quit)
+        tb.show()
         toolbar.insert(tb, -1)
-
+        
+        # Bouton File Precedent
+        tb = gtk.ToolButton(gtk.STOCK_GO_BACK)
+        tb.set_tooltip_text('Fichier précédent')
+        #tb.connect("clicked", gtk.main_quit)
+        tb.show()
+        toolbar.insert(tb, -1)
+        
+        # Séparateur
+        sep = gtk.SeparatorToolItem()
+        sep.show()
+        toolbar.insert(sep, -1)
+        
+        # Bouton Supprimer
+        tb = gtk.ToolButton(gtk.STOCK_DELETE)
+        tb.set_tooltip_text('Supprimer')
+        #tb.connect("clicked", gtk.main_quit)
+        tb.show()
+        toolbar.insert(tb, -1)
+        
+        # Séparateur
+        sep = gtk.SeparatorToolItem()
+        sep.show()
+        toolbar.insert(sep, -1)
+        
+        # Bouton File Suivant
+        tb = gtk.ToolButton(gtk.STOCK_GO_FORWARD)
+        tb.set_tooltip_text('Fichier suivant')
+        #tb.connect("clicked", gtk.main_quit)
+        tb.show()
+        toolbar.insert(tb, -1)
+        
+        # Bouton Doublon Precedent
+        tb = gtk.ToolButton(gtk.STOCK_GOTO_LAST)
+        tb.set_tooltip_text('Doublon suivant')
+        #tb.connect("clicked", gtk.main_quit)
+        tb.show()
+        toolbar.insert(tb, -1)
+        
 
     def init_statusbar(self):
         """
