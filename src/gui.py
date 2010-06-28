@@ -50,6 +50,8 @@ class WindowJustonefile():
         self.list_search = []
 
         gobject.timeout_add(700, self.update_searchs_infos)
+        
+        ## Connection du bouton STOPPER 
 
 
 
@@ -70,11 +72,20 @@ class WindowJustonefile():
             s.tab.set_title(title)
 
             if s.done: need_remove.append(s)
+        
+        
+        ####
+        #### Modif Olivier :
+        ###
+        ### On laisse les recherches en cours car ça permet de garder l'ordre des autres recherches pour les stopper
+        ###
+        ### Ps : c'est un détail
             
-        # On enlève les recherche qui sont finient
+        		# OLD : # On enlève les recherche qui sont finient
+        """
         for s in need_remove:
             s.join()
-            self.list_search.remove(s)
+            self.list_search.remove(s)"""
 
         return True
         
@@ -141,3 +152,23 @@ class WindowJustonefile():
         path = self.interface.get_object('entry_path').get_text()
 
         self.new_search(path)
+        
+    def on_button_stop_clicked(self, widget):
+    	
+    	## Lorsque le boutton stop est enclenché on stop la recherche en cours
+    	
+    	notebook = self.interface.get_object('notebook')
+    	proc = self.list_search[notebook.get_current_page()]
+    	
+    	
+    	## Arret du processus
+    	proc.terminate()
+    	
+    	## Suppression du processu de la liste
+    	del self.list_search[notebook.get_current_page()]
+    	
+    	## Suppression de la page 
+    	notebook.remove_page(notebook.get_current_page())
+    	
+    	
+    	
