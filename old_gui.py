@@ -47,6 +47,9 @@ class WindowJustonefile():
         self.init_treeview_dbl()
         self.init_toolbar()
         self.init_statusbar()
+        self.init_searchbar()
+
+        self.controls_buttons = self.interface.get_object('hbox_controls_buttons')
 
 
 
@@ -176,6 +179,58 @@ class WindowJustonefile():
         sb.push(self.sb_context, 'Construction de la liste ...')
 
 
+    def init_searchbar(self):
+        """
+        Initialize the search bar.
+        """
+        
+        # La barre de recherche est l'ensemble des widget qui contituent la
+        # fonction de recherche. Elle est initialisé pour pouvoir ensuite
+        # l'afficher ou la cacher à volonté, sans avoir besoin de la reconstruire
+        # a chaque fois.
+
+        # La barre de recherche contient une barre de texte et un bouton
+        # 'Rechercher'.
+
+        # La barre de texte
+        entry = gtk.Entry()
+        entry.show()
+
+        # Le bouton de recherche
+        search_button = gtk.Button(None, gtk.STOCK_FIND)
+        search_button.show()
+
+        # On met tout sa dans un calque
+        self.searchbar = gtk.HBox()
+        self.searchbar.pack_start(entry, True, True)
+        self.searchbar.pack_start(search_button, False, False)
+        self.searchbar.show()
+
+
+
+    def set_controls_buttons_visibility(self, visibility):
+        """
+        Hide or show the controls buttons
+        
+        Arguments:
+        - `visibility`: A boolean, False -> Hide, True -> Show
+        """
+
+        if not visibility:
+            # On enlève le calque hbox_controls_buttons et on met à la place
+            # la box initialisée dans init_searchbar.
+            parent = self.controls_buttons.get_parent()
+            parent.remove(self.controls_buttons)
+            
+            parent.pack_start(self.searchbar)
+        else:
+            # On enlève la barre de recherche et on metà la place la box
+            # hbox_controls_buttons
+            parent = self.searchbar.get_parent()
+            parent.remove(self.searchbar)
+            
+            parent.pack_start(self.controls_buttons)
+
 
     # -----------------------
     # Signaux
@@ -192,6 +247,16 @@ class WindowJustonefile():
         
         gtk.main_quit()
 
+
+    def on_tb_search_toggled(self, widget):
+        """
+        Call when the search toggle button was toggle.
+
+        Arguments:
+        - `widget`: The widget who send the signal
+        """
+
+        self.set_controls_buttons_visibility(not widget.get_active())
 
 
 # -----------------------
