@@ -135,101 +135,32 @@ class WindowJustonefile():
         sep.show()
         toolbar.insert(sep, -1)
 	
-	
-	# Bouton préférences
-        tb = gtk.ToolButton(gtk.STOCK_PREFERENCES)
-        tb.set_tooltip_text('Préférences')
-        tb.connect("clicked", gtk.main_quit)
+        # Bouton UNDO (Annuler)
+        tb = gtk.ToolButton(gtk.STOCK_UNDO)
+        tb.set_tooltip_text("Annuler l'action")
+        #tb.connect("clicked", gtk.main_quit)
         tb.show()
         toolbar.insert(tb, -1)
-
-        # Bouton aide
-        tb = gtk.ToolButton(gtk.STOCK_HELP)
-        tb.set_tooltip_text('Aide')
-        tb.connect("clicked", gtk.main_quit)
+        
+        # Bouton REDO (Refaire)
+        tb = gtk.ToolButton(gtk.STOCK_REDO)
+        tb.set_tooltip_text("Refaire l'action")
+        #tb.connect("clicked", gtk.main_quit)
         tb.show()
         toolbar.insert(tb, -1)
-
+        
         # Séparateur
         sep = gtk.SeparatorToolItem()
         sep.show()
         toolbar.insert(sep, -1)
-	"""
+        
         # Bouton quitter
         tb = gtk.ToolButton(gtk.STOCK_QUIT)
         tb.set_tooltip_text('Quitter JustOneFile')
         tb.connect("clicked", gtk.main_quit)
         tb.show()
-        toolbar.insert(tb, -1) """
-        
-        # Bouton Doublon Precedent
-        tb = gtk.ToolButton(gtk.STOCK_GOTO_FIRST)
-        tb.set_tooltip_text('Doublon précédent')
-        #tb.connect("clicked", gtk.main_quit)
-        tb.show()
         toolbar.insert(tb, -1)
-        
-        # Bouton File Precedent
-        tb = gtk.ToolButton(gtk.STOCK_GO_BACK)
-        tb.set_tooltip_text('Fichier précédent')
-        #tb.connect("clicked", gtk.main_quit)
-        tb.show()
-        toolbar.insert(tb, -1)
-        
-        # Séparateur
-        sep = gtk.SeparatorToolItem()
-        sep.show()
-        toolbar.insert(sep, -1)
-        
-        # Bouton Supprimer
-        tb = gtk.ToolButton(gtk.STOCK_DELETE)
-        tb.set_tooltip_text('Supprimer')
-        #tb.connect("clicked", gtk.main_quit)
-        tb.show()
-        toolbar.insert(tb, -1)
-        
-        # Bouton Valider
-        tb = gtk.ToolButton(gtk.STOCK_APPLY)
-        tb.set_tooltip_text('Valider')
-        #tb.connect("clicked", gtk.main_quit)
-        tb.show()
-        toolbar.insert(tb, -1)
-        
-        # Bouton File Suivant
-        tb = gtk.ToolButton(gtk.STOCK_GO_FORWARD)
-        tb.set_tooltip_text('Fichier suivant')
-        #tb.connect("clicked", gtk.main_quit)
-        tb.show()
-        toolbar.insert(tb, -1)
-        
-        # Bouton Doublon Precedent
-        tb = gtk.ToolButton(gtk.STOCK_GOTO_LAST)
-        tb.set_tooltip_text('Doublon suivant')
-        #tb.connect("clicked", gtk.main_quit)
-        tb.show()
-        toolbar.insert(tb, -1)
-        
-        # Séparateur
-        sep = gtk.SeparatorToolItem()
-        sep.show()
-        toolbar.insert(sep, -1)
-        
-        # Bouton UNDO
-        tb = gtk.ToolButton(gtk.STOCK_UNDO)
-        tb.set_tooltip_text('Annuler l\'action')
-        #tb.connect("clicked", gtk.main_quit)
-        tb.show()
-        toolbar.insert(tb, -1)
-        
-        # Bouton REDO
-        tb = gtk.ToolButton(gtk.STOCK_REDO)
-        tb.set_tooltip_text('Refaire l\'action')
-        #tb.connect("clicked", gtk.main_quit)
-        tb.show()
-        toolbar.insert(tb, -1)
-        
-        
-        
+
 
     def init_statusbar(self):
         """
