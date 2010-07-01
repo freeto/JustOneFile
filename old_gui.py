@@ -193,17 +193,17 @@ class WindowJustonefile():
         # 'Rechercher'.
 
         # La barre de texte
-        entry = gtk.Entry()
-        entry.show()
+        self.entry_search = gtk.Entry()
+        self.entry_search.show()
 
         # Le bouton de recherche
-        search_button = gtk.Button(None, gtk.STOCK_FIND)
+        search_button = gtk.Button(None, gtk.STOCK_PREFERENCES)
         search_button.show()
 
         # On met tout sa dans un calque
         self.searchbar = gtk.HBox()
-        self.searchbar.pack_start(entry, True, True)
-        self.searchbar.pack_start(search_button, False, False)
+        self.searchbar.pack_start(self.entry_search, True, True)
+        self.searchbar.pack_start(search_button, False, True)
         self.searchbar.show()
 
 
@@ -216,19 +216,26 @@ class WindowJustonefile():
         - `visibility`: A boolean, False -> Hide, True -> Show
         """
 
+        # On fait d'abord une petite vérification avant d'agir sur l'interface
+        if self.controls_buttons.get_parent() is None and not visibility:
+            return
+        elif self.searchbar.get_parent() is None and visibility:
+            return
+
         if not visibility:
             # On enlève le calque hbox_controls_buttons et on met à la place
             # la box initialisée dans init_searchbar.
             parent = self.controls_buttons.get_parent()
             parent.remove(self.controls_buttons)
-            
             parent.pack_start(self.searchbar)
+
+            # On donne le focus à la barre
+            self.entry_search.grab_focus()
         else:
-            # On enlève la barre de recherche et on metà la place la box
+            # On enlève la barre de recherche et on met à la place la box
             # hbox_controls_buttons
             parent = self.searchbar.get_parent()
             parent.remove(self.searchbar)
-            
             parent.pack_start(self.controls_buttons)
 
 
