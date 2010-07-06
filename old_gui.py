@@ -198,6 +198,8 @@ class WindowJustonefile():
         # l'afficher ou la cacher à volonté, sans avoir besoin de la reconstruire
         # a chaque fois.
 
+        # | Peut etre serait-il mieu de la construire avec glade+gtkBuilder non ? |
+
         # La barre de recherche contient une barre de texte et un bouton
         # 'Rechercher'.
 
@@ -209,7 +211,7 @@ class WindowJustonefile():
         search_button = gtk.Button(None, gtk.STOCK_PREFERENCES)
         search_button.show()
 
-        # On met tout sa dans un calque
+        # On met tout sa dans un calque Horizental
         self.searchbar = gtk.HBox()
         self.searchbar.pack_start(self.entry_search, True, True)
         self.searchbar.pack_start(search_button, False, True)
@@ -224,6 +226,8 @@ class WindowJustonefile():
         Arguments:
         - `visibility`: A boolean, False -> Hide, True -> Show
         """
+
+        # On affiche ou enlève la barre de recherche.
 
         # On fait d'abord une petite vérification avant d'agir sur l'interface
         if self.controls_buttons.get_parent() is None and not visibility:
@@ -287,9 +291,10 @@ class WindowJustonefile():
         # Comme les mécanisme de recherche ne sont pas encore implémentés,
         # ce bouton est juste (pour le moment) un bouton de démonstration.
         # On vas donc juste inverser l'état du bouton lors du clic.
+        # Penser à une meilleure implémentation.
 
         if self.tb_stop_search:
-            # On vas afficher reprendre.
+            # On vas afficher Reprendre.
             tb.set_stock_id(gtk.STOCK_MEDIA_PLAY)
             tb.set_tooltip_text('Reprendre la recherche')
             self.tb_stop_search = False
