@@ -69,7 +69,7 @@ class WindowJustonefile():
 
         # On créée la colone (texte)
         cell = gtk.CellRendererText()
-        col = gtk.TreeViewColumn("Colone à virée", cell, text=0)
+        col = gtk.TreeViewColumn("", cell, text=0)
         col.set_expand(True)
         self.tree_menu.append_column(col)
 
@@ -130,6 +130,15 @@ class WindowJustonefile():
         tb = gtk.ToolButton(gtk.STOCK_REMOVE)
         tb.set_tooltip_text('Supprime la recherche')
         tb.connect("clicked", gtk.main_quit)
+        tb.show()
+        toolbar.insert(tb, -1)
+
+        # Bouton 'Stopper la recherche'. Si cliqué, ce bouton sera remplacé par
+        # 'Reprendre la recherche'
+        self.tb_stop_search = True
+        tb = gtk.ToolButton(gtk.STOCK_MEDIA_STOP)
+        tb.set_tooltip_text('Stopper la recherche')
+        tb.connect("clicked", self.on_tb_stop_search_clicked)
         tb.show()
         toolbar.insert(tb, -1)
 
@@ -264,6 +273,32 @@ class WindowJustonefile():
         """
 
         self.set_controls_buttons_visibility(not widget.get_active())
+
+
+
+    def on_tb_stop_search_clicked(self, tb):
+        """
+        Call when the Stop search toolbutton's was clicked.
+        """
+        
+        # Si l'état de la recherche est stopée, on affiche 'Reprendre'
+        # sinon on affiche 'Stopper'.
+        
+        # Comme les mécanisme de recherche ne sont pas encore implémentés,
+        # ce bouton est juste (pour le moment) un bouton de démonstration.
+        # On vas donc juste inverser l'état du bouton lors du clic.
+
+        if self.tb_stop_search:
+            # On vas afficher reprendre.
+            tb.set_stock_id(gtk.STOCK_MEDIA_PLAY)
+            tb.set_tooltip_text('Reprendre la recherche')
+            self.tb_stop_search = False
+        else:
+            # On vas afficher Stopper
+            tb.set_stock_id(gtk.STOCK_MEDIA_STOP)
+            tb.set_tooltip_text('Stopper la recherche')
+            self.tb_stop_search = True
+
 
 
 # -----------------------
