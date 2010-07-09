@@ -39,7 +39,7 @@ class WindowJustonefile():
 
         # On contruit le fenetre à partie du fichier glade
         self.interface = gtk.Builder()
-        self.interface.add_from_file('old_gui.glade')
+        self.interface.add_from_file('justOneFile.glade')
         self.interface.connect_signals(self)
 
         # Initialisation des widgets de la fenetre
