@@ -21,5 +21,5 @@
 #	MA 02110-1301, USA.
 
 """
-A init file for python
+Init file
 """
