@@ -23,10 +23,10 @@
                     <property name="visible">True</property>
                     <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem1">
-                        <property name="label" translatable="yes" comments="Begin a new search.">Nouvelle recherche</property>
+                        <property name="label">gtk-new</property>
                         <property name="visible">True</property>
-                        <property name="image">image1</property>
-                        <property name="use_stock">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
                       </object>
                     </child>
                     <child>
@@ -62,7 +62,6 @@
                       <object class="GtkImageMenuItem" id="imagemenuitem5">
                         <property name="label">gtk-quit</property>
                         <property name="visible">True</property>
-                        <property name="tooltip_text" translatable="yes">Quitter JustOneFile.</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                       </object>
@@ -273,7 +272,6 @@
                                 <child>
                                   <object class="GtkVSeparator" id="vseparator1">
                                     <property name="visible">True</property>
-                                    <property name="orientation">vertical</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -298,13 +296,29 @@
                                   </packing>
                                 </child>
                                 <child>
+                                  <object class="GtkButton" id="button7">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <property name="relief">none</property>
+                                    <child>
+                                      <object class="GtkImage" id="image8">
+                                        <property name="visible">True</property>
+                                        <property name="stock">gtk-ok</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="position">4</property>
+                                  </packing>
+                                </child>
+                                <child>
                                   <object class="GtkVSeparator" id="vseparator2">
                                     <property name="visible">True</property>
-                                    <property name="orientation">vertical</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
-                                    <property name="position">4</property>
+                                    <property name="position">5</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -321,7 +335,7 @@
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="position">5</property>
+                                    <property name="position">6</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -338,7 +352,7 @@
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="position">6</property>
+                                    <property name="position">7</property>
                                   </packing>
                                 </child>
                               </object>
@@ -349,7 +363,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="button6">
-                                <property name="label" translatable="yes">gtk-ok</property>
+                                <property name="label">gtk-apply</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
