@@ -501,10 +501,4 @@
       </object>
     </child>
   </object>
-  <object class="GtkImage" id="image1">
-    <property name="visible">True</property>
-    <property name="stock">gtk-new</property>
-    <property name="icon-size">1</property>
-  </object>
-  <object class="GtkAccelGroup" id="accelgroup1"/>
 </interface>

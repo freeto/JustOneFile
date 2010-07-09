@@ -41,15 +41,14 @@ class WindowJustonefile():
         self.interface = gtk.Builder()
         self.interface.add_from_file('old_gui.glade')
         self.interface.connect_signals(self)
-        
+
         # Initialisation des widgets de la fenetre
+        self.controls_buttons = self.interface.get_object('hbox_controls_buttons')
         self.init_treeview_menu()
         self.init_treeview_dbl()
         self.init_toolbar()
         self.init_statusbar()
         self.init_searchbar()
-
-        self.controls_buttons = self.interface.get_object('hbox_controls_buttons')
 
 
 
@@ -203,7 +202,8 @@ class WindowJustonefile():
         # La barre de recherche contient une barre de texte et un bouton
         # 'Rechercher'.
 
-        # La barre de texte
+        # La barre de texte. Lorsque la barre de texte perd le focus, on revient
+        # à l'affichage normal.
         self.entry_search = gtk.Entry()
         self.entry_search.show()
 
@@ -217,34 +217,41 @@ class WindowJustonefile():
         self.searchbar.pack_start(search_button, False, True)
         self.searchbar.show()
 
+        self.searchbar_visibility = False
+        self.entry_search.connect('focus-out-event', self.on_entry_search_unfocus)
 
 
-    def set_controls_buttons_visibility(self, visibility):
+    def set_searchbar_visibility(self, visibility):
         """
         Hide or show the controls buttons
         
         Arguments:
         - `visibility`: A boolean, False -> Hide, True -> Show
+        - `need_refresh`: If we need toggled the toggled button.
         """
 
         # On affiche ou enlève la barre de recherche.
 
         # On fait d'abord une petite vérification avant d'agir sur l'interface
-        if self.controls_buttons.get_parent() is None and not visibility:
-            return
-        elif self.searchbar.get_parent() is None and visibility:
+        if self.searchbar_visibility == visibility:
             return
 
-        if not visibility:
+        tb_search = self.interface.get_object('tb_search')
+        if tb_search.is_focus():
+            print 'lol'
+
+        if visibility:
+            self.searchbar_visibility = True
             # On enlève le calque hbox_controls_buttons et on met à la place
             # la box initialisée dans init_searchbar.
             parent = self.controls_buttons.get_parent()
             parent.remove(self.controls_buttons)
             parent.pack_start(self.searchbar)
 
-            # On donne le focus à la barre
+            # On donne le focus à la barre et on met à jour le tb
             self.entry_search.grab_focus()
         else:
+            self.searchbar_visibility = False
             # On enlève la barre de recherche et on met à la place la box
             # hbox_controls_buttons
             parent = self.searchbar.get_parent()
@@ -252,6 +259,7 @@ class WindowJustonefile():
             parent.pack_start(self.controls_buttons)
 
 
+            
     # -----------------------
     # Signaux
     # -----------------------
@@ -276,7 +284,7 @@ class WindowJustonefile():
         - `widget`: The widget who send the signal
         """
 
-        self.set_controls_buttons_visibility(not widget.get_active())
+        self.set_searchbar_visibility(widget.get_active())
 
 
 
@@ -303,6 +311,18 @@ class WindowJustonefile():
             tb.set_stock_id(gtk.STOCK_MEDIA_STOP)
             tb.set_tooltip_text('Stopper la recherche')
             self.tb_stop_search = True
+
+
+
+    def on_entry_search_unfocus(self, event, widget):
+        """
+        We hide the search bar
+        
+        Arguments:
+        - `widget`: The widget send the signal.
+        """
+
+        self.set_searchbar_visibility(False)
 
 
 
