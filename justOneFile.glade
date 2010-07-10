@@ -202,6 +202,7 @@
                           <object class="GtkTreeView" id="treeview_dbl">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <signal name="focus_in_event" handler="on_treeview_dbl_focus_in_event"/>
                           </object>
                         </child>
                       </object>

@@ -265,13 +265,19 @@ class WindowJustonefile():
             self.tb_stop_search = True
 
 
-
-    def on_entry_search_unfocus(self, event, widget):
+    def on_treeview_dbl_focus_in_event(self, widget, event):
         """
-        We hide the search bar
+        Call when the treeview_dbl get focus.
+        Hide the search_bar
         
         Arguments:
-        - `widget`: The widget send the signal.
+        - `widget`: The widget who send the signal.
         """
+        
+        # /!\ Fonction pas très propre, à réorganiser /!\
 
-        self.set_searchbar_visibility(False)
+        # On test si la barre de recherche est active et on agit en fonction.
+        ac = self.interface.get_object('notebook_controlbar').get_current_page()
+        
+        if ac == 1:
+            self.interface.get_object('tb_search').clicked()
