@@ -240,6 +240,10 @@ class WindowJustonefile():
     # -----------------------
 
 
+    # -----------------------
+    # Fenetre
+    # -----------------------
+
     def on_windowJustonefile_destroy(self, widget):
         """
         Call when the window was destroy
@@ -251,6 +255,57 @@ class WindowJustonefile():
         gtk.main_quit()
 
 
+    def on_treeview_menu_cursor_changed(self, widget):
+        """
+        Display the associated page in the main notebook.
+        
+        Arguments:
+        - `widget`: The widget who send the signal.
+        """
+
+        # On prend le chemin de la selection et si on additionne tout les numéros,
+        # on obtient la position de la page qu'il faut afficher.
+        # (Peut-etre qu'il y a une méthode encore plus simple.)
+
+        path = widget.get_cursor()[0]
+        pos = path[0]
+        if len(path) > 1:
+            pos += path[1] + 1
+        
+        self.interface.get_object('notebook_main').set_current_page(pos)
+
+
+    def on_notebook_main_switch_page(self, widget, page, page_index):
+        """
+        Refresh and select the treeview menu.
+        
+        Arguments:
+        - `widget`: The widget who send the signal.
+        """
+        
+        # On prend la page et on construit le chemin en fonction.
+
+        # Si la position est plus petite que 4, alors le chemin est simple
+        # Sinon, cela veut dire que le chemin serait alors (3, page_index - 4)
+        if page_index < 4:
+            path = (page_index,)
+        else:
+            self.tree_menu.expand_row((3), False)
+            path = (3, page_index - 4)
+
+        # Si on ne gère pas sa, on a un appelle récursif (car le changement
+        # de surseur ordonne un changement d'onglet, qui ordonne a nouveau un
+        # changement de curseur ...).
+        if self.tree_menu.get_cursor()[0] == path:
+            return
+
+        self.tree_menu.set_cursor(path)
+
+
+    # -----------------------
+    # Onglet de recherche
+    # -----------------------
+
     def on_tb_search_toggled(self, widget):
         """
         Call when the search toggle button was toggle.
@@ -260,7 +315,6 @@ class WindowJustonefile():
         """
 
         self.set_searchbar_visibility(widget.get_active())
-
 
 
     def on_tb_stop_search_clicked(self, tb):
@@ -306,34 +360,9 @@ class WindowJustonefile():
             self.interface.get_object('tb_search').clicked()
 
 
-    def on_treeview_menu_cursor_changed(self, widget):
-        """
-        Display the associated page in the main notebook.
-        
-        Arguments:
-        - `widget`: The widget who send the signal.
-        """
-
-        # On prend le chemin de la selection et si on additionne tout les numéros,
-        # on obtient la position de la page qu'il faut afficher.
-        # (Peut-etre qu'il y a une méthode encore plus simple.)
-
-        path = widget.get_cursor()[0]
-        pos = path[0]
-        if len(path) > 1:
-            pos += path[1] + 1
-        
-        self.interface.get_object('notebook_main').set_current_page(pos)
-
-
-    def on_button_start_search_clicked(self, widget):
-        """
-        Start a new search : add a tab and lauch search.
-        
-        Arguments:
-        - `widget`: The widget who send the signal.
-        """
-        
+    # -----------------------
+    # Onglet 'Accueil'
+    # -----------------------
 
     def on_button_home_begin_new_search_clicked(self, widget):
         """
@@ -359,29 +388,14 @@ class WindowJustonefile():
         self.interface.get_object('notebook_main').set_current_page(1)
 
 
-    def on_notebook_main_switch_page(self, widget, page, page_index):
+    # -----------------------
+    # Onglet 'Nouvelle recherche'
+    # -----------------------
+
+    def on_button_start_search_clicked(self, widget):
         """
-        Refresh and select the treeview menu.
+        Start a new search : add a tab and lauch search.
         
         Arguments:
         - `widget`: The widget who send the signal.
         """
-        
-        # On prend la page et on construit le chemin en fonction.
-
-        # Si la position est plus petite que 4, alors le chemin est simple
-        # Sinon, cela veut dire que le chemin serait alors (3, page_index - 4)
-        if page_index < 4:
-            path = (page_index,)
-        else:
-            self.tree_menu.expand_row((3), False)
-            path = (3, page_index - 4)
-
-        # Si on ne gère pas sa, on a un appelle récursif (car le changement
-        # de surseur ordonne un changement d'onglet, qui ordonne a nouveau un
-        # changement de curseur ...).
-        if self.tree_menu.get_cursor()[0] == path:
-            return
-
-        self.tree_menu.set_cursor(path)
-
