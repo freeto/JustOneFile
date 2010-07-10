@@ -220,11 +220,15 @@ class WindowJustonefile():
         nb = self.interface.get_object('notebook_main')
 
         # On parcour tous les onglets et on prend son titre, que l'on place dans le
-        # modèle.
+        # modèle. Les 4 premiers onglets sont à la base  0, les autre dans le 4em.
         self.modele_treemenu.clear()
-        for i in xrange(0, nb.get_n_pages()):
+        for i in xrange(0, 4):
             text = nb.get_tab_label_text(nb.get_nth_page(i))
-            self.modele_treemenu.append (None, [text])
+            iter = self.modele_treemenu.append (None, [text])
+
+        for i in xrange(4, nb.get_n_pages()):
+            text = nb.get_tab_label_text(nb.get_nth_page(i))
+            self.modele_treemenu.append (iter, [text])
 
             
     # -----------------------
