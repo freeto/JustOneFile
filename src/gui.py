@@ -321,3 +321,13 @@ class WindowJustonefile():
             pos += path[1] + 1
         
         self.interface.get_object('notebook_main').set_current_page(pos)
+
+
+    def on_button_start_search_clicked(self, widget):
+        """
+        Start a new search : add a tab and lauch search.
+        
+        Arguments:
+        - `widget`: The widget who send the signal.
+        """
+        
