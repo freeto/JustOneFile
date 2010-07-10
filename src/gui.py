@@ -59,7 +59,6 @@ class WindowJustonefile():
         
         # Le treeview_menu est en fait le treeview a gauche qui sert de menu.
         # A ne pas confondre avec le menu du haut.
-
         self.tree_menu = self.interface.get_object('treeview_menu')
 
         # On créé le modèle du menu
@@ -149,14 +148,12 @@ class WindowJustonefile():
         # Bouton UNDO (Annuler)
         tb = gtk.ToolButton(gtk.STOCK_UNDO)
         tb.set_tooltip_text("Annuler l'action")
-        #tb.connect("clicked", gtk.main_quit)
         tb.show()
         toolbar.insert(tb, -1)
         
         # Bouton REDO (Refaire)
         tb = gtk.ToolButton(gtk.STOCK_REDO)
         tb.set_tooltip_text("Refaire l'action")
-        #tb.connect("clicked", gtk.main_quit)
         tb.show()
         toolbar.insert(tb, -1)
         
@@ -205,40 +202,34 @@ class WindowJustonefile():
         # La barre de texte. Lorsque la barre de texte perd le focus, on revient
         # à l'affichage normal.
         self.entry_search = gtk.Entry()
+        self.entry_search.connect('focus-out-event', self.on_entry_search_unfocus)
         self.entry_search.show()
 
-        # Le bouton de recherche
+        # Le bouton de préférences de recherche.
         search_button = gtk.Button(None, gtk.STOCK_PREFERENCES)
         search_button.show()
 
-        # On met tout sa dans un calque Horizental
+        # On met tout sa dans un calque Horizontal
         self.searchbar = gtk.HBox()
         self.searchbar.pack_start(self.entry_search, True, True)
         self.searchbar.pack_start(search_button, False, True)
         self.searchbar.show()
 
         self.searchbar_visibility = False
-        self.entry_search.connect('focus-out-event', self.on_entry_search_unfocus)
 
 
     def set_searchbar_visibility(self, visibility):
         """
-        Hide or show the controls buttons
+        Hide or show the searchbar
         
         Arguments:
         - `visibility`: A boolean, False -> Hide, True -> Show
-        - `need_refresh`: If we need toggled the toggled button.
         """
 
         # On affiche ou enlève la barre de recherche.
 
-        # On fait d'abord une petite vérification avant d'agir sur l'interface
         if self.searchbar_visibility == visibility:
             return
-
-        tb_search = self.interface.get_object('tb_search')
-        if tb_search.is_focus():
-            print 'lol'
 
         if visibility:
             self.searchbar_visibility = True
@@ -248,8 +239,7 @@ class WindowJustonefile():
             parent.remove(self.controls_buttons)
             parent.pack_start(self.searchbar)
 
-            # On donne le focus à la barre et on met à jour le tb
-            self.entry_search.grab_focus()
+            self.entry_search.grab_focus() # On donne le focus à la barre.
         else:
             self.searchbar_visibility = False
             # On enlève la barre de recherche et on met à la place la box
