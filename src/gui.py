@@ -227,7 +227,10 @@ class WindowJustonefile():
             text = nb.get_tab_label_text(nb.get_nth_page(i))
             iter = self.modele_treemenu.append (None, [text])
 
-        for i in xrange(4, nb.get_n_pages()):
+        # On liste toutes les recherches. A noté que le premier onglet sera
+        # toujour 'Nouvelle recherche' et que le dernier ne doit pas etre
+        # affiché car il contient juste le modèle pour un onglet 'Recherche'.
+        for i in xrange(4, nb.get_n_pages() - 1):
             text = nb.get_tab_label_text(nb.get_nth_page(i))
             self.modele_treemenu.append (iter, [text])
 
