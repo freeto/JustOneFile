@@ -74,9 +74,7 @@ class WindowJustonefile():
         self.tree_menu.set_headers_visible(False)
 
         # Et on le remplit
-        self.modele_treemenu.append(None, ['Accueil'])
-        self.modele_treemenu.append(None, ['Préférence'])
-        self.modele_treemenu.append(None, ['Aide'])
+        self.update_treemenu_content()
 
 
     def init_treeview_dbl(self):
@@ -210,6 +208,23 @@ class WindowJustonefile():
         else:
             nb.prev_page()
 
+
+    def update_treemenu_content(self):
+        """
+        Set content of the treeview menu model with the main notebook.
+        """
+        
+        # On prend touts les titres des onglets et on les mets dans le modèle du
+        # treeview 'menu'.
+
+        nb = self.interface.get_object('notebook_main')
+
+        # On parcour tous les onglets et on prend son titre, que l'on place dans le
+        # modèle.
+        self.modele_treemenu.clear()
+        for i in xrange(0, nb.get_n_pages()):
+            text = nb.get_tab_label_text(nb.get_nth_page(i))
+            self.modele_treemenu.append (None, [text])
 
             
     # -----------------------
