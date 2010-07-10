@@ -190,6 +190,7 @@
                 <property name="can_focus">True</property>
                 <property name="show_tabs">False</property>
                 <property name="show_border">False</property>
+                <signal name="switch_page" handler="on_notebook_main_switch_page"/>
                 <child>
                   <object class="GtkVBox" id="vbox4">
                     <property name="visible">True</property>
@@ -254,10 +255,11 @@
                             <property name="spacing">2</property>
                             <property name="layout_style">center</property>
                             <child>
-                              <object class="GtkButton" id="button9">
+                              <object class="GtkButton" id="button_home_begin_new_search">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <signal name="clicked" handler="on_button_home_begin_new_search_clicked"/>
                                 <child>
                                   <object class="GtkHBox" id="hbox5">
                                     <property name="visible">True</property>
