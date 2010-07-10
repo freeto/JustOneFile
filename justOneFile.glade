@@ -292,10 +292,11 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="button10">
+                              <object class="GtkButton" id="button_home_preferences">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <signal name="clicked" handler="on_button_home_preferences_clicked"/>
                                 <child>
                                   <object class="GtkHBox" id="hbox6">
                                     <property name="visible">True</property>

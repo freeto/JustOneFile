@@ -347,6 +347,18 @@ class WindowJustonefile():
         self.interface.get_object('notebook_main').set_current_page(4)
 
 
+    def on_button_home_preferences_clicked(self, widget):
+        """
+        Display the préférences tab's
+        
+        Arguments:
+        - `widget`: The widget who send the signal.
+        """
+        
+        # L'onglet 'Préférence' est toujour en 2èm position.
+        self.interface.get_object('notebook_main').set_current_page(1)
+
+
     def on_notebook_main_switch_page(self, widget, page, page_index):
         """
         Refresh and select the treeview menu.
@@ -372,3 +384,4 @@ class WindowJustonefile():
             return
 
         self.tree_menu.set_cursor(path)
+
