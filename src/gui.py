@@ -73,8 +73,9 @@ class WindowJustonefile():
         # On modifie ces propriétés
         self.tree_menu.set_headers_visible(False)
 
-        # Et on le remplit
+        # On le remplit et on selectionne le premier item.
         self.update_treemenu_content()
+        self.tree_menu.set_cursor (0)
 
 
     def init_treeview_dbl(self):
@@ -300,3 +301,23 @@ class WindowJustonefile():
         
         if ac == 1:
             self.interface.get_object('tb_search').clicked()
+
+
+    def on_treeview_menu_cursor_changed(self, widget):
+        """
+        Display the associated page in the main notebook.
+        
+        Arguments:
+        - `widget`: The widget who send the signal.
+        """
+
+        # On prend le chemin de la selection et si on additionne tout les numéros,
+        # on obtient la position de la page qu'il faut afficher.
+        # (Peut-etre qu'il y a une méthode encore plus simple.)
+
+        path = widget.get_cursor()[0]
+        pos = path[0]
+        if len(path) > 1:
+            pos += path[1] + 1
+        
+        self.interface.get_object('notebook_main').set_current_page(pos)
