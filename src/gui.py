@@ -48,7 +48,6 @@ class WindowJustonefile():
         self.init_treeview_dbl()
         self.init_toolbar()
         self.init_statusbar()
-        self.init_searchbar()
 
 
 
@@ -184,40 +183,6 @@ class WindowJustonefile():
         sb.push(self.sb_context, 'Construction de la liste ...')
 
 
-    def init_searchbar(self):
-        """
-        Initialize the search bar.
-        """
-        
-        # La barre de recherche est l'ensemble des widget qui contituent la
-        # fonction de recherche. Elle est initialisé pour pouvoir ensuite
-        # l'afficher ou la cacher à volonté, sans avoir besoin de la reconstruire
-        # a chaque fois.
-
-        # | Peut etre serait-il mieu de la construire avec glade+gtkBuilder non ? |
-
-        # La barre de recherche contient une barre de texte et un bouton
-        # 'Rechercher'.
-
-        # La barre de texte. Lorsque la barre de texte perd le focus, on revient
-        # à l'affichage normal.
-        self.entry_search = gtk.Entry()
-        self.entry_search.connect('focus-out-event', self.on_entry_search_unfocus)
-        self.entry_search.show()
-
-        # Le bouton de préférences de recherche.
-        search_button = gtk.Button(None, gtk.STOCK_PREFERENCES)
-        search_button.show()
-
-        # On met tout sa dans un calque Horizontal
-        self.searchbar = gtk.HBox()
-        self.searchbar.pack_start(self.entry_search, True, True)
-        self.searchbar.pack_start(search_button, False, True)
-        self.searchbar.show()
-
-        self.searchbar_visibility = False
-
-
     def set_searchbar_visibility(self, visibility):
         """
         Hide or show the searchbar
@@ -227,26 +192,23 @@ class WindowJustonefile():
         """
 
         # On affiche ou enlève la barre de recherche.
+        # Les différents calques sont contenu dans un notebook. Pour afficher
+        # la barre de recherche, on a juste à changer de page !
+        # page 0 = barre de bouton
+        # page 1 = barre de recherche
 
-        if self.searchbar_visibility == visibility:
+        nb = self.interface.get_object('notebook_controlbar')
+
+        # On fait un petit test pour savoir si il est utile de changer de page.
+        cur_page = nb.get_current_page()
+        if (visibility and cur_page == 1) or (not visibility and cur_page == 0):
             return
 
         if visibility:
-            self.searchbar_visibility = True
-            # On enlève le calque hbox_controls_buttons et on met à la place
-            # la box initialisée dans init_searchbar.
-            parent = self.controls_buttons.get_parent()
-            parent.remove(self.controls_buttons)
-            parent.pack_start(self.searchbar)
-
-            self.entry_search.grab_focus() # On donne le focus à la barre.
+            nb.next_page()
+            self.interface.get_object('entry_search').grab_focus()
         else:
-            self.searchbar_visibility = False
-            # On enlève la barre de recherche et on met à la place la box
-            # hbox_controls_buttons
-            parent = self.searchbar.get_parent()
-            parent.remove(self.searchbar)
-            parent.pack_start(self.controls_buttons)
+            nb.prev_page()
 
 
             
