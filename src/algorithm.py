@@ -267,8 +267,6 @@ class Algorithm(multiprocessing.Process):
                     list_dbl.append(item)
                     self.update_infos()
 
-            print list_dbl
-
             # On remet les listes à 0
             dico_md5 = {}
             list_dbl = []

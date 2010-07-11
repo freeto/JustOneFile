@@ -24,7 +24,7 @@
 Gui class with functions
 """
 
-import pygtk, gtk, os
+import pygtk, gtk, os, gobject
 from src import search
 
 
@@ -49,6 +49,7 @@ class WindowJustonefile():
         self.init_statusbar()
 
         self.list_search = []
+        gobject.timeout_add(200, self.update_searchs_infos)
 
 
 
@@ -202,21 +203,26 @@ class WindowJustonefile():
         # treeview 'menu'.
 
         nb = self.interface.get_object('notebook_main')
-        model_treemenu = self.interface.get_object('treeview_menu').get_model()
+        tree_menu = self.interface.get_object('treeview_menu')
+        model_treemenu = tree_menu.get_model()
 
         # On parcour tous les onglets et on prend son titre, que l'on place dans le
         # modèle. Les 4 premiers onglets sont à la base  0, les autre dans le 4em.
+        cursor = tree_menu.get_cursor()[0]
         model_treemenu.clear()
         for i in xrange(0, 4):
             text = nb.get_tab_label_text(nb.get_nth_page(i))
             iter = model_treemenu.append (None, [text])
 
         # On liste toutes les recherches. A noté que le premier onglet sera
-        # toujour 'Nouvelle recherche' et que le dernier ne doit pas etre
-        # affiché car il contient juste le modèle pour un onglet 'Recherche'.
+        # toujour 'Nouvelle recherche'.
         for i in xrange(4, nb.get_n_pages()):
             text = nb.get_tab_label_text(nb.get_nth_page(i))
             model_treemenu.append (iter, [text])
+        
+        tree_menu.expand_row(3, True)
+        if not cursor is None:
+            tree_menu.set_cursor(cursor)
 
             
     def set_toolbar_search_mode(self, mode):
@@ -238,6 +244,21 @@ class WindowJustonefile():
             item.set_sensitive(mode)
 
 
+    def update_searchs_infos(self, ):
+        """
+        Update the search infos and display its into the interface.
+        """
+
+        for s in self.list_search:
+            s.update_infos()
+
+            # On met à jour l'interface
+            s.tab.set_title(str(int(s.progress * 100)) + '  %' + s.path)
+            self.update_treemenu_content()
+
+        return True
+
+
 
     # -----------------------
     # Signaux
@@ -255,7 +276,11 @@ class WindowJustonefile():
         Arguments:
         - `widget`: The widget who send the signal
         """
-        
+
+        # On termine toutes les recherches
+        for s in self.list_search:
+            s.terminate()
+
         gtk.main_quit()
 
 
@@ -432,3 +457,4 @@ class WindowJustonefile():
 
         # On selectionne la page
         nb.set_current_page(-1)
+        s.start()
