@@ -54,7 +54,34 @@ class TabSearch():
         self.main_box.unparent()
 
         self.label_title = gtk.Label(title)
+        self.init_treeview_dbl()
 
+
+    def init_treeview_dbl(self):
+        """
+        Initilize the treeview of duplicates files
+        """
+        
+        # Ce treeview contient la liste des fichiers en doubles sous forme
+        # d'arbre.
+
+        tree_dbl = self.interface.get_object('treeview_dbl')
+
+        # On créé le modèle du menu
+        model_treedbl = gtk.TreeStore(str)
+        tree_dbl.set_model(model_treedbl)
+
+        # On créée la colone (texte)
+        cell = gtk.CellRendererText()
+        col = gtk.TreeViewColumn("Doublons", cell, text=0)
+        col.set_expand(True)
+        tree_dbl.append_column(col)
+
+        # Et on le remplit
+        iter = model_treedbl.append(None, ['Fichier 1.txt'])
+        model_treedbl.append(iter, ['Autre fichier 1.txt'])
+        iter = model_treedbl.append(None, ['background.jpg'])
+        model_treedbl.append(iter, ['arbres.jpg'])
 
 
     def set_pb(self, progress, text):

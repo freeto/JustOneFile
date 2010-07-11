@@ -25,6 +25,7 @@ Gui class with functions
 """
 
 import pygtk, gtk, os
+from src import search
 
 
 class WindowJustonefile():
@@ -75,34 +76,6 @@ class WindowJustonefile():
         # On le remplit et on selectionne le premier item.
         self.update_treemenu_content()
         tree_menu.set_cursor (0)
-
-
-    def init_treeview_dbl(self):
-        """
-        Initilize the treeview of duplicates files
-        """
-        
-        # Ce treeview contient la liste des fichiers en doubles sous forme
-        # d'arbre.
-
-        tree_dbl = self.interface.get_object('treeview_dbl')
-
-        # On créé le modèle du menu
-        model_treedbl = gtk.TreeStore(str)
-        tree_dbl.set_model(model_treedbl)
-
-        # On créée la colone (texte)
-        cell = gtk.CellRendererText()
-        col = gtk.TreeViewColumn("Doublons", cell, text=0)
-        col.set_expand(True)
-        tree_dbl.append_column(col)
-
-        # Et on le remplit
-        iter = model_treedbl.append(None, ['Fichier 1.txt'])
-        model_treedbl.append(iter, ['Autre fichier 1.txt'])
-        iter = model_treedbl.append(None, ['background.jpg'])
-        model_treedbl.append(iter, ['arbres.jpg'])
-
 
 
     def init_toolbar(self):
@@ -240,7 +213,7 @@ class WindowJustonefile():
         # On liste toutes les recherches. A noté que le premier onglet sera
         # toujour 'Nouvelle recherche' et que le dernier ne doit pas etre
         # affiché car il contient juste le modèle pour un onglet 'Recherche'.
-        for i in xrange(4, nb.get_n_pages() - 1):
+        for i in xrange(4, nb.get_n_pages()):
             text = nb.get_tab_label_text(nb.get_nth_page(i))
             model_treemenu.append (iter, [text])
 
@@ -306,7 +279,7 @@ class WindowJustonefile():
 
         # On active ou désactive le toolbar search mode si l'onglet est
         # un onglet de recherche.
-        if pos == 3 or pos > 4:
+        if pos > 4:
             self.set_toolbar_search_mode(True)
         else:
             self.set_toolbar_search_mode(False)
@@ -437,3 +410,12 @@ class WindowJustonefile():
         Arguments:
         - `widget`: The widget who send the signal.
         """
+
+        # On prend le contenu de l'onglet 'Recherche (Modèle)', on en fait un nouvel
+        # onglet.
+
+        nb = self.interface.get_object('notebook_main')
+        s = search.Search('.')
+
+        nb.append_page(s.tab.main_box, s.tab.label_title)
+        self.update_treemenu_content()
