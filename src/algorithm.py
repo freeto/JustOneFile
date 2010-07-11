@@ -267,8 +267,9 @@ class Algorithm(multiprocessing.Process):
             for item in dico_md5.values():
                 if len(item) > 1: # Doublons !
                     self.list_dbl.append(item)
-                    self.update_infos()
 
+                    self.update_infos()
+            
             # On remet les listes à 0
             dico_md5 = {}
             self.list_dbl = []

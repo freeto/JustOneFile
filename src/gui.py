@@ -273,6 +273,7 @@ class WindowJustonefile():
             # On met à jour l'interface sauf si la recherche est terminé
             if s.done: s.join()
             s.tab.set_title(str(int(s.progress * 100)) + '%  ' + s.path)
+            s.tab.add_dbl(s.new_dbl)
 
         self.update_treemenu_content()
         return True

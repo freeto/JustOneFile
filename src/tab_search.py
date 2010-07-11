@@ -123,3 +123,19 @@ class TabSearch():
         
         self.label_title.set_text(title)
 
+
+    def add_dbl(self, list_dbl):
+        """
+        Add the new duplicates files into the list.
+        
+        Arguments:
+        - `list_dbl`: A list who contain the new duplicates files.
+        """
+        
+        if not list_dbl: return
+
+        tree_model = self.interface.get_object('treeview_dbl').get_model()
+        for list_dbls in list_dbl[0]:
+            iter = tree_model.append(None, [list_dbls[0]])
+            for dbl in list_dbls[1:]:
+                tree_model.append(iter, [dbl])

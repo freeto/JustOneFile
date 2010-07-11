@@ -70,7 +70,7 @@ class Search():
         Return the last entry of the pipe
         """
 
-        self.list_dbl = []
+        self.new_dbl = []
 
         if self._queue_send.empty():
             return False
@@ -78,7 +78,8 @@ class Search():
         # Tant qu'il y à une entrée, on contenu de recevoir ..
         while not self._queue_send.empty():
             infos = self._queue_send.get()
-            self.new_dbl.append(infos['dbl'])
+            if infos['dbl']:
+                self.new_dbl.append(infos['dbl'])
 
         return infos
         
