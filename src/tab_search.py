@@ -365,4 +365,20 @@ class TabSearch():
                 model[(path[0], i)][1] = False
             else:
                 model[(path[0], i)][1] = True
-            
+
+
+    def on_button_delete_file_clicked(self, widget):
+        """
+        Toggle a file.
+        
+        Arguments:
+        - `widget`:
+        """
+
+        tree = self.interface.get_object('treeview_dbl')
+        path = tree.get_cursor()[0]
+        model = tree.get_model()
+
+        model[path][1] = not model[path][1]
+        
+

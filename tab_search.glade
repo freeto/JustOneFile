@@ -110,23 +110,6 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="button3">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="relief">none</property>
-                                <child>
-                                  <object class="GtkImage" id="image6">
-                                    <property name="visible">True</property>
-                                    <property name="stock">gtk-delete</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="position">3</property>
-                              </packing>
-                            </child>
-                            <child>
                               <object class="GtkButton" id="button_keep_only">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -137,6 +120,24 @@
                                   <object class="GtkImage" id="image8">
                                     <property name="visible">True</property>
                                     <property name="stock">gtk-ok</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="position">3</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="button_delete_file">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="relief">none</property>
+                                <signal name="clicked" handler="on_button_delete_file_clicked"/>
+                                <child>
+                                  <object class="GtkImage" id="image6">
+                                    <property name="visible">True</property>
+                                    <property name="stock">gtk-delete</property>
                                   </object>
                                 </child>
                               </object>
