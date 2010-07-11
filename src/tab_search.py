@@ -67,7 +67,7 @@ class TabSearch():
 
         tree_dbl = self.interface.get_object('treeview_dbl')
 
-        # On créé le modèle du menu
+        # On créé le modèle
         model_treedbl = gtk.TreeStore(str)
         tree_dbl.set_model(model_treedbl)
 
@@ -77,30 +77,35 @@ class TabSearch():
         col.set_expand(True)
         tree_dbl.append_column(col)
 
-        # On lui donne le focus
-        # xtree_dbl.set_cursor(0)
 
-
-    def set_pb(self, progress, text):
+    def set_searchbar_visibility(self, visibility):
         """
-        Set the progress bar infos
+        Hide or show the searchbar
         
         Arguments:
-        - `progress`: The progress bar fraction
-        - `text`: The progress bar text
+        - `visibility`: A boolean, False -> Hide, True -> Show
         """
-        
-        pb = self.interface.get_object('pb_progress')
 
-        if progress == -1:
-            # On met la barre en mode attente
-            pb.pulse()
+        # On affiche ou enlève la barre de recherche.
+        # Les différents calques sont contenu dans un notebook. Pour afficher
+        # la barre de recherche, on a juste à changer de page !
+        # page 0 = barre de bouton
+        # page 1 = barre de recherche
+
+        nb = self.interface.get_object('notebook_controlbar')
+
+        # On fait un petit test pour savoir si il est utile de changer de page.
+        cur_page = nb.get_current_page()
+        if (visibility and cur_page == 1) or (not visibility and cur_page == 0):
+            return
+
+        if visibility:
+            nb.next_page()
+            self.interface.get_object('entry_search').grab_focus()
         else:
-            pb.set_fraction(float(progress))
+            nb.prev_page()
 
-        pb.set_text(text)
 
-            
     def set_label(self, text):
         """
         Set the label_search_path text
@@ -144,3 +149,39 @@ class TabSearch():
                 # Contient une liste de doublons
                 for file in list_file[1:]:
                     model.append(iter, [file])
+
+
+    # -----------------------
+    # Signaux
+    # -----------------------
+
+    def on_tb_search_toggled(self, widget):
+        """
+        Call when the search toggle button was toggle.
+
+        Arguments:
+        - `widget`: The widget who send the signal
+        """
+
+        self.set_searchbar_visibility(widget.get_active())
+
+
+    def on_treeview_dbl_focus_in_event(self, widget, event):
+        """
+        Call when the treeview_dbl get focus.
+        Hide the search_bar
+        
+        Arguments:
+        - `widget`: The widget who send the signal.
+        """
+        
+        # /!\ Fonction pas très propre, à réorganiser /!\
+
+        # On test si la barre de recherche est active et on agit en fonction.
+        ac = self.interface.get_object('notebook_controlbar').get_current_page()
+        
+        if ac == 1:
+            self.interface.get_object('tb_search').clicked()
+
+
+

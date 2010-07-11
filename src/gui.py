@@ -217,33 +217,6 @@ class WindowJustonefile():
         sb.push(self.sb_context, 'Construction de la liste ...')
 
 
-    def set_searchbar_visibility(self, visibility):
-        """
-        Hide or show the searchbar
-        
-        Arguments:
-        - `visibility`: A boolean, False -> Hide, True -> Show
-        """
-
-        # On affiche ou enlève la barre de recherche.
-        # Les différents calques sont contenu dans un notebook. Pour afficher
-        # la barre de recherche, on a juste à changer de page !
-        # page 0 = barre de bouton
-        # page 1 = barre de recherche
-
-        nb = self.interface.get_object('notebook_controlbar')
-
-        # On fait un petit test pour savoir si il est utile de changer de page.
-        cur_page = nb.get_current_page()
-        if (visibility and cur_page == 1) or (not visibility and cur_page == 0):
-            return
-
-        if visibility:
-            nb.next_page()
-            self.interface.get_object('entry_search').grab_focus()
-        else:
-            nb.prev_page()
-
 
     def update_treemenu_content(self):
         """
@@ -444,17 +417,6 @@ class WindowJustonefile():
     # -----------------------
     # Onglet de recherche
     # -----------------------
-
-    def on_tb_search_toggled(self, widget):
-        """
-        Call when the search toggle button was toggle.
-
-        Arguments:
-        - `widget`: The widget who send the signal
-        """
-
-        self.set_searchbar_visibility(widget.get_active())
-
 
     def on_tb_stop_search_clicked(self, tb):
         """
