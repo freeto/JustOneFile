@@ -195,12 +195,13 @@ class TabSearch():
         
         # On selectionne le fichier précédent.
         tree = self.interface.get_object('treeview_dbl')
-        path = tree.get_cursor()[0][0]
+        path = tree.get_cursor()[0]
         
         # On vérifie avant de selectionner que l'on pas sur le premier
         # fichier.
-        if path == 0: return
-        tree.set_cursor(path - 1)
+        if len(path) == 1 and path[0] == 0: return
+        elif len(path) == 2: tree.set_cursor(path[0])
+        else: tree.set_cursor(path[0] - 1)
 
 
     def on_button_prev_file_clicked(self, widget):
