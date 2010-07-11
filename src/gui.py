@@ -456,6 +456,18 @@ class WindowJustonefile():
     # Onglet 'Nouvelle recherche'
     # -----------------------
 
+    def on_entry_search_path_activate(self, widget):
+        """
+        Start a new search.
+        
+        Arguments:
+        - `widget`:
+        """
+
+        print 'lol'
+        self.on_button_start_search_clicked(None)
+
+    
     def on_button_start_search_clicked(self, widget):
         """
         Start a new search : add a tab and lauch search.

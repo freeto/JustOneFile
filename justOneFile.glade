@@ -485,6 +485,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="invisible_char">&#x25CF;</property>
                                     <property name="text" translatable="yes">/lib</property>
+                                    <signal name="activate" handler="on_entry_search_path_activate"/>
                                   </object>
                                   <packing>
                                     <property name="position">0</property>
