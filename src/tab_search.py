@@ -104,6 +104,7 @@ class TabSearch():
         # la barre de recherche, on a juste à changer de page !
         # page 0 = barre de bouton
         # page 1 = barre de recherche
+        # page 2 = barre de recherche
 
         nb = self.interface.get_object('notebook_controlbar')
 
@@ -113,10 +114,38 @@ class TabSearch():
             return
 
         if visibility:
-            nb.next_page()
+            nb.set_current_page(1)
             self.interface.get_object('entry_search').grab_focus()
         else:
-            nb.prev_page()
+            nb.set_current_page(0)
+
+
+    def set_preferencesbar_visibility(self, visibility):
+        """
+        Hide or show the preferencebar.
+        
+        Arguments:
+        - `visibility`: A boolean, False -> Hide, True -> Show
+        """
+
+        # On affiche ou enlève la barre de préférence.
+        # Les différents calques sont contenu dans un notebook. Pour afficher
+        # la barre de préférence, on a juste à changer de page !
+        # page 0 = barre de bouton
+        # page 1 = barre de recherche
+        # page 2 = barre de recherche
+
+        nb = self.interface.get_object('notebook_controlbar')
+
+        # On fait un petit test pour savoir si il est utile de changer de page.
+        cur_page = nb.get_current_page()
+        if (visibility and cur_page == 2) or (not visibility and cur_page == 0):
+            return
+
+        if visibility:
+            nb.set_current_page(2)
+        else:
+            nb.set_current_page(0)
 
 
     def set_label(self, text):
@@ -177,6 +206,8 @@ class TabSearch():
         - `widget`: The widget who send the signal
         """
 
+        if self.interface.get_object('notebook_controlbar').get_current_page() == 2:
+            self.interface.get_object('tb_file_preferences').clicked()
         self.set_searchbar_visibility(widget.get_active())
 
 
@@ -194,7 +225,9 @@ class TabSearch():
         
         if ac == 1:
             self.interface.get_object('tb_search').clicked()
-
+        if ac == 2:
+            self.interface.get_object('tb_file_preferences').clicked()
+            
 
     def on_button_prev_dbl_clicked(self, widget):
         """
@@ -380,5 +413,18 @@ class TabSearch():
         model = tree.get_model()
 
         model[path][1] = not model[path][1]
+
+
+    def on_tb_file_preferences_toggled(self, widget):
+        """
+        Hide/Show the préférence bar.
+        
+        Arguments:
+        - `widget`:
+        """
+        if self.interface.get_object('notebook_controlbar').get_current_page() == 1:
+            self.interface.get_object('tb_search').clicked()        
+        self.set_preferencesbar_visibility(widget.get_active())
+
         
 
