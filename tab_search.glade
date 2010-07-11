@@ -154,12 +154,12 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="button_select_next">
+                              <object class="GtkButton" id="button_next_file">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="relief">none</property>
-                                <signal name="clicked" handler="on_button_select_next_clicked"/>
+                                <signal name="clicked" handler="on_button_next_file_clicked"/>
                                 <child>
                                   <object class="GtkImage" id="image3">
                                     <property name="visible">True</property>
@@ -172,12 +172,12 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="button_select_last">
+                              <object class="GtkButton" id="button_next_dbl">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="relief">none</property>
-                                <signal name="clicked" handler="on_button_select_last_clicked"/>
+                                <signal name="clicked" handler="on_button_next_dbl_clicked"/>
                                 <child>
                                   <object class="GtkImage" id="image2">
                                     <property name="visible">True</property>

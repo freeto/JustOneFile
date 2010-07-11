@@ -193,7 +193,7 @@ class TabSearch():
         - `widget`:
         """
         
-        # On selectionne le fichier précédent.
+        # On selectionne le doublon précédent.
         tree = self.interface.get_object('treeview_dbl')
         path = tree.get_cursor()[0]
         
@@ -232,34 +232,50 @@ class TabSearch():
             tree.set_cursor((path[0], path[1] - 1))
 
 
-    def on_button_select_next_clicked(self, widget):
+    def on_button_next_file_clicked(self, widget):
         """
-        Select the next file.
+        Go to next file
+        
+        Arguments:
+        - `widget`:
+        """
+
+        # On selectionne le fichier suivant.
+        tree = self.interface.get_object('treeview_dbl')
+        model = tree.get_model()
+        path = tree.get_cursor()[0]
+        last_path = model.iter_n_children(model.get_iter((path[0]))) - 1
+
+        if path == (len(model) - 1, last_path): return
+        # 3 possibilité : soit le curseur est actuellement sur un doublon
+        # soit le curseur est sur un fichier
+        # soit le curseur est sur le dernier fichier d'un doublons
+        if len(path) == 1 and path[0] < len(model):
+            # On place le curseur sur le premier fichier.
+            tree.expand_row(path[0], False)
+            tree.set_cursor((path[0], 0))
+        elif len(path) == 2 and path[1] == last_path:
+            # On place le curseur sur le premier fichier du doublon suivant
+            tree.expand_row(path[0] + 1, False)
+            tree.set_cursor((path[0] + 1, 0))
+        elif len(path) == 2 and path[1] < last_path:
+            tree.set_cursor((path[0], path[1] + 1))
+        
+
+    def on_button_next_dbl_clicked(self, widget):
+        """
+        Go to next dbl.
         
         Arguments:
         - `widget`:
         """
         
-        # On selectionne le fichier suivant.
+        # On selectionne le fichier précédent.
         tree = self.interface.get_object('treeview_dbl')
-        path = tree.get_cursor()[0][0]
+        path = tree.get_cursor()[0]
         last_path = len(tree.get_model()) - 1
         
-        # On vérifie avant de selectionner que l'on pas déjà sur le dernier
-        # fichier.
-        if path == last_path: return
-        tree.set_cursor(path + 1)
-
-
-    def on_button_select_last_clicked(self, widget):
-        """
-        Select the last file.
-        
-        Arguments:
-        - `widget`:
-        """
-        
-        # On selectionne le fichier suivant.
-        tree = self.interface.get_object('treeview_dbl')
-        last_path = len(tree.get_model()) - 1
-        tree.set_cursor(last_path)
+        # On vérifie avant de selectionner que l'on pas sur le dernier
+        # doublon.
+        if len(path) == 1 and path[0] == last_path: return
+        tree.set_cursor(path[0] + 1)
