@@ -52,6 +52,7 @@ class Algorithm(multiprocessing.Process):
         self.path = path
         
         self.progress = 0.0
+        self.list_dbl = []
         self.action = 'Initialisation'
         self.done = False
 
@@ -67,6 +68,7 @@ class Algorithm(multiprocessing.Process):
         infos['progress'] = self.progress
         infos['action'] = self.action
         infos['done'] = self.done
+        infos['dbl'] = self.list_dbl
 
         self.queue_send.put(infos)
 
@@ -86,11 +88,11 @@ class Algorithm(multiprocessing.Process):
         
         # On explore toute l'arborescence à l'aide de la fonction os.walk()
         # elle explore toute l'arborécense des fichier à partie d'un chemin
-        # donner.
+        # donné.
         for dirpath, dirnames, filenames in os.walk(dir_path):
             for file_name in filenames:
-                # Cette fonction est un générateur, elle donne a chaque 'appel'
-                # le chemin d'un fichier à tester.
+                # Cette fonction est un générateur, elle donne à chaque 'appel'
+                # le chemin d'un fichier à tester. (Pour ne pas consommer de mémoire)
                 yield dirpath + '/' + file_name
 
 
@@ -240,7 +242,7 @@ class Algorithm(multiprocessing.Process):
         self.update_infos()
 
         dico_md5 = {}
-        list_dbl = []           # La liste des doublons
+        self.list_dbl = []           # La liste des doublons
 
         for list_file in list_filesize:
             
@@ -264,14 +266,12 @@ class Algorithm(multiprocessing.Process):
             # On cherche les doublons
             for item in dico_md5.values():
                 if len(item) > 1: # Doublons !
-                    list_dbl.append(item)
+                    self.list_dbl.append(item)
                     self.update_infos()
 
             # On remet les listes à 0
             dico_md5 = {}
-            list_dbl = []
-
-
+            self.list_dbl = []
 
 
         # -----------------------

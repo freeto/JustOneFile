@@ -57,10 +57,8 @@ class Search():
         self.action = 'Initilize'
         self.step = 0
         self.done = False
-
-        # L'onglet associé
-        self.tab = tab_search.TabSearch()
-
+        self.new_dbl = []
+        self.tab = tab_search.TabSearch()  # L'onglet associé
         self._queue_send = multiprocessing.Queue()
 
         self.algorithm = algorithm.Algorithm(self._queue_send, path)
@@ -72,12 +70,15 @@ class Search():
         Return the last entry of the pipe
         """
 
+        self.list_dbl = []
+
         if self._queue_send.empty():
             return False
 
         # Tant qu'il y à une entrée, on contenu de recevoir ..
         while not self._queue_send.empty():
             infos = self._queue_send.get()
+            self.new_dbl.append(infos['dbl'])
 
         return infos
         
@@ -94,7 +95,6 @@ class Search():
 
         self.progress = infos['progress']
         self.action = infos['action']
-        self.step = infos['action']
         self.done = infos['done']
 
 
