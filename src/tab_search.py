@@ -25,7 +25,7 @@ The interface of a search's tab.
 """
 
 
-import gtk, pygtk
+import gtk, pygtk, os
 
 class TabSearch():
     """
@@ -147,10 +147,11 @@ class TabSearch():
         for list_dbl in lists_dbl:
             # Contient une liste de liste de doublons
             for list_file in list_dbl:
-                
-                iter = model.append(None, [list_file[0]])
+                name = os.path.basename(list_file[0])
+                name += ' (' + str(len(list_file)) + ')'
+                iter = model.append(None, [name])
                 # Contient une liste de doublons
-                for file in list_file[1:]:
+                for file in list_file:
                     model.append(iter, [file])
 
 
