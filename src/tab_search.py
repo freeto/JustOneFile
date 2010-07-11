@@ -185,4 +185,34 @@ class TabSearch():
             self.interface.get_object('tb_search').clicked()
 
 
+    def on_button_select_first_clicked(self, widget):
+        """
+        Select the first file
+        
+        Arguments:
+        - `widget`:
+        """
+
+        # On selectionne le premier fichier.
+        model = self.interface.get_object('treeview_dbl').get_model()
+        sel = self.interface.get_object('treeview_dbl').get_selection()
+        sel.select_iter (model.get_iter_first())
+
+
+    def on_button_select_prev_clicked(self, widget):
+        """
+        Select the previous file
+        
+        Arguments:
+        - `widget`:
+        """
+        
+        # On selectionne le premier fichier.
+        tree = self.interface.get_object('treeview_dbl')
+        path = tree.get_cursor()[0][0]
+        
+        # On vérifie avant de selectionner que l'on pas déjà sur le premier
+        # fichier.
+        if path == 0: return
+        tree.set_cursor(path - 1)
 
