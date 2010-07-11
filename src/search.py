@@ -78,8 +78,8 @@ class Search():
         # Tant qu'il y à une entrée, on contenu de recevoir ..
         while not self._queue_send.empty():
             infos = self._queue_send.get()
-            if infos['dbl']:
-                self.new_dbl.append(infos['dbl'])
+            if not infos['dbl']: continue
+            self.new_dbl.append(infos['dbl'])
 
         return infos
         

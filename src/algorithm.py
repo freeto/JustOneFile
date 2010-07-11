@@ -68,7 +68,10 @@ class Algorithm(multiprocessing.Process):
         infos['progress'] = self.progress
         infos['action'] = self.action
         infos['done'] = self.done
-        infos['dbl'] = self.list_dbl
+        if self.list_dbl == []:
+            infos['dbl'] = False
+        else:
+            infos['dbl'] = self.list_dbl
 
         self.queue_send.put(infos)
 
@@ -268,7 +271,7 @@ class Algorithm(multiprocessing.Process):
                 if len(item) > 1: # Doublons !
                     self.list_dbl.append(item)
 
-                    self.update_infos()
+            self.update_infos()
             
             # On remet les listes à 0
             dico_md5 = {}
