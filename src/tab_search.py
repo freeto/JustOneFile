@@ -77,14 +77,8 @@ class TabSearch():
         col.set_expand(True)
         tree_dbl.append_column(col)
 
-        # Et on le remplit
-        iter = model_treedbl.append(None, ['Fichier 1.txt'])
-        model_treedbl.append(iter, ['Autre fichier 1.txt'])
-        iter = model_treedbl.append(None, ['background.jpg'])
-        model_treedbl.append(iter, ['arbres.jpg'])
-
         # On lui donne le focus
-        tree_dbl.set_cursor(0)
+        # xtree_dbl.set_cursor(0)
 
 
     def set_pb(self, progress, text):

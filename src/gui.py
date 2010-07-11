@@ -76,7 +76,22 @@ class WindowJustonefile():
         tree_menu.set_headers_visible(False)
 
         # On le remplit et on selectionne le premier item.
-        self.update_treemenu_content()
+        # On prend touts les titres des onglets et on les mets dans le modèle du
+        # treeview 'menu'.
+        nb = self.interface.get_object('notebook_main')
+        
+        # On parcour tous les onglets et on prend son titre, que l'on place dans le
+        # modèle. Les 4 premiers onglets sont à la base  0, les autre dans le 4em.
+        for i in xrange(0, 4):
+            text = nb.get_tab_label_text(nb.get_nth_page(i))
+            self.search_iter = model_treemenu.append (None, [text])
+
+        # On liste toutes les recherches. A noté que le premier onglet sera
+        # toujour 'Nouvelle recherche'.
+        for i in xrange(4, nb.get_n_pages()):
+            text = nb.get_tab_label_text(nb.get_nth_page(i))
+            model_treemenu.append (self.search_iter, [text])
+        
         tree_menu.set_cursor (0)
 
 
@@ -206,21 +221,17 @@ class WindowJustonefile():
         tree_menu = self.interface.get_object('treeview_menu')
         model_treemenu = tree_menu.get_model()
 
-        # On parcour tous les onglets et on prend son titre, que l'on place dans le
-        # modèle. Les 4 premiers onglets sont à la base  0, les autre dans le 4em.
+        # Les 5 premiers onglet ne sont pas à mettre à jour, on enlève que les
+        # onglets de recherches.
         cursor = tree_menu.get_cursor()[0]
-        model_treemenu.clear()
-        for i in xrange(0, 4):
-            text = nb.get_tab_label_text(nb.get_nth_page(i))
-            iter = model_treemenu.append (None, [text])
+        it = self.search_iter
+        for i in xrange(1, model_treemenu.iter_n_children(self.search_iter)):
+            model_treemenu.remove(model_treemenu.iter_nth_child(self.search_iter, i))
 
-        # On liste toutes les recherches. A noté que le premier onglet sera
-        # toujour 'Nouvelle recherche'.
-        for i in xrange(4, nb.get_n_pages()):
+        for i in xrange(5, nb.get_n_pages()):
             text = nb.get_tab_label_text(nb.get_nth_page(i))
-            model_treemenu.append (iter, [text])
+            model_treemenu.append(self.search_iter, [text])
         
-        tree_menu.expand_row(3, True)
         if not cursor is None:
             tree_menu.set_cursor(cursor)
 
@@ -253,7 +264,7 @@ class WindowJustonefile():
             s.update_infos()
 
             # On met à jour l'interface
-            s.tab.set_title(str(int(s.progress * 100)) + '  %' + s.path)
+            s.tab.set_title(str(int(s.progress * 100)) + '%  ' + s.path)
             self.update_treemenu_content()
 
         return True
