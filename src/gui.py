@@ -43,10 +43,9 @@ class WindowJustonefile():
         self.interface.connect_signals(self)
 
         # Initialisation des widgets de la fenetre
-        self.controls_buttons = self.interface.get_object('hbox_controls_buttons')
         self.init_toolbar()
         self.init_treeview_menu()
-        self.init_treeview_dbl()
+        # self.init_treeview_dbl()
         self.init_statusbar()
 
 
@@ -61,8 +60,8 @@ class WindowJustonefile():
         tree_menu = self.interface.get_object('treeview_menu')
 
         # On créé le modèle du menu
-        self.modele_treemenu = gtk.TreeStore(str)
-        tree_menu.set_model(self.modele_treemenu)
+        model_treemenu = gtk.TreeStore(str)
+        tree_menu.set_model(model_treemenu)
 
         # On créée la colone (texte)
         cell = gtk.CellRendererText()
@@ -86,23 +85,23 @@ class WindowJustonefile():
         # Ce treeview contient la liste des fichiers en doubles sous forme
         # d'arbre.
 
-        self.tree_dbl = self.interface.get_object('treeview_dbl')
+        tree_dbl = self.interface.get_object('treeview_dbl')
 
         # On créé le modèle du menu
-        self.modele_treedbl = gtk.TreeStore(str)
-        self.tree_dbl.set_model(self.modele_treedbl)
+        model_treedbl = gtk.TreeStore(str)
+        tree_dbl.set_model(model_treedbl)
 
         # On créée la colone (texte)
         cell = gtk.CellRendererText()
         col = gtk.TreeViewColumn("Doublons", cell, text=0)
         col.set_expand(True)
-        self.tree_dbl.append_column(col)
+        tree_dbl.append_column(col)
 
         # Et on le remplit
-        iter = self.modele_treedbl.append(None, ['Fichier 1.txt'])
-        self.modele_treedbl.append(iter, ['Autre fichier 1.txt'])
-        iter = self.modele_treedbl.append(None, ['background.jpg'])
-        self.modele_treedbl.append(iter, ['arbres.jpg'])
+        iter = model_treedbl.append(None, ['Fichier 1.txt'])
+        model_treedbl.append(iter, ['Autre fichier 1.txt'])
+        iter = model_treedbl.append(None, ['background.jpg'])
+        model_treedbl.append(iter, ['arbres.jpg'])
 
 
 
@@ -229,20 +228,21 @@ class WindowJustonefile():
         # treeview 'menu'.
 
         nb = self.interface.get_object('notebook_main')
+        model_treemenu = self.interface.get_object('treeview_menu').get_model()
 
         # On parcour tous les onglets et on prend son titre, que l'on place dans le
         # modèle. Les 4 premiers onglets sont à la base  0, les autre dans le 4em.
-        self.modele_treemenu.clear()
+        model_treemenu.clear()
         for i in xrange(0, 4):
             text = nb.get_tab_label_text(nb.get_nth_page(i))
-            iter = self.modele_treemenu.append (None, [text])
+            iter = model_treemenu.append (None, [text])
 
         # On liste toutes les recherches. A noté que le premier onglet sera
         # toujour 'Nouvelle recherche' et que le dernier ne doit pas etre
         # affiché car il contient juste le modèle pour un onglet 'Recherche'.
         for i in xrange(4, nb.get_n_pages() - 1):
             text = nb.get_tab_label_text(nb.get_nth_page(i))
-            self.modele_treemenu.append (iter, [text])
+            model_treemenu.append (iter, [text])
 
             
     def set_toolbar_search_mode(self, mode):
