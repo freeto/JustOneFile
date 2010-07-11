@@ -50,10 +50,10 @@ class TabSearch():
 
         # Le calque principale s'appelle 'main_box'
         self.main_box = self.interface.get_object('main_box')
-        # On lui enlève son parent
-        self.main_box.unparent()
+        self.main_box.unparent() # Afin de pouvoir l'inserer dans un autre calque.
 
         self.label_title = gtk.Label(title)
+        self.interface.get_object('checkb_display_files').set_active(True)
         self.init_treeview_dbl()
 
 
@@ -422,9 +422,20 @@ class TabSearch():
         Arguments:
         - `widget`:
         """
+        
         if self.interface.get_object('notebook_controlbar').get_current_page() == 1:
             self.interface.get_object('tb_search').clicked()        
         self.set_preferencesbar_visibility(widget.get_active())
 
+
+    def on_checkb_display_files_toggled(self, widget):
+        """
+        Active options.
+        
+        Arguments:
+        - `widget`:
+        """
+
+        self.interface.get_object('checkb_control_files').set_sensitive(widget.get_active ())
         
 

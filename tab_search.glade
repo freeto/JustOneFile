@@ -279,24 +279,25 @@
                           </object>
                           <packing>
                             <property name="expand">False</property>
-                            <property name="padding">3</property>
+                            <property name="padding">4</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkCheckButton" id="checkbutton2">
+                          <object class="GtkCheckButton" id="checkb_display_files">
                             <property name="label" translatable="yes">Afficher</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="draw_indicator">True</property>
+                            <signal name="toggled" handler="on_checkb_display_files_toggled"/>
                           </object>
                           <packing>
                             <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkCheckButton" id="checkbutton1">
+                          <object class="GtkCheckButton" id="checkb_control_files">
                             <property name="label" translatable="yes">Controler</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
