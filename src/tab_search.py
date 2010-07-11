@@ -199,9 +199,18 @@ class TabSearch():
         
         # On vérifie avant de selectionner que l'on pas sur le premier
         # fichier.
-        if len(path) == 1 and path[0] == 0: return
-        elif len(path) == 2: tree.set_cursor(path[0])
-        else: tree.set_cursor(path[0] - 1)
+        if (len(path) == 1 and path[0] == 0) or path == (0,0): return
+        elif len(path) == 2 and path[1] == 0:
+            # On est sur le premier fichier du doublon, on peut aller au suivant
+            tree.expand_row(path[0] - 1, False)
+            tree.set_cursor((path[0] - 1, 0))
+        elif len(path) == 2 and path[1] > 0:
+            # On ce place sur le premier fichier du doublon.
+            tree.set_cursor((path[0], 0))
+        else:
+            # On ce place dans le doublon précédent et sur le premier fichier.
+            tree.expand_row(path[0] - 1, False)
+            tree.set_cursor((path[0] - 1, 0))
 
 
     def on_button_prev_file_clicked(self, widget):
@@ -247,6 +256,7 @@ class TabSearch():
         last_path = model.iter_n_children(model.get_iter((path[0]))) - 1
 
         if path == (len(model) - 1, last_path): return
+
         # 3 possibilité : soit le curseur est actuellement sur un doublon
         # soit le curseur est sur un fichier
         # soit le curseur est sur le dernier fichier d'un doublons
@@ -273,9 +283,22 @@ class TabSearch():
         # On selectionne le fichier précédent.
         tree = self.interface.get_object('treeview_dbl')
         path = tree.get_cursor()[0]
-        last_path = len(tree.get_model()) - 1
+        model = tree.get_model()
+        last_path = len(model) - 1
         
         # On vérifie avant de selectionner que l'on pas sur le dernier
         # doublon.
-        if len(path) == 1 and path[0] == last_path: return
-        tree.set_cursor(path[0] + 1)
+        if len(path) == 2 and path[0] == last_path:
+            # On est sur le dernier doublon, on place le curseur à la fin.
+            iter = model.get_iter(path[0])
+            lenght = model.iter_n_children(iter) - 1
+            tree.set_cursor((path[0], lenght))
+        elif len(path) == 1:
+            # On deplit la ligne et on se place à a première position.
+            tree.expand_row(path[0], False)
+            tree.set_cursor((path[0], 0))
+        else:
+            # On deplit la ligne suivante et on ce place à la première position.
+            tree.expand_row(path[0] + 1, False)
+            tree.set_cursor((path[0] + 1, 0))
+            
