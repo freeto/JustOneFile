@@ -220,22 +220,29 @@ class WindowJustonefile():
         nb = self.interface.get_object('notebook_main')
         tree_menu = self.interface.get_object('treeview_menu')
         model_treemenu = tree_menu.get_model()
-
-        # Les 5 premiers onglet ne sont pas à mettre à jour, on enlève que les
-        # onglets de recherches.
         cursor = tree_menu.get_cursor()[0]
-        it = self.search_iter
-        for i in xrange(1, model_treemenu.iter_n_children(self.search_iter)):
-            model_treemenu.remove(model_treemenu.iter_nth_child(self.search_iter, i))
 
+        if not tree_menu.row_expanded(3):
+            return
+
+        # On supprime toute les recherches.
+        for i in range(1, model_treemenu.iter_n_children(self.search_iter)):
+            it = model_treemenu.get_iter_from_string('3:1')
+            model_treemenu.remove(it)
+
+        # Et on ajoute toutes les recherche, a partir des onglets. Donc si il y en a
+        # des nouvelles, elles seront rajoutées.
         for i in xrange(5, nb.get_n_pages()):
             text = nb.get_tab_label_text(nb.get_nth_page(i))
             model_treemenu.append(self.search_iter, [text])
-        
-        if not cursor is None:
+
+        # On replace le curseur. Si il n'y en avais pas, on le met au début.
+        if cursor is None:
+            tree_menu.set_cursor(0)
+        else:
             tree_menu.set_cursor(cursor)
 
-            
+
     def set_toolbar_search_mode(self, mode):
         """
         Enabled or disabled the search controls buttons.
@@ -255,7 +262,7 @@ class WindowJustonefile():
             item.set_sensitive(mode)
 
 
-    def update_searchs_infos(self, ):
+    def update_searchs_infos(self):
         """
         Update the search infos and display its into the interface.
         """
@@ -263,10 +270,10 @@ class WindowJustonefile():
         for s in self.list_search:
             s.update_infos()
 
-            # On met à jour l'interface
+            # On met à jour l'interface sauf si la recherche est terminé
             s.tab.set_title(str(int(s.progress * 100)) + '%  ' + s.path)
-            self.update_treemenu_content()
 
+        self.update_treemenu_content()
         return True
 
 
@@ -308,11 +315,18 @@ class WindowJustonefile():
         # (Peut-etre qu'il y a une méthode encore plus simple.)
 
         path = widget.get_cursor()[0]
-        pos = path[0]
+        if path is None:
+            return
+
+        pos = (path[0])
         if len(path) > 1:
-            pos += path[1] + 1
-        
-        self.interface.get_object('notebook_main').set_current_page(pos)
+            pos += (path[1] + 1)
+
+        nb = self.interface.get_object('notebook_main')
+        if pos == nb.get_current_page():
+            return
+
+        nb.set_current_page(pos)
 
         # On active ou désactive le toolbar search mode si l'onglet est
         # un onglet de recherche.
@@ -464,8 +478,9 @@ class WindowJustonefile():
         self.list_search.append(s)
 
         nb.append_page(s.tab.main_box, s.tab.label_title)
-        self.update_treemenu_content()
 
         # On selectionne la page
+        self.update_treemenu_content()
         nb.set_current_page(-1)
+
         s.start()
