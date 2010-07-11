@@ -46,8 +46,9 @@ class WindowJustonefile():
         # Initialisation des widgets de la fenetre
         self.init_toolbar()
         self.init_treeview_menu()
-        # self.init_treeview_dbl()
         self.init_statusbar()
+
+        self.list_search = []
 
 
 
@@ -411,11 +412,20 @@ class WindowJustonefile():
         - `widget`: The widget who send the signal.
         """
 
-        # On prend le contenu de l'onglet 'Recherche (Modèle)', on en fait un nouvel
-        # onglet.
+        # On déclare une nouvelle recherche avec comme chemin le contenu
+        # de la barre de texte 'entry_search_path'.
 
         nb = self.interface.get_object('notebook_main')
-        s = search.Search('.')
+        path = self.interface.get_object('entry_search_path').get_text()
+
+        # On test si le chemin est valide.
+        if not os.path.isdir(path):
+            print 'Chemin invalide'
+            return
+
+        s = search.Search(path)
+        s.tab.set_title(path)
+        self.list_search.append(s)
 
         nb.append_page(s.tab.main_box, s.tab.label_title)
         self.update_treemenu_content()

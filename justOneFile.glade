@@ -479,7 +479,7 @@
                               <object class="GtkHBox" id="hbox7">
                                 <property name="visible">True</property>
                                 <child>
-                                  <object class="GtkEntry" id="entry_path_search">
+                                  <object class="GtkEntry" id="entry_search_path">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="invisible_char">&#x25CF;</property>
@@ -492,6 +492,7 @@
                                   <object class="GtkButton" id="button13">
                                     <property name="label" translatable="yes">Parcourir...</property>
                                     <property name="visible">True</property>
+                                    <property name="sensitive">False</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
                                   </object>
