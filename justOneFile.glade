@@ -306,7 +306,7 @@
                             <property name="visible">True</property>
                             <property name="layout_style">end</property>
                             <child>
-                              <object class="GtkToggleButton" id="togglebutton1">
+                              <object class="GtkToggleButton" id="tb_search_runing">
                                 <property name="label" translatable="yes">En cours</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -321,7 +321,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkToggleButton" id="togglebutton2">
+                              <object class="GtkToggleButton" id="tb_search_done">
                                 <property name="label" translatable="yes">Termin&#xE9;es</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>

@@ -286,6 +286,8 @@ class WindowJustonefile():
         
         tree = self.interface.get_object('treeview_list_search')
         model = tree.get_model()
+        show_done = self.interface.get_object('tb_search_done').get_active()
+        show_runing = self.interface.get_object('tb_search_runing').get_active()
         
         # On sauvegarde le curseur
         cursor = tree.get_cursor()[0]
@@ -294,6 +296,11 @@ class WindowJustonefile():
         # avec les informations nécéssaires.
         model.clear()
         for s in self.list_search:
+            # On détermine si il faut l'afficher
+            if s.done and show_done: pass
+            elif not s.done and show_runing: pass
+            else: continue
+
             progress = str(int(s.progress * 100)) + '%'
             model.append([s.path, progress, 0])
 
