@@ -64,16 +64,16 @@
                           <object class="GtkHBox" id="hbox4">
                             <property name="visible">True</property>
                             <child>
-                              <object class="GtkButton" id="button_select_first">
+                              <object class="GtkButton" id="button_prev_dbl">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="relief">none</property>
-                                <signal name="clicked" handler="on_button_select_first_clicked"/>
+                                <signal name="clicked" handler="on_button_prev_dbl_clicked"/>
                                 <child>
                                   <object class="GtkImage" id="image4">
                                     <property name="visible">True</property>
-                                    <property name="stock">gtk-goto-first</property>
+                                    <property name="stock">gtk-goto-top</property>
                                   </object>
                                 </child>
                               </object>
@@ -82,16 +82,16 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="button_select_back">
+                              <object class="GtkButton" id="button_prev_file">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="relief">none</property>
-                                <signal name="clicked" handler="on_button_select_back_clicked"/>
+                                <signal name="clicked" handler="on_button_prev_file_clicked"/>
                                 <child>
                                   <object class="GtkImage" id="image5">
                                     <property name="visible">True</property>
-                                    <property name="stock">gtk-go-back</property>
+                                    <property name="stock">gtk-go-up</property>
                                   </object>
                                 </child>
                               </object>
@@ -163,7 +163,7 @@
                                 <child>
                                   <object class="GtkImage" id="image3">
                                     <property name="visible">True</property>
-                                    <property name="stock">gtk-go-forward</property>
+                                    <property name="stock">gtk-go-down</property>
                                   </object>
                                 </child>
                               </object>
@@ -181,7 +181,7 @@
                                 <child>
                                   <object class="GtkImage" id="image2">
                                     <property name="visible">True</property>
-                                    <property name="stock">gtk-goto-last</property>
+                                    <property name="stock">gtk-goto-bottom</property>
                                   </object>
                                 </child>
                               </object>

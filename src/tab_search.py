@@ -185,21 +185,9 @@ class TabSearch():
             self.interface.get_object('tb_search').clicked()
 
 
-    def on_button_select_first_clicked(self, widget):
+    def on_button_prev_dbl_clicked(self, widget):
         """
-        Select the first file
-        
-        Arguments:
-        - `widget`:
-        """
-
-        # On selectionne le premier fichier.
-        self.interface.get_object('treeview_dbl').set_cursor(0)
-
-
-    def on_button_select_back_clicked(self, widget):
-        """
-        Select the previous file.
+        Go to the previous dbl.
         
         Arguments:
         - `widget`:
@@ -213,6 +201,34 @@ class TabSearch():
         # fichier.
         if path == 0: return
         tree.set_cursor(path - 1)
+
+
+    def on_button_prev_file_clicked(self, widget):
+        """
+        Select the next file.
+        
+        Arguments:
+        - `widget`:
+        """
+
+        # On selectionne le fichier suivant.
+        tree = self.interface.get_object('treeview_dbl')
+        model = tree.get_model()
+        path = tree.get_cursor()[0]
+
+        # 3 possibilité : soit le curseur est actuellement sur un doublon
+        # soit le curseur est sur un fichier
+        # soit le curseur est sur le premier fichier d'un doublons
+        if (len(path) == 1 and path[0] > 0) or (len(path) == 2 and path[1] == 0
+                                                and path[0] > 0):
+            # On prend le doublons précédent, on compte le nombre d'enfant
+            # et on place le curseur sur le dernier.
+            iter = model.get_iter((path[0] - 1))
+            tree.expand_row(path[0] - 1, False)
+            lenght = model.iter_n_children(iter)
+            tree.set_cursor((path[0] - 1, lenght -1))
+        elif len(path) == 2 and path[1] > 0:
+            tree.set_cursor((path[0], path[1] - 1))
 
 
     def on_button_select_next_clicked(self, widget):

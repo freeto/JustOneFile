@@ -5,6 +5,7 @@
   <object class="GtkWindow" id="windowJustonefile">
     <property name="visible">True</property>
     <property name="title" translatable="yes">JustOneFile</property>
+    <property name="window_position">center</property>
     <property name="default_width">700</property>
     <property name="default_height">400</property>
     <signal name="destroy" handler="on_windowJustonefile_destroy"/>
@@ -164,9 +165,11 @@
           <object class="GtkHPaned" id="hpaned1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="position">2</property>
+            <property name="position">200</property>
+            <property name="position_set">True</property>
             <child>
               <object class="GtkScrolledWindow" id="scrolledwindow1">
+                <property name="width_request">200</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="hscrollbar_policy">automatic</property>
@@ -174,9 +177,9 @@
                 <property name="shadow_type">in</property>
                 <child>
                   <object class="GtkTreeView" id="treeview_menu">
-                    <property name="width_request">200</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="headers_visible">False</property>
                     <signal name="cursor_changed" handler="on_treeview_menu_cursor_changed"/>
                   </object>
                 </child>
