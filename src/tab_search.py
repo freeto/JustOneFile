@@ -71,11 +71,19 @@ class TabSearch():
         model_treedbl = gtk.TreeStore(str)
         tree.set_model(model_treedbl)
 
-        # On créée la colone (texte)
+        # On créée la première colone (texte)
         cell = gtk.CellRendererText()
         col = gtk.TreeViewColumn("Doublons", cell, text=0)
         col.set_expand(True)
         tree.append_column(col)
+        
+        # On créée la colone qui contient la case à coché (toggled)
+        cell = gtk.CellRendererToggle()
+        cell.set_property('activatable', True)
+        cell.connect('toggled', self.on_cell_toggled)
+        col = gtk.TreeViewColumn("", cell)
+        tree.append_column(col)
+
 
         # On définit le champ de recherche
         tree.set_search_entry(self.interface.get_object('entry_search'))
@@ -303,3 +311,12 @@ class TabSearch():
             tree.expand_row(path[0] + 1, False)
             tree.set_cursor((path[0] + 1, 0))
             
+
+    def on_cell_toggled(self, cell, path):
+        """
+        Call when the cell was toggled
+        
+        Arguments:
+        - `cell`:
+        - `path`:
+        """
