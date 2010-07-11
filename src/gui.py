@@ -296,13 +296,19 @@ class WindowJustonefile():
         # avec les informations nécéssaires.
         model.clear()
         for s in self.list_search:
-            # On détermine si il faut l'afficher
+            # On détermine si la recherche doit etre afficher selon les critère
+            # de tri.
             if s.done and show_done: pass
             elif not s.done and show_runing: pass
             else: continue
 
+            # Et construit les informations à afficher.
+            name = s.path
+            if s.done: name += ' (Terminée)'
+            else: name += ' (En cours ...)'
             progress = str(int(s.progress * 100)) + '%'
-            model.append([s.path, progress, 0])
+            
+            model.append([name, progress, 0])
 
         if cursor is None and len(model) > 0:
             tree.set_cursor(0)
