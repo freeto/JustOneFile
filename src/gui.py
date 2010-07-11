@@ -117,20 +117,23 @@ class WindowJustonefile():
         # dans un tableau pour etre ensuite activé/désactivé par la fonction
         # set_toolbar_search_mode(). Ils sont marqués (RECHERCHE) .
         self.toolbar_search_buttons = []
-        
+
+        # Fonctions pour les signaux 'rapide'
+        def new_search(widget):
+            self.interface.get_object('notebook_main').set_current_page(4)
+
         # On ajoute les boutons
 
         # Bouton nouvelle recherche
         tb = gtk.ToolButton(gtk.STOCK_NEW)
         tb.set_tooltip_text('Nouvelle recherche')
-        tb.connect("clicked", gtk.main_quit)
+        tb.connect("clicked", new_search)
         tb.show()
         toolbar.insert(tb, -1)
 
         # (RECHERCHE) Bouton 'Suprimme recherche'
         tb = gtk.ToolButton(gtk.STOCK_REMOVE)
         tb.set_tooltip_text('Supprime la recherche')
-        tb.connect("clicked", gtk.main_quit)
         tb.show()
         toolbar.insert(tb, -1)
         self.toolbar_search_buttons.append(toolbar.get_item_index(tb))
@@ -303,7 +306,7 @@ class WindowJustonefile():
 
         # On active ou désactive le toolbar search mode si l'onglet est
         # un onglet de recherche.
-        if pos > 2:
+        if pos == 3 or pos > 4:
             self.set_toolbar_search_mode(True)
         else:
             self.set_toolbar_search_mode(False)
