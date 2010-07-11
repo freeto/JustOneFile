@@ -483,7 +483,6 @@ class WindowJustonefile():
         - `widget`:
         """
 
-        print 'lol'
         self.on_button_start_search_clicked(None)
 
     
