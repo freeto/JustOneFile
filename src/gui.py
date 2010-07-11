@@ -44,9 +44,9 @@ class WindowJustonefile():
 
         # Initialisation des widgets de la fenetre
         self.controls_buttons = self.interface.get_object('hbox_controls_buttons')
+        self.init_toolbar()
         self.init_treeview_menu()
         self.init_treeview_dbl()
-        self.init_toolbar()
         self.init_statusbar()
 
 
@@ -58,24 +58,24 @@ class WindowJustonefile():
         
         # Le treeview_menu est en fait le treeview a gauche qui sert de menu.
         # A ne pas confondre avec le menu du haut.
-        self.tree_menu = self.interface.get_object('treeview_menu')
+        tree_menu = self.interface.get_object('treeview_menu')
 
         # On créé le modèle du menu
         self.modele_treemenu = gtk.TreeStore(str)
-        self.tree_menu.set_model(self.modele_treemenu)
+        tree_menu.set_model(self.modele_treemenu)
 
         # On créée la colone (texte)
         cell = gtk.CellRendererText()
         col = gtk.TreeViewColumn("", cell, text=0)
         col.set_expand(True)
-        self.tree_menu.append_column(col)
+        tree_menu.append_column(col)
 
         # On modifie ces propriétés
-        self.tree_menu.set_headers_visible(False)
+        tree_menu.set_headers_visible(False)
 
         # On le remplit et on selectionne le premier item.
         self.update_treemenu_content()
-        self.tree_menu.set_cursor (0)
+        tree_menu.set_cursor (0)
 
 
     def init_treeview_dbl(self):
@@ -113,6 +113,11 @@ class WindowJustonefile():
         
         toolbar = self.interface.get_object("toolbar")
 
+        # Les positions des boutons spécifiques à une recherche sont stockés
+        # dans un tableau pour etre ensuite activé/désactivé par la fonction
+        # set_toolbar_search_mode(). Ils sont marqués (RECHERCHE) .
+        self.toolbar_search_buttons = []
+        
         # On ajoute les boutons
 
         # Bouton nouvelle recherche
@@ -122,21 +127,23 @@ class WindowJustonefile():
         tb.show()
         toolbar.insert(tb, -1)
 
-        # Bouton suprimme recherche
+        # (RECHERCHE) Bouton 'Suprimme recherche'
         tb = gtk.ToolButton(gtk.STOCK_REMOVE)
         tb.set_tooltip_text('Supprime la recherche')
         tb.connect("clicked", gtk.main_quit)
         tb.show()
         toolbar.insert(tb, -1)
+        self.toolbar_search_buttons.append(toolbar.get_item_index(tb))
 
-        # Bouton 'Stopper la recherche'. Si cliqué, ce bouton sera remplacé par
-        # 'Reprendre la recherche'
+        # (RECHERCHE) Bouton 'Stopper la recherche'. Si cliqué, ce bouton sera
+        # remplacé par 'Reprendre la recherche'.
         self.tb_stop_search = True
         tb = gtk.ToolButton(gtk.STOCK_MEDIA_STOP)
         tb.set_tooltip_text('Stopper la recherche')
         tb.connect("clicked", self.on_tb_stop_search_clicked)
         tb.show()
         toolbar.insert(tb, -1)
+        self.toolbar_search_buttons.append(toolbar.get_item_index(tb))
 
         # Séparateur
         sep = gtk.SeparatorToolItem()
@@ -235,6 +242,26 @@ class WindowJustonefile():
             self.modele_treemenu.append (iter, [text])
 
             
+    def set_toolbar_search_mode(self, mode):
+        """
+        Enabled or disabled the search controls buttons.
+        
+        Arguments:
+        - `mode`: A boolean for enabled or disabled the mode.
+        """
+
+        # Les boutons de controls de recherche sont les boutons spécifiques
+        # a un onglet de recherche. Ils sont définit lors de l'initialisation
+        # de la toolbar. La liste de leur position est stocké dans
+        # self.toolbar_search_buttons
+
+        toolbar = self.interface.get_object('toolbar')
+        for pos in self.toolbar_search_buttons:
+            item = toolbar.get_nth_item(pos)
+            item.set_sensitive(mode)
+
+
+
     # -----------------------
     # Signaux
     # -----------------------
@@ -274,6 +301,13 @@ class WindowJustonefile():
         
         self.interface.get_object('notebook_main').set_current_page(pos)
 
+        # On active ou désactive le toolbar search mode si l'onglet est
+        # un onglet de recherche.
+        if pos > 2:
+            self.set_toolbar_search_mode(True)
+        else:
+            self.set_toolbar_search_mode(False)
+
 
     def on_notebook_main_switch_page(self, widget, page, page_index):
         """
@@ -285,21 +319,22 @@ class WindowJustonefile():
         
         # On prend la page et on construit le chemin en fonction.
 
+        tree_menu = self.interface.get_object('treeview_menu')
         # Si la position est plus petite que 4, alors le chemin est simple
         # Sinon, cela veut dire que le chemin serait alors (3, page_index - 4)
         if page_index < 4:
             path = (page_index,)
         else:
-            self.tree_menu.expand_row((3), False)
+            tree_menu.expand_row((3), False)
             path = (3, page_index - 4)
 
         # Si on ne gère pas sa, on a un appelle récursif (car le changement
         # de surseur ordonne un changement d'onglet, qui ordonne a nouveau un
         # changement de curseur ...).
-        if self.tree_menu.get_cursor()[0] == path:
+        if tree_menu.get_cursor()[0] == path:
             return
 
-        self.tree_menu.set_cursor(path)
+        tree_menu.set_cursor(path)
 
 
     # -----------------------
