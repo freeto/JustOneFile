@@ -65,17 +65,20 @@ class TabSearch():
         # Ce treeview contient la liste des fichiers en doubles sous forme
         # d'arbre.
 
-        tree_dbl = self.interface.get_object('treeview_dbl')
+        tree = self.interface.get_object('treeview_dbl')
 
         # On créé le modèle
         model_treedbl = gtk.TreeStore(str)
-        tree_dbl.set_model(model_treedbl)
+        tree.set_model(model_treedbl)
 
         # On créée la colone (texte)
         cell = gtk.CellRendererText()
         col = gtk.TreeViewColumn("Doublons", cell, text=0)
         col.set_expand(True)
-        tree_dbl.append_column(col)
+        tree.append_column(col)
+
+        # On définit le champ de recherche
+        tree.set_search_entry(self.interface.get_object('entry_search'))
 
 
     def set_searchbar_visibility(self, visibility):
@@ -175,8 +178,6 @@ class TabSearch():
         - `widget`: The widget who send the signal.
         """
         
-        # /!\ Fonction pas très propre, à réorganiser /!\
-
         # On test si la barre de recherche est active et on agit en fonction.
         ac = self.interface.get_object('notebook_controlbar').get_current_page()
         

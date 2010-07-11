@@ -432,33 +432,15 @@ class WindowJustonefile():
         # Penser à une meilleure implémentation.
 
         if self.tb_stop_search:
-            # On vas afficher Reprendre.
+            # On affiche 'Reprendre'
             tb.set_stock_id(gtk.STOCK_MEDIA_PLAY)
             tb.set_tooltip_text('Reprendre la recherche')
             self.tb_stop_search = False
         else:
-            # On vas afficher Stopper
+            # On affiche 'Stopper'
             tb.set_stock_id(gtk.STOCK_MEDIA_STOP)
             tb.set_tooltip_text('Stopper la recherche')
             self.tb_stop_search = True
-
-
-    def on_treeview_dbl_focus_in_event(self, widget, event):
-        """
-        Call when the treeview_dbl get focus.
-        Hide the search_bar
-        
-        Arguments:
-        - `widget`: The widget who send the signal.
-        """
-        
-        # /!\ Fonction pas très propre, à réorganiser /!\
-
-        # On test si la barre de recherche est active et on agit en fonction.
-        ac = self.interface.get_object('notebook_controlbar').get_current_page()
-        
-        if ac == 1:
-            self.interface.get_object('tb_search').clicked()
 
 
     # -----------------------
