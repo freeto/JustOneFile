@@ -25,7 +25,7 @@ The interface of a search's tab.
 """
 
 
-import gtk, pygtk, os
+import gtk, pygtk, os, gobject
 
 class TabSearch():
     """
@@ -68,20 +68,22 @@ class TabSearch():
         tree = self.interface.get_object('treeview_dbl')
 
         # On créé le modèle
-        model_treedbl = gtk.TreeStore(str)
-        tree.set_model(model_treedbl)
+        model = gtk.TreeStore(str, gobject.TYPE_BOOLEAN)
+        tree.set_model(model)
 
         # On créée la première colone (texte)
         cell = gtk.CellRendererText()
         col = gtk.TreeViewColumn("Doublons", cell, text=0)
+        col.set_cell_data_func(cell, self.cell_file_render)
         col.set_expand(True)
         tree.append_column(col)
         
         # On créée la colone qui contient la case à coché (toggled)
         cell = gtk.CellRendererToggle()
         cell.set_property('activatable', True)
-        cell.connect('toggled', self.on_cell_toggled)
+        cell.connect('toggled', self.on_cell_toggled, model)
         col = gtk.TreeViewColumn("", cell)
+        col.add_attribute(cell, 'active', 1)
         tree.append_column(col)
 
 
@@ -157,10 +159,10 @@ class TabSearch():
             for list_file in list_dbl:
                 name = os.path.basename(list_file[0])
                 name += ' (' + str(len(list_file)) + ')'
-                iter = model.append(None, [name])
+                iter = model.append(None, [name, False])
                 # Contient une liste de doublons
                 for file in list_file:
-                    model.append(iter, [file])
+                    model.append(iter, [file, False])
 
 
     # -----------------------
@@ -312,7 +314,7 @@ class TabSearch():
             tree.set_cursor((path[0] + 1, 0))
             
 
-    def on_cell_toggled(self, cell, path):
+    def on_cell_toggled(self, cell, path, model):
         """
         Call when the cell was toggled
         
@@ -320,3 +322,24 @@ class TabSearch():
         - `cell`:
         - `path`:
         """
+
+        model[path][1] = not model[path][1]
+
+
+    def cell_file_render(self, col, cell, model, iter):
+        """
+        Call when a cell need renderer.
+        
+        Arguments:
+        - `col`:
+        - `cell`:
+        - `model`:
+        - `iter`:
+        """
+        
+        if model.get_value(iter, 1):
+            cell.set_property('foreground', 'grey')
+            # cell.set_property('strikethrough', True)
+        else:
+            cell.set_property('foreground', 'black')
+            # cell.set_property('strikethrough', False)
