@@ -51,6 +51,7 @@
               <object class="GtkNotebook" id="notebook_main">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="show_tabs">False</property>
                 <property name="show_border">False</property>
                 <signal name="switch_page" handler="on_notebook_main_switch_page"/>
                 <child>
@@ -483,6 +484,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="invisible_char">&#x25CF;</property>
+                                    <property name="text" translatable="yes">/lib</property>
                                   </object>
                                   <packing>
                                     <property name="position">0</property>

@@ -83,6 +83,9 @@ class TabSearch():
         iter = model_treedbl.append(None, ['background.jpg'])
         model_treedbl.append(iter, ['arbres.jpg'])
 
+        # On lui donne le focus
+        tree_dbl.set_cursor(0)
+
 
     def set_pb(self, progress, text):
         """

@@ -420,12 +420,15 @@ class WindowJustonefile():
 
         # On test si le chemin est valide.
         if not os.path.isdir(path):
-            print 'Chemin invalide'
+            print 'Chemin invalide.'
             return
 
         s = search.Search(path)
-        s.tab.set_title(path)
+        s.tab.set_title(str(int(s.progress)) + '%  ' + path)
         self.list_search.append(s)
 
         nb.append_page(s.tab.main_box, s.tab.label_title)
         self.update_treemenu_content()
+
+        # On selectionne la page
+        nb.set_current_page(-1)
