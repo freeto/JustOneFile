@@ -82,12 +82,12 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="button_select_prev">
+                              <object class="GtkButton" id="button_select_back">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="relief">none</property>
-                                <signal name="clicked" handler="on_button_select_prev_clicked"/>
+                                <signal name="clicked" handler="on_button_select_back_clicked"/>
                                 <child>
                                   <object class="GtkImage" id="image5">
                                     <property name="visible">True</property>
@@ -159,6 +159,7 @@
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="relief">none</property>
+                                <signal name="clicked" handler="on_button_select_next_clicked"/>
                                 <child>
                                   <object class="GtkImage" id="image3">
                                     <property name="visible">True</property>
@@ -176,6 +177,7 @@
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="relief">none</property>
+                                <signal name="clicked" handler="on_button_select_last_clicked"/>
                                 <child>
                                   <object class="GtkImage" id="image2">
                                     <property name="visible">True</property>
