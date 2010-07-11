@@ -343,3 +343,26 @@ class TabSearch():
         else:
             cell.set_property('foreground', 'black')
             # cell.set_property('strikethrough', False)
+
+
+    def on_button_keep_only_clicked(self, widget):
+        """
+        Disabled all files except the selected file.
+        
+        Arguments:
+        - `widget`:
+        """
+
+        tree = self.interface.get_object('treeview_dbl')
+        path = tree.get_cursor()[0]
+        model = tree.get_model()
+        
+        if len(path) == 1:
+            path = (path[0], 0)
+
+        for i in xrange(model.iter_n_children(model.get_iter(path[0]))):
+            if i == path[1]:
+                model[(path[0], i)][1] = False
+            else:
+                model[(path[0], i)][1] = True
+            

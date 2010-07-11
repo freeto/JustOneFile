@@ -127,11 +127,12 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="button7">
+                              <object class="GtkButton" id="button_keep_only">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="relief">none</property>
+                                <signal name="clicked" handler="on_button_keep_only_clicked"/>
                                 <child>
                                   <object class="GtkImage" id="image8">
                                     <property name="visible">True</property>
