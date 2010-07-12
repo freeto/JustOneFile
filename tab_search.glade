@@ -275,7 +275,7 @@
                         <child>
                           <object class="GtkLabel" id="label1">
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes">Options sur les fichiers coch&#xE9;s</property>
+                            <property name="label" translatable="yes">Options sur les fichiers coch&#xE9;s :</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>

@@ -436,6 +436,12 @@ class TabSearch():
         - `widget`:
         """
 
-        self.interface.get_object('checkb_control_files').set_sensitive(widget.get_active ())
+        # On désactive le checkbutton 'Controler' si ce check button n'est pas
+        # coché.
+        
+        cb = self.interface.get_object ('checkb_control_files')
+        cb.set_sensitive (widget.get_active ())
+        if not widget.get_active ():
+            cb.set_active (False) # On décoche la case.
         
 
