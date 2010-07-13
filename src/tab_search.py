@@ -201,9 +201,6 @@ class TabSearch():
     def on_tb_search_toggled(self, widget):
         """
         Call when the search toggle button was toggle.
-
-        Arguments:
-        - `widget`: The widget who send the signal
         """
 
         if self.interface.get_object('notebook_controlbar').get_current_page() == 2:
@@ -215,9 +212,6 @@ class TabSearch():
         """
         Call when the treeview_dbl get focus.
         Hide the search_bar
-        
-        Arguments:
-        - `widget`: The widget who send the signal.
         """
         
         # On test si la barre de recherche est active et on agit en fonction.
@@ -232,9 +226,6 @@ class TabSearch():
     def on_button_prev_dbl_clicked(self, widget):
         """
         Go to the previous dbl.
-        
-        Arguments:
-        - `widget`:
         """
         
         # On selectionne le doublon précédent.
@@ -260,9 +251,6 @@ class TabSearch():
     def on_button_prev_file_clicked(self, widget):
         """
         Select the next file.
-        
-        Arguments:
-        - `widget`:
         """
 
         # On selectionne le fichier suivant.
@@ -288,9 +276,6 @@ class TabSearch():
     def on_button_next_file_clicked(self, widget):
         """
         Go to next file
-        
-        Arguments:
-        - `widget`:
         """
 
         # On selectionne le fichier suivant.
@@ -319,9 +304,6 @@ class TabSearch():
     def on_button_next_dbl_clicked(self, widget):
         """
         Go to next dbl.
-        
-        Arguments:
-        - `widget`:
         """
         
         # On selectionne le fichier précédent.
@@ -381,9 +363,6 @@ class TabSearch():
     def on_button_keep_only_clicked(self, widget):
         """
         Disabled all files except the selected file.
-        
-        Arguments:
-        - `widget`:
         """
 
         tree = self.interface.get_object('treeview_dbl')
@@ -403,9 +382,6 @@ class TabSearch():
     def on_button_delete_file_clicked(self, widget):
         """
         Toggle a file.
-        
-        Arguments:
-        - `widget`:
         """
 
         tree = self.interface.get_object('treeview_dbl')
@@ -417,10 +393,7 @@ class TabSearch():
 
     def on_tb_file_preferences_toggled(self, widget):
         """
-        Hide/Show the préférence bar.
-        
-        Arguments:
-        - `widget`:
+        Hide/Show the préférences bar.
         """
         
         if self.interface.get_object('notebook_controlbar').get_current_page() == 1:
@@ -431,17 +404,21 @@ class TabSearch():
     def on_checkb_display_files_toggled(self, widget):
         """
         Active options.
-        
-        Arguments:
-        - `widget`:
         """
 
         # On désactive le checkbutton 'Controler' si ce check button n'est pas
         # coché.
-        
+
         cb = self.interface.get_object ('checkb_control_files')
-        cb.set_sensitive (widget.get_active ())
         if not widget.get_active ():
-            cb.set_active (False) # On décoche la case.
+            cb.set_active (False)
+            
+        cb.set_sensitive (widget.get_active ())
         
 
+    def on_checkb_control_files_toggled(self, widget):
+        """
+        Enabled or disabled options.
+        """
+
+        self.control_toggled_files = widget.get_active()

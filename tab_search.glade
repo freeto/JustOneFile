@@ -303,6 +303,7 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="draw_indicator">True</property>
+                            <signal name="toggled" handler="on_checkb_control_files_toggled"/>
                           </object>
                           <packing>
                             <property name="position">2</property>
