@@ -284,13 +284,13 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkCheckButton" id="checkb_display_files">
+                          <object class="GtkCheckButton" id="checkb_display_toggled_files">
                             <property name="label" translatable="yes">Afficher</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="draw_indicator">True</property>
-                            <signal name="toggled" handler="on_checkb_display_files_toggled"/>
+                            <signal name="toggled" handler="on_checkb_display_toggled_files_toggled"/>
                           </object>
                           <packing>
                             <property name="position">1</property>

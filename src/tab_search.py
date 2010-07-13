@@ -53,7 +53,7 @@ class TabSearch():
         self.main_box.unparent() # Afin de pouvoir l'inserer dans un autre calque.
 
         self.label_title = gtk.Label(title)
-        self.interface.get_object('checkb_display_files').set_active(True)
+        self.interface.get_object('checkb_display_toggled_files').set_active(True)
         self.init_treeview_dbl()
 
 
@@ -401,7 +401,7 @@ class TabSearch():
         self.set_preferencesbar_visibility(widget.get_active())
 
 
-    def on_checkb_display_files_toggled(self, widget):
+    def on_checkb_display_toggled_files_toggled(self, widget):
         """
         Active options.
         """
