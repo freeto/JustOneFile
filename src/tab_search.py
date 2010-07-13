@@ -409,14 +409,14 @@ class TabSearch():
         # On désactive le checkbutton 'Controler' si ce check button n'est pas
         # coché.
 
-        cb = self.interface.get_object ('checkb_control_files')
+        cb = self.interface.get_object ('checkb_control_toggled_files')
         if not widget.get_active ():
             cb.set_active (False)
             
         cb.set_sensitive (widget.get_active ())
         
 
-    def on_checkb_control_files_toggled(self, widget):
+    def on_checkb_control_toggled_files_toggled(self, widget):
         """
         Enabled or disabled options.
         """
