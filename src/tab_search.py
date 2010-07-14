@@ -258,6 +258,22 @@ class TabSearch():
             self.need_remove.append(iter)
 
 
+    def _remove_row(self, model, path):
+        """
+        Remove a row from a model, and set her information into
+        self.remove_files .
+        
+        Arguments:
+        - `model`: a gtk.TreeStore . (The treeview_dbl model)
+        - `path`: The row path.
+        """
+
+        # On regarde si ont doit enlever les lignes cochées.
+        if not self.display_toggled_files:
+            self.remove_files.append ((model[path][0], path[0]))
+            model.remove (model.get_iter (path))
+
+
 
     # -----------------------
     # signaux
@@ -392,42 +408,8 @@ class TabSearch():
             # On deplit la ligne suivante et on ce place à la première position.
             tree.expand_row(path[0] + 1, False)
             tree.set_cursor((path[0] + 1, 0))
+
             
-
-    def on_cell_toggled(self, cell, path, model):
-        """
-        Call when the cell was toggled
-        """
-
-        # Si la ligne est un doubon, on ne peut pas la cocher.
-        if model.iter_depth (model.get_iter (path)) == 1:
-            model[path][1] = not model[path][1]
-
-
-    def cell_file_render(self, col, cell, model, iter):
-        """
-        Call when a cell need renderer.
-        """
-
-        if model.get_value(iter, 1):
-            cell.set_property('foreground', 'grey')
-            # cell.set_property('strikethrough', True)
-        else:
-            cell.set_property('foreground', 'black')
-            # cell.set_property('strikethrough', False)
-
-
-    def cell_toggle_render(self, col, cell, model, iter):
-        """
-        Call when a cell need renderer.
-        """
-
-        if model.iter_depth (iter) == 0:
-            cell.set_property('visible', False)
-        else:
-            cell.set_property('visible', True)
-
-
     def on_button_keep_only_clicked(self, widget):
         """
         Disabled all files except the selected file.
@@ -462,8 +444,43 @@ class TabSearch():
         # Si la ligne est un doubon, on ne peut pas la cocher.
         if model.iter_depth (model.get_iter (path)) == 1:
             model[path][1] = not model[path][1]
+            self._remove_row (model, path)
+
+
+    def on_cell_toggled(self, cell, path, model):
+        """
+        Call when the cell was toggled
+        """
+
+        # Si la ligne est un doubon, on ne peut pas la cocher.
+        if model.iter_depth (model.get_iter (path)) == 1:
+            model[path][1] = not model[path][1]
+
+            self._remove_row (model, path)
+
+
+    def cell_file_render(self, col, cell, model, iter):
+        """
+        Call when a cell need renderer.
+        """
+
+        if model.get_value(iter, 1):
+            cell.set_property('foreground', 'grey')
+            # cell.set_property('strikethrough', True)
         else:
-            model[path][1] = False
+            cell.set_property('foreground', 'black')
+            # cell.set_property('strikethrough', False)
+
+
+    def cell_toggle_render(self, col, cell, model, iter):
+        """
+        Call when a cell need renderer.
+        """
+
+        if model.iter_depth (iter) == 0:
+            cell.set_property('visible', False)
+        else:
+            cell.set_property('visible', True)
 
 
     def on_tb_file_preferences_toggled(self, widget):
