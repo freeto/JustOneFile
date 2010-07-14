@@ -402,7 +402,9 @@ class TabSearch():
         - `path`:
         """
 
-        model[path][1] = not model[path][1]
+        if model.iter_depth (model.get_iter (path)) == 1:
+            model[path][1] = not model[path][1]
+            
 
 
     def cell_file_render(self, col, cell, model, iter):
@@ -452,7 +454,12 @@ class TabSearch():
         path = tree.get_cursor()[0]
         model = tree.get_model()
 
-        model[path][1] = not model[path][1]
+        print model.iter_depth (model.get_iter (path))
+        
+        if model.iter_depth (model.get_iter (path)) == 1:
+            model[path][1] = not model[path][1]
+        else:
+            model[path][1] = False
 
 
     def on_tb_file_preferences_toggled(self, widget):
