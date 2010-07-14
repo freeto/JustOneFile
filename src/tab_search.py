@@ -83,6 +83,7 @@ class TabSearch():
         cell.set_property('activatable', True)
         cell.connect('toggled', self.on_cell_toggled, model)
         col = gtk.TreeViewColumn("", cell)
+        col.set_cell_data_func(cell, self.cell_toggle_render)
         col.add_attribute(cell, 'active', 1)
         tree.append_column(col)
 
@@ -396,28 +397,18 @@ class TabSearch():
     def on_cell_toggled(self, cell, path, model):
         """
         Call when the cell was toggled
-        
-        Arguments:
-        - `cell`:
-        - `path`:
         """
 
+        # Si la ligne est un doubon, on ne peut pas la cocher.
         if model.iter_depth (model.get_iter (path)) == 1:
             model[path][1] = not model[path][1]
-            
 
 
     def cell_file_render(self, col, cell, model, iter):
         """
         Call when a cell need renderer.
-        
-        Arguments:
-        - `col`:
-        - `cell`:
-        - `model`:
-        - `iter`:
         """
-        
+
         if model.get_value(iter, 1):
             cell.set_property('foreground', 'grey')
             # cell.set_property('strikethrough', True)
@@ -426,19 +417,33 @@ class TabSearch():
             # cell.set_property('strikethrough', False)
 
 
+    def cell_toggle_render(self, col, cell, model, iter):
+        """
+        Call when a cell need renderer.
+        """
+
+        if model.iter_depth (iter) == 0:
+            cell.set_property('visible', False)
+        else:
+            cell.set_property('visible', True)
+
+
     def on_button_keep_only_clicked(self, widget):
         """
         Disabled all files except the selected file.
         """
 
-        tree = self.interface.get_object('treeview_dbl')
-        path = tree.get_cursor()[0]
-        model = tree.get_model()
-        
-        if len(path) == 1:
+        # On coche toute les lignes sauf celle qui est selectionnée.
+        tree = self.interface.get_object ('treeview_dbl')
+        path = tree.get_cursor ()[0]
+        model = tree.get_model ()
+
+        # Si la ligne selectionnée est un doublon, alors on considère que c'est
+        # le premier fichier qui est selectionné.
+        if len (path) == 1:
             path = (path[0], 0)
 
-        for i in xrange(model.iter_n_children(model.get_iter(path[0]))):
+        for i in xrange (model.iter_n_children (model.get_iter (path[0]))):
             if i == path[1]:
                 model[(path[0], i)][1] = False
             else:
@@ -450,12 +455,11 @@ class TabSearch():
         Toggle a file.
         """
 
-        tree = self.interface.get_object('treeview_dbl')
-        path = tree.get_cursor()[0]
-        model = tree.get_model()
+        tree = self.interface.get_object ('treeview_dbl')
+        path = tree.get_cursor ()[0]
+        model = tree.get_model ()
 
-        print model.iter_depth (model.get_iter (path))
-        
+        # Si la ligne est un doubon, on ne peut pas la cocher.
         if model.iter_depth (model.get_iter (path)) == 1:
             model[path][1] = not model[path][1]
         else:
@@ -467,9 +471,9 @@ class TabSearch():
         Hide/Show the préférences bar.
         """
         
-        if self.interface.get_object('notebook_controlbar').get_current_page() == 1:
-            self.interface.get_object('tb_search').clicked()        
-        self.set_preferencesbar_visibility(widget.get_active())
+        if self.interface.get_object ('notebook_controlbar').get_current_page () == 1:
+            self.interface.get_object ('tb_search').clicked ()        
+        self.set_preferencesbar_visibility (widget.get_active ())
 
 
     def on_checkb_display_toggled_files_toggled(self, widget):
