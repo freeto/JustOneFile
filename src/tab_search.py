@@ -430,6 +430,14 @@ class TabSearch():
                 model[(path[0], i)][1] = False
             else:
                 model[(path[0], i)][1] = True
+                # On enlève la ligne du modèle si l'option 'Afficher' est
+                # désactivée.
+                if not self.display_toggled_files:
+                    self.remove_files.append ((model[(path[0], i)][0], path[0]))
+                    self.need_remove.append (model.get_iter ((path[0], i)))
+
+        for iter in self.need_remove:
+            model.remove (iter)
 
 
     def on_button_delete_file_clicked(self, widget):
@@ -464,12 +472,11 @@ class TabSearch():
         Call when a cell need renderer.
         """
 
+        # On grise la cellule si la ligne est cochée.
         if model.get_value(iter, 1):
             cell.set_property('foreground', 'grey')
-            # cell.set_property('strikethrough', True)
         else:
             cell.set_property('foreground', 'black')
-            # cell.set_property('strikethrough', False)
 
 
     def cell_toggle_render(self, col, cell, model, iter):
