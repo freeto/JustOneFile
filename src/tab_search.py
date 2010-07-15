@@ -449,10 +449,21 @@ class TabSearch():
         path = tree.get_cursor ()[0]
         model = tree.get_model ()
 
-        # Si la ligne est un doubon, on ne peut pas la cocher.
+        # Si la ligne est un doublon, on ne peut pas la cocher.
         if model.iter_depth (model.get_iter (path)) == 1:
             model[path][1] = not model[path][1]
             self._remove_row (model, path)
+
+        # Si tous les fichiers du doublon sont cochés, on désactive le doublon.
+        for i in xrange (model.iter_n_children (model.get_iter (path[0]))):
+            iter = model.get_iter_from_string (str (path[0]) + ':' + str (i))
+            if not model.get_value (iter, 1):
+                model[path[0]][1] = False
+                return
+        
+        # Si on arrive la, c'est que tout les fichiers sont cochés.
+        model[path[0]][1] = True
+            
 
 
     def on_cell_toggled(self, cell, path, model):
@@ -463,8 +474,17 @@ class TabSearch():
         # Si la ligne est un doubon, on ne peut pas la cocher.
         if model.iter_depth (model.get_iter (path)) == 1:
             model[path][1] = not model[path][1]
-
             self._remove_row (model, path)
+
+        # Si tous les fichiers du doublon sont cochés, on désactive le doublon.
+        for i in xrange (model.iter_n_children (model.get_iter (path[0]))):
+            iter = model.get_iter_from_string (str (path[0]) + ':' + str (i))
+            if not model.get_value (iter, 1):
+                model[path[0]][1] = False
+                return
+        
+        # Si on arrive la, c'est que tout les fichiers sont cochés.
+        model[path[0]][1] = True
 
 
     def cell_file_render(self, col, cell, model, iter):
@@ -473,10 +493,10 @@ class TabSearch():
         """
 
         # On grise la cellule si la ligne est cochée.
-        if model.get_value(iter, 1):
-            cell.set_property('foreground', 'grey')
+        if model.get_value (iter, 1):
+            cell.set_property ('foreground', 'grey')
         else:
-            cell.set_property('foreground', 'black')
+            cell.set_property ('foreground', 'black')
 
 
     def cell_toggle_render(self, col, cell, model, iter):
