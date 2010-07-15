@@ -55,13 +55,14 @@ class Search():
 
         self.progress = 0.0
         self.action = 'Initilize'
-        self.step = 0
         self.done = False
         self.new_dbl = []
-        self.tab = tab_search.TabSearch()  # L'onglet associé
-        self._queue_send = multiprocessing.Queue()
+        self.nb_dbl = 0         # Le nombre de doublons.
 
-        self.algorithm = algorithm.Algorithm(self._queue_send, path)
+        self.tab = tab_search.TabSearch ()  # L'onglet associé.
+        self._queue_send = multiprocessing.Queue ()
+
+        self.algorithm = algorithm.Algorithm (self._queue_send, path)
         
 
     
@@ -78,6 +79,8 @@ class Search():
         # Tant qu'il y à une entrée, on contenu de recevoir ..
         while not self._queue_send.empty():
             infos = self._queue_send.get()
+            
+            # On regarde si il y a des nouveaux doublons.
             if not infos['dbl']: continue
             self.new_dbl.append(infos['dbl'])
 
@@ -97,7 +100,8 @@ class Search():
         self.progress = infos['progress']
         self.action = infos['action']
         self.done = infos['done']
-
+        for dbl in self.new_dbl:        # On compte le nombre de doublons.
+            self.nb_dbl += len (dbl)
 
 
     def start(self):

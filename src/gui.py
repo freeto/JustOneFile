@@ -269,7 +269,7 @@ class WindowJustonefile():
         # avec les informations nécéssaires.
         model.clear()
         for s in self.list_search:
-            # On détermine si la recherche doit etre afficher selon les critère
+            # On détermine si la recherche doit etre afficher selon les critères
             # de tri.
             if s.done and show_done: pass
             elif not s.done and show_runing: pass
@@ -281,8 +281,9 @@ class WindowJustonefile():
             else: name += ' (En cours ...)'
             progress = str(int(s.progress * 100)) + '%'
             
-            model.append([name, progress, 0])
+            model.append([name, progress, s.nb_dbl])
 
+        # On restaure le curseur.
         if cursor is None and len(model) > 0:
             tree.set_cursor(0)
         elif len(model) > 0:
