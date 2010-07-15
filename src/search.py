@@ -73,16 +73,16 @@ class Search():
 
         self.new_dbl = []
 
-        if self._queue_send.empty():
+        if self._queue_send.empty ():
             return False
 
         # Tant qu'il y à une entrée, on contenu de recevoir ..
-        while not self._queue_send.empty():
-            infos = self._queue_send.get()
+        while not self._queue_send.empty ():
+            infos = self._queue_send.get ()
             
             # On regarde si il y a des nouveaux doublons.
             if not infos['dbl']: continue
-            self.new_dbl.append(infos['dbl'])
+            self.new_dbl.append (infos['dbl'])
 
         return infos
         
@@ -93,7 +93,7 @@ class Search():
         Update informations
         """
 
-        infos = self._get_last_entry()
+        infos = self._get_last_entry ()
 
         if not infos: return
 
@@ -109,7 +109,7 @@ class Search():
         Run algorithm
         """
         
-        self.algorithm.start()
+        self.algorithm.start ()
 
 
     def join(self):
@@ -117,7 +117,7 @@ class Search():
         Join processus
         """
         
-        self.algorithm.join()
+        self.algorithm.join ()
 
 
     def terminate(self):
@@ -125,4 +125,4 @@ class Search():
         Terminate algorithm
         """
         
-        self.algorithm.terminate()
+        self.algorithm.terminate ()

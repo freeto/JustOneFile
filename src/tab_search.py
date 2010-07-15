@@ -43,18 +43,18 @@ class TabSearch():
         # On contruit l'onglet à partir du fichier Glade
         # On prend juste les widgets qu'il y a dans la fenetre
 
-        self.interface = gtk.Builder()
-        self.interface.add_from_file('tab_search.glade')
+        self.interface = gtk.Builder ()
+        self.interface.add_from_file ('tab_search.glade')
 
-        self.interface.connect_signals(self)
+        self.interface.connect_signals (self)
 
         # Le calque principale s'appelle 'main_box'
-        self.main_box = self.interface.get_object('main_box')
-        self.main_box.unparent() # Afin de pouvoir l'inserer dans un autre calque.
+        self.main_box = self.interface.get_object ('main_box')
+        self.main_box.unparent () # Afin de pouvoir l'inserer dans un autre calque.
 
-        self.label_title = gtk.Label(title)
-        self.init_treeview_dbl()
-        self.interface.get_object('checkb_display_toggled_files').set_active(True)
+        self.label_title = gtk.Label (title)
+        self.init_treeview_dbl ()
+        self.interface.get_object ('checkb_display_toggled_files').set_active (True)
 
 
     def init_treeview_dbl(self):
@@ -65,30 +65,30 @@ class TabSearch():
         # Ce treeview contient la liste des fichiers en doubles sous forme
         # d'arbre.
 
-        tree = self.interface.get_object('treeview_dbl')
+        tree = self.interface.get_object ('treeview_dbl')
 
         # On créé le modèle
-        model = gtk.TreeStore(str, gobject.TYPE_BOOLEAN)
-        tree.set_model(model)
+        model = gtk.TreeStore (str, gobject.TYPE_BOOLEAN)
+        tree.set_model (model)
 
         # On créée la première colone (texte)
-        cell = gtk.CellRendererText()
-        col = gtk.TreeViewColumn("Doublons", cell, text=0)
-        col.set_cell_data_func(cell, self.cell_file_render)
-        col.set_expand(True)
-        tree.append_column(col)
+        cell = gtk.CellRendererText ()
+        col = gtk.TreeViewColumn ("Doublons", cell, text=0)
+        col.set_cell_data_func (cell, self.cell_file_render)
+        col.set_expand (True)
+        tree.append_column (col)
         
         # On créée la colone qui contient la case à coché (toggle).
-        cell = gtk.CellRendererToggle()
-        cell.set_property('activatable', True)
-        cell.connect('toggled', self.on_cell_toggled, model)
-        col = gtk.TreeViewColumn("", cell)
-        col.set_cell_data_func(cell, self.cell_toggle_render)
-        col.add_attribute(cell, 'active', 1)
-        tree.append_column(col)
+        cell = gtk.CellRendererToggle ()
+        cell.set_property ('activatable', True)
+        cell.connect ('toggled', self.on_cell_toggled, model)
+        col = gtk.TreeViewColumn ("", cell)
+        col.set_cell_data_func (cell, self.cell_toggle_render)
+        col.add_attribute (cell, 'active', 1)
+        tree.append_column (col)
 
         # On définit le champ de recherche.
-        tree.set_search_entry(self.interface.get_object('entry_search'))
+        tree.set_search_entry (self.interface.get_object ('entry_search'))
 
         # On initialise les variables.
         self.remove_files = []  # Contiendra les donnés des fichiers enlevés.
@@ -110,18 +110,18 @@ class TabSearch():
         # page 1 = barre de recherche
         # page 2 = barre de recherche
 
-        nb = self.interface.get_object('notebook_controlbar')
+        nb = self.interface.get_object ('notebook_controlbar')
 
         # On fait un petit test pour savoir si il est utile de changer de page.
-        cur_page = nb.get_current_page()
+        cur_page = nb.get_current_page ()
         if (visibility and cur_page == 1) or (not visibility and cur_page == 0):
             return
 
         if visibility:
-            nb.set_current_page(1)
-            self.interface.get_object('entry_search').grab_focus()
+            nb.set_current_page (1)
+            self.interface.get_object ('entry_search').grab_focus ()
         else:
-            nb.set_current_page(0)
+            nb.set_current_page (0)
 
 
     def set_preferencesbar_visibility(self, visibility):
@@ -139,17 +139,17 @@ class TabSearch():
         # page 1 = barre de recherche
         # page 2 = barre de recherche
 
-        nb = self.interface.get_object('notebook_controlbar')
+        nb = self.interface.get_object ('notebook_controlbar')
 
         # On fait un petit test pour savoir si il est utile de changer de page.
-        cur_page = nb.get_current_page()
+        cur_page = nb.get_current_page ()
         if (visibility and cur_page == 2) or (not visibility and cur_page == 0):
             return
 
         if visibility:
-            nb.set_current_page(2)
+            nb.set_current_page (2)
         else:
-            nb.set_current_page(0)
+            nb.set_current_page (0)
 
 
     def set_label(self, text):
@@ -160,8 +160,8 @@ class TabSearch():
         - `text`: The new text of the label
         """
         
-        label = self.interface.get_object('label_search_path')
-        label.set_text(text)
+        label = self.interface.get_object ('label_search_path')
+        label.set_text (text)
 
 
     def set_title(self, title):
@@ -172,7 +172,7 @@ class TabSearch():
         - `title`: The new title of the tab's search
         """
         
-        self.label_title.set_text(title)
+        self.label_title.set_text (title)
 
 
     def add_dbl(self, lists_dbl):
@@ -184,7 +184,7 @@ class TabSearch():
         """
         
         if lists_dbl == []: return
-        model = self.interface.get_object('treeview_dbl').get_model()
+        model = self.interface.get_object ('treeview_dbl').get_model ()
 
         # Contient une liste de liste de liste de doublons
         for list_dbl in lists_dbl:
@@ -192,13 +192,13 @@ class TabSearch():
             # Contient une liste de liste de doublons
             for list_file in list_dbl:
                 # On affiche juste le nom di fichier avec le nb de doublons.
-                name = os.path.basename(list_file[0])
-                name += ' (' + str(len(list_file)) + ')'
-                iter = model.append(None, [name, False])
+                name = os.path.basename (list_file[0])
+                name += ' (' + str (len (list_file)) + ')'
+                iter = model.append (None, [name, False])
                 
                 # On affiche tout les doublons.
                 for file in list_file:
-                    model.append(iter, [file, False])
+                    model.append (iter, [file, False])
 
 
     def set_toggled_files_visibility(self, visibility):
@@ -218,7 +218,7 @@ class TabSearch():
             not visibility and not self.remove_files == []):
             return
 
-        model = self.interface.get_object('treeview_dbl').get_model ()
+        model = self.interface.get_object ('treeview_dbl').get_model ()
 
         if not visibility:      # On enlève les fichiers cochés.
             model.foreach (self._remove_toggled_files)
@@ -252,10 +252,10 @@ class TabSearch():
         # et on stock les informations qui permettront de les remettre.
 
         # On vérifie si la case à coché est activée et si c'est bien un fichier.
-        if model[path][1] and  model.iter_depth(iter) == 1:
+        if model[path][1] and  model.iter_depth (iter) == 1:
             file_name = model[path][0]
-            self.remove_files.append ((file_name, path[0]))
-            self.need_remove.append(iter)
+            self.remove_files.append  ((file_name, path[0]))
+            self.need_remove.append (iter)
 
 
     def _remove_row(self, model, path):
@@ -309,9 +309,9 @@ class TabSearch():
         Call when the search toggle button was toggle.
         """
 
-        if self.interface.get_object('notebook_controlbar').get_current_page() == 2:
-            self.interface.get_object('tb_file_preferences').clicked()
-        self.set_searchbar_visibility(widget.get_active())
+        if self.interface.get_object ('notebook_controlbar').get_current_page () == 2:
+            self.interface.get_object ('tb_file_preferences').clicked ()
+        self.set_searchbar_visibility (widget.get_active ())
 
 
     def on_treeview_dbl_focus_in_event(self, widget, event):
@@ -321,12 +321,12 @@ class TabSearch():
         """
         
         # On test si la barre de recherche est active et on agit en fonction.
-        ac = self.interface.get_object('notebook_controlbar').get_current_page()
+        ac = self.interface.get_object ('notebook_controlbar').get_current_page ()
         
         if ac == 1:
-            self.interface.get_object('tb_search').clicked()
+            self.interface.get_object ('tb_search').clicked ()
         if ac == 2:
-            self.interface.get_object('tb_file_preferences').clicked()
+            self.interface.get_object ('tb_file_preferences').clicked ()
             
 
     def on_button_prev_dbl_clicked(self, widget):
@@ -335,23 +335,23 @@ class TabSearch():
         """
         
         # On selectionne le doublon précédent.
-        tree = self.interface.get_object('treeview_dbl')
-        path = tree.get_cursor()[0]
+        tree = self.interface.get_object ('treeview_dbl')
+        path = tree.get_cursor ()[0]
         
         # On vérifie avant de selectionner que l'on pas sur le premier
         # fichier.
-        if (len(path) == 1 and path[0] == 0) or path == (0,0): return
-        elif len(path) == 2 and path[1] == 0:
+        if (len (path) == 1 and path[0] == 0) or path == (0,0): return
+        elif len (path) == 2 and path[1] == 0:
             # On est sur le premier fichier du doublon, on peut aller au suivant
-            tree.expand_row(path[0] - 1, False)
-            tree.set_cursor((path[0] - 1, 0))
-        elif len(path) == 2 and path[1] > 0:
+            tree.expand_row (path[0] - 1, False)
+            tree.set_cursor ((path[0] - 1, 0))
+        elif len (path) == 2 and path[1] > 0:
             # On ce place sur le premier fichier du doublon.
-            tree.set_cursor((path[0], 0))
+            tree.set_cursor ((path[0], 0))
         else:
             # On ce place dans le doublon précédent et sur le premier fichier.
-            tree.expand_row(path[0] - 1, False)
-            tree.set_cursor((path[0] - 1, 0))
+            tree.expand_row (path[0] - 1, False)
+            tree.set_cursor ((path[0] - 1, 0))
 
 
     def on_button_prev_file_clicked(self, widget):
@@ -360,23 +360,23 @@ class TabSearch():
         """
 
         # On selectionne le fichier suivant.
-        tree = self.interface.get_object('treeview_dbl')
-        model = tree.get_model()
-        path = tree.get_cursor()[0]
+        tree = self.interface.get_object ('treeview_dbl')
+        model = tree.get_model ()
+        path = tree.get_cursor ()[0]
 
         # 3 possibilité : soit le curseur est actuellement sur un doublon
         # soit le curseur est sur un fichier
         # soit le curseur est sur le premier fichier d'un doublons
-        if (len(path) == 1 and path[0] > 0) or (len(path) == 2 and path[1] == 0
+        if (len (path) == 1 and path[0] > 0) or (len (path) == 2 and path[1] == 0
                                                 and path[0] > 0):
             # On prend le doublons précédent, on compte le nombre d'enfant
             # et on place le curseur sur le dernier.
-            iter = model.get_iter((path[0] - 1))
-            tree.expand_row(path[0] - 1, False)
-            lenght = model.iter_n_children(iter)
-            tree.set_cursor((path[0] - 1, lenght -1))
-        elif len(path) == 2 and path[1] > 0:
-            tree.set_cursor((path[0], path[1] - 1))
+            iter = model.get_iter ((path[0] - 1))
+            tree.expand_row (path[0] - 1, False)
+            lenght = model.iter_n_children (iter)
+            tree.set_cursor ((path[0] - 1, lenght -1))
+        elif len (path) == 2 and path[1] > 0:
+            tree.set_cursor ((path[0], path[1] - 1))
 
 
     def on_button_next_file_clicked(self, widget):
@@ -385,26 +385,26 @@ class TabSearch():
         """
 
         # On selectionne le fichier suivant.
-        tree = self.interface.get_object('treeview_dbl')
-        model = tree.get_model()
-        path = tree.get_cursor()[0]
-        last_path = model.iter_n_children(model.get_iter((path[0]))) - 1
+        tree = self.interface.get_object ('treeview_dbl')
+        model = tree.get_model ()
+        path = tree.get_cursor ()[0]
+        last_path = model.iter_n_children (model.get_iter ((path[0]))) - 1
 
-        if path == (len(model) - 1, last_path): return
+        if path == (len (model) - 1, last_path): return
 
         # 3 possibilité : soit le curseur est actuellement sur un doublon
         # soit le curseur est sur un fichier
-        # soit le curseur est sur le dernier fichier d'un doublons
-        if len(path) == 1 and path[0] < len(model):
+        # soit le curseur est sur le dernier fichier d'un doublon
+        if len (path) == 1 and path[0] < len (model):
             # On place le curseur sur le premier fichier.
-            tree.expand_row(path[0], False)
-            tree.set_cursor((path[0], 0))
-        elif len(path) == 2 and path[1] == last_path:
-            # On place le curseur sur le premier fichier du doublon suivant
-            tree.expand_row(path[0] + 1, False)
-            tree.set_cursor((path[0] + 1, 0))
-        elif len(path) == 2 and path[1] < last_path:
-            tree.set_cursor((path[0], path[1] + 1))
+            tree.expand_row (path[0], False)
+            tree.set_cursor ((path[0], 0))
+        elif len (path) == 2 and path[1] == last_path:
+            # On place le curseur sur le premier fichier du doublon suivant.
+            tree.expand_row (path[0] + 1, False)
+            tree.set_cursor ((path[0] + 1, 0))
+        elif len (path) == 2 and path[1] < last_path:
+            tree.set_cursor ((path[0], path[1] + 1))
         
 
     def on_button_next_dbl_clicked(self, widget):
@@ -413,26 +413,26 @@ class TabSearch():
         """
         
         # On selectionne le fichier précédent.
-        tree = self.interface.get_object('treeview_dbl')
-        path = tree.get_cursor()[0]
-        model = tree.get_model()
-        last_path = len(model) - 1
+        tree = self.interface.get_object ('treeview_dbl')
+        path = tree.get_cursor ()[0]
+        model = tree.get_model ()
+        last_path = len (model) - 1
         
         # On vérifie avant de selectionner que l'on pas sur le dernier
         # doublon.
-        if len(path) == 2 and path[0] == last_path:
+        if len (path) == 2 and path[0] == last_path:
             # On est sur le dernier doublon, on place le curseur à la fin.
-            iter = model.get_iter(path[0])
-            lenght = model.iter_n_children(iter) - 1
-            tree.set_cursor((path[0], lenght))
-        elif len(path) == 1:
+            iter = model.get_iter (path[0])
+            lenght = model.iter_n_children (iter) - 1
+            tree.set_cursor ((path[0], lenght))
+        elif len (path) == 1:
             # On deplit la ligne et on se place à a première position.
-            tree.expand_row(path[0], False)
-            tree.set_cursor((path[0], 0))
+            tree.expand_row (path[0], False)
+            tree.set_cursor ((path[0], 0))
         else:
             # On deplit la ligne suivante et on ce place à la première position.
-            tree.expand_row(path[0] + 1, False)
-            tree.set_cursor((path[0] + 1, 0))
+            tree.expand_row (path[0] + 1, False)
+            tree.set_cursor ((path[0] + 1, 0))
 
             
     def on_button_keep_only_clicked(self, widget):
@@ -503,9 +503,9 @@ class TabSearch():
         """
 
         if model.iter_depth (iter) == 0:
-            cell.set_property('visible', False)
+            cell.set_property ('visible', False)
         else:
-            cell.set_property('visible', True)
+            cell.set_property ('visible', True)
 
 
     def on_tb_file_preferences_toggled(self, widget):
@@ -542,4 +542,4 @@ class TabSearch():
         Enabled or disabled options.
         """
 
-        self.control_toggled_files = widget.get_active()
+        self.control_toggled_files = widget.get_active ()
