@@ -464,6 +464,10 @@ class TabSearch():
         for iter in self.need_remove:
             model.remove (iter)
 
+        # On met la case à cocher de l'élément parent à False puisqu'il y a un
+        # fichier de coché.
+        model[path[0]][1] = False
+
 
     def on_button_delete_file_clicked(self, widget):
         """
