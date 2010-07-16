@@ -25,7 +25,7 @@ The interface of a search's tab.
 """
 
 
-import gtk, pygtk, os, gobject
+import gtk, pygtk, os, gobject, pango
 
 class TabSearch():
     """
@@ -73,6 +73,7 @@ class TabSearch():
 
         # On créée la première colone (texte)
         cell = gtk.CellRendererText ()
+        cell.set_property ('ellipsize', pango.ELLIPSIZE_START)
         col = gtk.TreeViewColumn ("Doublons", cell, text=0)
         col.set_cell_data_func (cell, self.cell_file_render)
         col.set_expand (True)
