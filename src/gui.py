@@ -24,7 +24,7 @@
 Gui class with functions
 """
 
-import pygtk, gtk, os, gobject
+import pygtk, gtk, os, gobject, pango
 from src import search
 
 
@@ -63,17 +63,18 @@ class WindowJustonefile():
         # A ne pas confondre avec le menu du haut.
         tree = self.interface.get_object ('treeview_menu')
 
-        # On créé le modèle du menu
+        # On créé le modèle du menu.
         model = gtk.TreeStore (str)
         tree.set_model (model)
 
-        # On créée la colone (texte)
+        # On créée la colone (texte).
         cell = gtk.CellRendererText ()
+        cell.set_property ('ellipsize', pango.ELLIPSIZE_END)
         col = gtk.TreeViewColumn ("", cell, text=0)
         col.set_expand (True)
         tree.append_column (col)
 
-        # On modifie ces propriétés
+        # On modifi ces propriétés.
         tree.set_headers_visible (False)
 
         # On le remplit et on selectionne le premier item.
@@ -125,6 +126,9 @@ class WindowJustonefile():
         cell = gtk.CellRendererText ()
         col = gtk.TreeViewColumn ("Doublons", cell, text=2)
         tree.append_column (col)
+
+        # On met en couleur une ligne sur 2.
+        tree.set_rules_hint (True)
 
         # On le remplit et on selectionne le premier élément.
         self.update_treeview_list_search ()
