@@ -93,7 +93,9 @@ class WindowJustonefile():
         for i in xrange (4, nb.get_n_pages ()):
             text = nb.get_tab_label_text (nb.get_nth_page (i))
             model.append (self.search_iter, [text])
-        
+
+        # On met deplit l'onglet 'Recherches'
+        tree.expand_row (3, False)
         tree.set_cursor (0)
 
 
