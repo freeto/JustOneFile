@@ -38,6 +38,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Rechercher</property>
                     <property name="relief">none</property>
                     <signal name="toggled" handler="on_tb_search_toggled"/>
                     <child>
@@ -57,6 +58,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Pr&#xE9;f&#xE9;rences d'affichage et de contr&#xF4;le des doublons</property>
                     <property name="relief">none</property>
                     <signal name="toggled" handler="on_tb_file_preferences_toggled"/>
                     <child>
@@ -87,6 +89,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">Doublon pr&#xE9;c&#xE9;dent</property>
                                 <property name="relief">none</property>
                                 <signal name="clicked" handler="on_button_prev_dbl_clicked"/>
                                 <child>
@@ -105,6 +108,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">Fichier pr&#xE9;c&#xE9;dent</property>
                                 <property name="relief">none</property>
                                 <signal name="clicked" handler="on_button_prev_file_clicked"/>
                                 <child>
@@ -133,6 +137,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">Ne garder que ce fichier</property>
                                 <property name="relief">none</property>
                                 <signal name="clicked" handler="on_button_keep_only_clicked"/>
                                 <child>
@@ -151,6 +156,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">Supprimer/garder ce fichier</property>
                                 <property name="relief">none</property>
                                 <signal name="clicked" handler="on_button_delete_file_clicked"/>
                                 <child>
@@ -179,6 +185,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">Fichier suivant</property>
                                 <property name="relief">none</property>
                                 <signal name="clicked" handler="on_button_next_file_clicked"/>
                                 <child>
@@ -197,6 +204,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">Doublon suivant</property>
                                 <property name="relief">none</property>
                                 <signal name="clicked" handler="on_button_next_dbl_clicked"/>
                                 <child>
@@ -275,6 +283,7 @@
                         <child>
                           <object class="GtkLabel" id="label1">
                             <property name="visible">True</property>
+                            <property name="tooltip_text" translatable="yes">Les options suivante s'appliqueront que pour les fichiers coch&#xE9;s</property>
                             <property name="label" translatable="yes">Options sur les fichiers coch&#xE9;s :</property>
                           </object>
                           <packing>
@@ -289,6 +298,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
+                            <property name="tooltip_text" translatable="yes">Afficher/Cacher les fichiers coch&#xE9;</property>
                             <property name="draw_indicator">True</property>
                             <signal name="toggled" handler="on_checkb_display_toggled_files_toggled"/>
                           </object>
@@ -302,6 +312,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
+                            <property name="tooltip_text" translatable="yes">Permettre aux boutons de contr&#xF4;les de prendre en compte les fichiers coch&#xE9;s, dans le cas contraire, vous ne pourrez pas selectionner un fichier avec les boutons de contr&#xF4;les</property>
                             <property name="draw_indicator">True</property>
                             <signal name="toggled" handler="on_checkb_control_toggled_files_toggled"/>
                           </object>

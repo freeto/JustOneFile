@@ -265,6 +265,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">D&#xE9;marer une nouvelle recherche</property>
                                 <signal name="clicked" handler="on_button_home_begin_new_search_clicked"/>
                                 <child>
                                   <object class="GtkHBox" id="hbox5">
@@ -302,6 +303,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">Changer mes pr&#xE9;f&#xE9;rences</property>
                                 <signal name="clicked" handler="on_button_home_preferences_clicked"/>
                                 <child>
                                   <object class="GtkHBox" id="hbox6">
@@ -454,6 +456,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">Afficher/Cacher les recherches en cours</property>
                                 <property name="relief">none</property>
                                 <property name="active">True</property>
                               </object>
@@ -469,6 +472,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">Afficher/Cacher les recherches termin&#xE9;es</property>
                                 <property name="relief">none</property>
                                 <property name="active">True</property>
                               </object>
@@ -513,7 +517,7 @@
                       <object class="GtkHButtonBox" id="hbuttonbox3">
                         <property name="visible">True</property>
                         <property name="spacing">1</property>
-                        <property name="layout_style">spread</property>
+                        <property name="layout_style">center</property>
                         <child>
                           <object class="GtkButton" id="button11">
                             <property name="label">gtk-delete</property>
@@ -675,6 +679,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">Remettre les param&#xE8;tres &#xE0; defaut</property>
                                 <child>
                                   <object class="GtkHBox" id="hbox10">
                                     <property name="visible">True</property>
@@ -711,6 +716,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">Commencer la recherche</property>
                                 <signal name="clicked" handler="on_button_start_search_clicked"/>
                                 <child>
                                   <object class="GtkHBox" id="hbox2">
