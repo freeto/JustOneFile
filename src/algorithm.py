@@ -21,7 +21,7 @@
 #	MA 02110-1301, USA.
 
 """
-Class and functions to search duplicates files
+Class and functions to search duplicates files.
 """
 
 
@@ -29,7 +29,7 @@ import multiprocessing, os, hashlib, time, gtk
 
 
 # -----------------------
-# Cette classe est comme un processus.
+# Cette classe sera dans un processus à part.
 # -----------------------
 
 class Algorithm(multiprocessing.Process):
@@ -39,7 +39,7 @@ class Algorithm(multiprocessing.Process):
     
     def __init__(self, queue_send, path, options={}):
         """
-        Initilize algorithm
+        Initilize algorithm.
         
         Arguments:
         - `queue_send`: The queue for communicate with the parent's process
@@ -60,14 +60,15 @@ class Algorithm(multiprocessing.Process):
 
     def update_infos(self):
         """
-        Send infos about algorithm progress and get signal
+        Send infos about algorithm status.
         """
 
-        # On envoie un dictionaire
+        # On envoie un dictionaire.
         infos = {}
         infos['progress'] = self.progress
         infos['action'] = self.action
         infos['done'] = self.done
+        
         if self.list_dbl == []:
             infos['dbl'] = False
         else:
@@ -88,14 +89,16 @@ class Algorithm(multiprocessing.Process):
         Arguments:
         - `dir_path`: The base directories
         """
-        
+
+        # Cette fonction est un générateur, elle donne à chaque 'appel'
+        # le chemin d'un fichier à tester. (Afin d'éviter d'avoir une
+        # variable qui contient touts les noms de fichier.)
+
         # On explore toute l'arborescence à l'aide de la fonction os.walk ()
-        # elle explore toute l'arborécense des fichier à partie d'un chemin
+        # elle explore toute l'arborécense des fichiers à partir d'un chemin
         # donné.
         for dirpath, dirnames, filenames in os.walk (dir_path):
             for file_name in filenames:
-                # Cette fonction est un générateur, elle donne à chaque 'appel'
-                # le chemin d'un fichier à tester. (Pour ne pas consommer de mémoire)
                 yield dirpath + '/' + file_name
 
 
@@ -103,53 +106,54 @@ class Algorithm(multiprocessing.Process):
 
     def get_md5sum(self, file_path):
         """
-        Return md5 sum of a file
+        Return md5 sum of a file.
         
         Arguments:
         - `file_path`: The path of the file
         """
         
         # On prend un descripteur de fichier pour pouvoir tester si le fichier
-        # est bloquant ou pas (comme par exemple '/dev/null')
+        # est bloquant ou pas (comme par exemple '/dev/null').
         try:
             file_des = os.open (file_path, os.O_RDONLY|os.O_NONBLOCK)
         except:
             print "Impossible d'ouvrir le fichier", file_path
             return False
 
-        # On convertit le descripteur de fichier en object file
+        # On convertit le descripteur de fichier en object file.
         file_obj = os.fdopen (file_des)
 
-        # On lit le fichier par block de 1 Mo (1024*1024), pour éviter de prendre 
-        # trop de RAM.
+        # On lit le fichier par block de 1 Mo (1024*1024), pour éviter de
+        # prendre trop de RAM.
 
         md5_string = ""
         content = True
 
         while content:
             content = file_obj.read (1048576) # 1048576 = 1024*1024
-            if not content: break
+            if not content: break             # Fin du fichier.
 
-            # On Hash le block, et on place tout sa dans une variable qui contient 
-            # à la suite les sommes md5 de tout les blocks
+            # On Hash le block, et on place la somme md5 dans la variable
+            # qui contient toutes les sommes md5 des blocks.
             md5_string += hashlib.md5 (content).hexdigest ()
 
         file_obj.close ()
 
-        # On retourne la somme md5 de la chaine qui contient toutes les sommes md5
+        # On retourne la somme md5 de la chaine qui contient toutes les sommes
+        # md5 des blocks.
         return hashlib.md5 (md5_string).hexdigest ()
         
 
 
     def get_size(self, file_path):
         """
-        Return size of a file
+        Return size of a file.
         
         Arguments:
         - `file_path`: The file to get size
         """
 
-        # On prend sa taille si on peut
+        # On prend sa taille si on peut.
         try:
             file_size = os.path.getsize (file_path)
         except:
@@ -172,25 +176,25 @@ class Algorithm(multiprocessing.Process):
         Return a list of duplicate's file.
         """
 
-        # Cette fonction 'run', elle est en fait appellé implicitement lorsque
-        # l'on lance la fonction start. la fonction start met
-        # cette classe dans un nouveau processus et appelle la fonction run ()
-        # de cette dernière. A partir de maintenant donc, pour communiquer,
-        # c'est avec des queue.
-        # C'est la fonction update_infos () qui est chargé d'envoyer l'état de 
-        # l'algo dans la queue.
+        # La fonction 'run' est en fait appellé implicitement lorsque l'on
+        # appelle la fonction start(). La fonction start() met cette classe dans
+        # un nouveau processus et appelle la fonction run() de cette dernière.
+        # A partir de maintenant, on communique avec des queues.
+        # C'est la fonction update_infos() qui est chargé d'envoyer la valeur des
+        # variables dans la queue.
 
         # -----------------------
-        # Fonctionement de l'algorithme
+        # Fonctionement de l'algorithme :
         # 
         # 1 - On fait un tableau organisé des fichiers qui ont la meme taille.
         #     Tout les fichiers qui ont une taille unique sur l'ensemble des
         #     fichiers à tester sont donc obligatoirement unique, il n'y à pas
-        #     besoin de les tester avec une somme md5.
+        #     besoin de les tester avec une somme md5. Le tableau est un
+        #     dictionnaire qui associe à chaque taille une liste de fichier
         # 
         # 2 - On recherche les fichiers qui ont une meme somme md5.
         #     Si il ont une meme somme md5, alors ce sont des doublons.
-        #     Ont les stock dans un tableau et on enverat régulièrement des infos 
+        #     Ont les stock dans un tableau et on enverat régulièrement les infos
         #     dans la queue.
         # -----------------------
 
@@ -199,14 +203,14 @@ class Algorithm(multiprocessing.Process):
         # 1 - On garde que les fichiers qui ont la meme taille.
         # -----------------------
 
-        self.action = 'Build file list'
-        self.progress = -1      # Met la bare en mode 'activité'
+        self.action = 'Construction de la liste'
+        self.progress = -1
 
         self.update_infos ()
 
-        # Associe une taille (keys) à un/des chemins de fichiers
+        # Associe une taille à un/des chemins de fichiers.
         dico_filesize = {}
-        allfiles_size = 0       # La taille de l'ensemble des fichiers à testé
+        allfiles_size = 0       # La taille de l'ensemble des fichiers à tester.
 
         # On parcour l'arbre des fichiers ...
         for file_path in self.gen_all_files_paths (self.path):
@@ -215,7 +219,7 @@ class Algorithm(multiprocessing.Process):
 
             allfiles_size += file_size
 
-            # si la clé n'éxiste pas encore, on la créée et on indique que la 
+            # Si la clé n'éxiste pas encore, on la créée et on indique que la 
             # valeur sera une liste.
             if not dico_filesize.has_key (file_size):
                 dico_filesize[file_size] = []
@@ -225,7 +229,6 @@ class Algorithm(multiprocessing.Process):
 
         # On enlève les éléments qui sont unique, pour garder que les fichiers
         # qui ont au moin un autre fichier de meme taille.
-
         list_filesize = []
         for item in dico_filesize.values ():
             if len (item) > 1:    # Si plusieurs fichiers ont la meme taille ..
@@ -235,27 +238,24 @@ class Algorithm(multiprocessing.Process):
             
 
         # -----------------------
-        # On recherche les fichiers qui ont une meme somme md5
+        # On recherche les fichiers qui ont une meme somme md5.
         # -----------------------
 
-        self.action = 'Searching duplicates files'
+        self.action = 'Recherche des doublons'
         self.progress = 0
         progress = 0
         
         self.update_infos ()
 
         dico_md5 = {}
-        self.list_dbl = []           # La liste des doublons
+        self.list_dbl = []           # La liste temporaire des doublons.
 
         for list_file in list_filesize:
-            
-            # Si la liste 
-
             for file_path in list_file:
 
                 md5_sum = self.get_md5sum (file_path)
 
-                # Si l'entré dans le dico n'éxiste pas encore, on la créée
+                # Si l'entré dans le dico n'éxiste pas encore, on la créée.
                 if not md5_sum in dico_md5:
                     dico_md5[md5_sum] = []
 
@@ -266,14 +266,14 @@ class Algorithm(multiprocessing.Process):
                 self.progress = float (progress) / float (allfiles_size)
                 self.update_infos ()
                 
-            # On cherche les doublons
+            # On cherche les doublons.
             for item in dico_md5.values ():
                 if len (item) > 1: # Doublons !
                     self.list_dbl.append (item)
 
             self.update_infos ()
             
-            # On remet les listes à 0
+            # On remet les listes à 0.
             dico_md5 = {}
             self.list_dbl = []
 
@@ -282,7 +282,7 @@ class Algorithm(multiprocessing.Process):
         # Recherche finie
         # -----------------------
 
-        self.action = 'Finished'
+        self.action = 'Finit'
         self.progress = 1.0
         self.done = True
 
