@@ -98,7 +98,9 @@ class WindowJustonefile():
 
         # On deplit l'onglet 'Recherches'.
         tree.expand_row (3, False)
-        tree.set_cursor (self.prefs['tab_start'])
+        # On affiche l'onglet de démarrage (A partir de la boite à onglet, car
+        # ca évite de faire des conversions de position, ex : 5 -> (3, 1) )
+        self.interface.get_object ('notebook_main').set_current_page (self.prefs['tab_start'])
 
 
     def init_treeview_list_search(self):
