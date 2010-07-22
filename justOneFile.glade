@@ -388,6 +388,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Obtenir de l'aide</property>
                             <property name="relief">none</property>
                             <property name="use_stock">True</property>
                           </object>
@@ -443,6 +444,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="tooltip_text" translatable="yes">Afficher ou enl&#xE8;ver la barre de menu.</property>
                                             <property name="draw_indicator">True</property>
                                           </object>
                                           <packing>
@@ -451,10 +453,11 @@
                                         </child>
                                         <child>
                                           <object class="GtkCheckButton" id="checkb_hide_toolbar">
-                                            <property name="label" translatable="yes">D&#xE9;sactiver la barre d'outils</property>
+                                            <property name="label" translatable="yes">Afficher la barre d'outils</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="tooltip_text" translatable="yes">Afficher ou enl&#xE8;ver la barre d'outils</property>
                                             <property name="draw_indicator">True</property>
                                           </object>
                                           <packing>
@@ -463,32 +466,15 @@
                                         </child>
                                         <child>
                                           <object class="GtkCheckButton" id="checkb_display_tabs">
-                                            <property name="label" translatable="yes">Afficher les onglets</property>
+                                            <property name="label" translatable="yes">Ne plus afficher les onglets sous forme d'arborescence</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="tooltip_text" translatable="yes">Place la liste des onglets en haut et enl&#xE8;ve l'arbor&#xE9;cense de gauche</property>
                                             <property name="draw_indicator">True</property>
                                           </object>
                                           <packing>
                                             <property name="position">2</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkAlignment" id="alignment6">
-                                            <property name="visible">True</property>
-                                            <property name="left_padding">16</property>
-                                            <child>
-                                              <object class="GtkCheckButton" id="checkb_hide_treemenu">
-                                                <property name="label" translatable="yes">D&#xE9;sactiver la liste des onglets en arbor&#xE9;sence</property>
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="receives_default">False</property>
-                                                <property name="draw_indicator">True</property>
-                                              </object>
-                                            </child>
-                                          </object>
-                                          <packing>
-                                            <property name="position">3</property>
                                           </packing>
                                         </child>
                                         <child>
@@ -497,6 +483,7 @@
                                             <child>
                                               <object class="GtkLabel" id="label5">
                                                 <property name="visible">True</property>
+                                                <property name="tooltip_text" translatable="yes">L'onglet qui s'affichera au d&#xE9;marage de l'application</property>
                                                 <property name="xalign">0</property>
                                                 <property name="label" translatable="yes">Onglet au d&#xE9;marage :</property>
                                               </object>
@@ -507,6 +494,7 @@
                                             <child>
                                               <object class="GtkComboBox" id="combobox_tab_start">
                                                 <property name="visible">True</property>
+                                                <property name="tooltip_text" translatable="yes">L'onglet qui s'affichera au d&#xE9;marage de l'application</property>
                                               </object>
                                               <packing>
                                                 <property name="padding">4</property>
@@ -515,7 +503,7 @@
                                             </child>
                                           </object>
                                           <packing>
-                                            <property name="position">4</property>
+                                            <property name="position">3</property>
                                           </packing>
                                         </child>
                                       </object>
@@ -525,6 +513,7 @@
                                 <child type="label">
                                   <object class="GtkLabel" id="label4">
                                     <property name="visible">True</property>
+                                    <property name="tooltip_text" translatable="yes">Options d'affichage</property>
                                     <property name="label" translatable="yes">Affichage</property>
                                     <attributes>
                                       <attribute name="weight" value="bold"/>
@@ -774,6 +763,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">Obtenir de l'aide</property>
                                 <property name="relief">none</property>
                                 <property name="use_stock">True</property>
                               </object>
@@ -883,7 +873,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="tooltip_text" translatable="yes">Remettre les param&#xE8;tres &#xE0; defaut</property>
+                                <property name="tooltip_text" translatable="yes">Remettre les param&#xE8;tres par defaut</property>
                                 <child>
                                   <object class="GtkHBox" id="hbox10">
                                     <property name="visible">True</property>
