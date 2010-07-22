@@ -25,7 +25,7 @@ Gui class with functions
 """
 
 import pygtk, gtk, os, gobject, pango
-from src import search
+from src import search, preferences
 
 
 class WindowJustonefile():
@@ -44,14 +44,16 @@ class WindowJustonefile():
         self.interface.connect_signals (self)
 
         # Initialisation des widgets de la fenetre
+        self.init_preferences ()
         self.list_search = []
         self.init_toolbar ()
         self.init_treeview_menu ()
         self.init_treeview_list_search ()
         self.init_statusbar ()
 
-        gobject.timeout_add (200, self.update_searchs_infos)
+        self.apply_prefs ()
 
+        gobject.timeout_add (200, self.update_searchs_infos)
 
 
     def init_treeview_menu(self):
@@ -94,9 +96,9 @@ class WindowJustonefile():
             text = nb.get_tab_label_text (nb.get_nth_page (i))
             model.append (self.search_iter, [text])
 
-        # On met deplit l'onglet 'Recherches'
+        # On deplit l'onglet 'Recherches'.
         tree.expand_row (3, False)
-        tree.set_cursor (0)
+        tree.set_cursor (self.prefs['tab_start'])
 
 
     def init_treeview_list_search(self):
@@ -223,6 +225,18 @@ class WindowJustonefile():
         sb.push (self.sb_context, 'Construction de la liste ...')
 
 
+    def init_preferences(self):
+        """
+        Initialize the self.prefs variable.
+        """
+
+        self.prefs = preferences.load ('./prefs_test.cfg')
+        
+        if not self.prefs:
+            print "Le fichier de configuration n'est pas valide."
+            print 'Arret du programme.'
+            exit (0)
+
 
     def update_treemenu_content(self):
         """
@@ -333,6 +347,45 @@ class WindowJustonefile():
         self.update_treeview_list_search ()
         return True
 
+
+    def apply_prefs(self):
+        """
+        Apply the préférences.
+        """
+
+        # On applique les préférences.
+        # Pour chaque entrée dans self.prefs, on change les choses associées en
+        # fonction de la valeur.
+        
+        # -----------------------
+        # Affichage
+        # -----------------------
+
+        # La barre de menu (True -> visible, False -> cachée).
+        widget = self.interface.get_object ('menubar')
+        if self.prefs['menu_bar']:
+            widget.show ()
+        else:
+            widget.hide ()
+
+
+        # La barre d'outils (True -> visible, False -> cachée).
+        widget = self.interface.get_object ('toolbar')
+        if self.prefs['tool_bar']:
+            widget.show ()
+        else:
+            widget.hide ()
+
+
+        # Mode 'Onglets' : on enlève le treeview menu et on affiche les onglets.
+        widget = self.interface.get_object ('notebook_main')
+        widget.set_show_tabs (self.prefs['tabs_mode'])
+
+        widget = self.interface.get_object ('treeview_menu')
+        if self.prefs['tabs_mode']:
+            widget.hide ()
+        else:
+            widget.show ()
 
 
     # -----------------------

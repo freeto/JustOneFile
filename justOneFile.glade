@@ -15,7 +15,7 @@
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkMenuBar" id="menubar1">
+          <object class="GtkMenuBar" id="menubar">
             <property name="visible">True</property>
             <child>
               <object class="GtkMenuItem" id="menuitem1">
