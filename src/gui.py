@@ -230,10 +230,10 @@ class WindowJustonefile():
         Initialize the self.prefs variable.
         """
 
-        self.prefs = preferences.load ('./prefs_test.cfg')
+        self.prefs = preferences.load ('./preferences.cfg')
         
         if not self.prefs:
-            print "Le fichier de configuration n'est pas valide."
+            print 'Impossible de charger la configuration.'
             print 'Arret du programme.'
             exit (0)
 
