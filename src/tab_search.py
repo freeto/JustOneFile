@@ -54,6 +54,7 @@ class TabSearch():
         self.label_title = gtk.Label (title)
         self.init_treeview_dbl ()
         self.interface.get_object ('checkb_display_toggled_files').set_active (True)
+        self.interface.get_object ('checkb_control_toggled_files').set_active (True)
 
 
     def init_treeview_dbl(self):
@@ -399,38 +400,59 @@ class TabSearch():
         tree.expand_row (path[0], False)
         tree.set_cursor ((path[0], first_file))
 
+
     def on_button_prev_file_clicked(self, widget):
         """
         Select the previous file.
         """
 
-        # On sélectionne le fichier précédent.
-        
         tree = self.interface.get_object ('treeview_dbl')
         model = tree.get_model ()
         path = tree.get_cursor ()[0]
 
         # On fait une petite vérification pour éviter les déplacements inutiles.
-        if path == (0) or path == (0, 0): return
+        if path == (0,) or path == (0, 0): return
         
         # 2 possibilités :
-        #  -Soit le curseur est sur un fichier qui n'est pas le premier fichier
-        # d'un doublon.
-        #  -Sinon le curseur est forcément sur un doublon ou sur le premier
-        # fichier d'un doublon.
+        #  -Soit le curseur est sur un fichier placé après le premier fichier de
+        # ce doublon.
+        #  -Sinon le curseur est sur ou avant le premier fichier du doublon.
 
-        if len (path) == 2 and path[1] > 0:
-            # On séléctionne le fichier précédent.
+        first_file = self._get_first_file_index (path[0])
+
+        if path > (path[0], first_file):
+            # On est sur un fichier après le premier fichier.
+            # On selectionne le fichier précédent, en fonction de l'option
+            # self.control_toggled_file .
+            if not self.control_toggle_files:
+                for i in xrange (path[1] - 1, -1, -1):
+                    if not model[(path[0], i)][1]:
+                        tree.set_cursor ((path[0], i))
+                        return
+
             tree.set_cursor ((path[0], path[1] - 1))
 
-        else:
-            # On prend le doublon précédent, on compte le nombre de fichier et on
-            # place le curseur sur le dernier.
-            iter = model.get_iter ((path[0] - 1))
-            tree.expand_row (path[0] - 1, False)
-            lenght = model.iter_n_children (iter)
-            tree.set_cursor ((path[0] - 1, lenght -1))
+        elif path > (0, first_file):
+            # On prend le premier doublon précédent qui a au moin un fichier non
+            # coché.
+            path = (path[0] - 1,)
+            while model[path][1]:
+                path = (path[0] - 1,)
+                if path == (0,):
+                    return
 
+            iter = model.get_iter ((path[0]))
+            tree.expand_row (path[0], False)
+            lenght = model.iter_n_children (iter)
+            
+            if not self.control_toggle_files:
+                for i in xrange (lenght - 1, -1, -1):
+                    if not model[(path[0], i)][1]:
+                        tree.set_cursor ((path[0], i))
+                        return
+            else:
+                tree.set_cursor ((path[0], lenght - 1))
+            
 
     def on_button_next_file_clicked(self, widget):
         """
