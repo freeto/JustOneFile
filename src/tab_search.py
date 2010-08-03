@@ -93,6 +93,8 @@ class TabSearch():
         # On initialise les variables.
         self.remove_files = []  # Contiendra les donnés des fichiers enlevés.
         self.need_remove = [] # Contiendra les lignes à enlever.
+        self.display_toggle_files = True
+        self.control_toggle_files = True
             
 
     def set_searchbar_visibility(self, visibility):
@@ -269,7 +271,7 @@ class TabSearch():
         """
 
         # On regarde si ont doit enlever les lignes cochées.
-        if not self.display_toggled_files:
+        if not self.display_toggle_files:
             self.remove_files.append ((model[path][0], path[0]))
             model.remove (model.get_iter (path))
 
@@ -299,6 +301,36 @@ class TabSearch():
         # le doublon.
         model[path[0]][1] = True
 
+
+    def _get_first_file_index(self, dbl):
+        """
+        Return None if the dbl has not uncheck file else return the first file
+        index.
+        
+        Arguments:
+        - `dbl`: The dbl index.
+        """
+
+        # On sélectionne le doublon précédent.
+        tree = self.interface.get_object ('treeview_dbl')
+        model = tree.get_model ()
+        first_file = None
+
+        # On détermine l'index du premier fichier du doublon :
+        # Si on ne control pas les fichiers cochés, le premier fichier est 0.
+        # Sinon, on test quel est le premier fichier.
+
+        if self.control_toggle_files:
+            first_file = 0
+
+        else:
+            # Le premier fichier non coché est le premier fichier du doublon.
+            for i in xrange (model.iter_n_children (model.get_iter ((dbl,)))):
+                if not model[(dbl, i)][1]:
+                    first_file = i
+                    break
+
+        return first_file
 
 
     # -----------------------
@@ -338,24 +370,34 @@ class TabSearch():
         Go to the previous dbl.
         """
         
-        # On sélectionne le doublon précédent.
         tree = self.interface.get_object ('treeview_dbl')
+        model = tree.get_model ()
         path = tree.get_cursor ()[0]
-        
-        # On vérifie avant de sélectionner que l'on est pas sur le premier
-        # fichier du premier doublon ou sur le premier doublon.
-        if (len (path) == 1 and path[0] == 0) or path == (0,0): return
-        
-        elif (len (path) == 2 and path[1] == 0) or len (path) == 1:
-            # On est sur le premier fichier d'un doublon ou sur un doublon, on
-            # peut aller au doublon précédent.
-            tree.expand_row (path[0] - 1, False)
-            tree.set_cursor ((path[0] - 1, 0))
-            
-        else:
-            # On ce place sur le premier fichier du doublon.
-            tree.set_cursor ((path[0], 0))
 
+        # On vérifie si on est pas sur le premier doublon.
+        if path == (0,):
+            return
+
+        # On regarde si le premier fichier est plus bas dans la liste des
+        # fichiers, dans ce cas on met le curseur dessus.
+        first_file = self._get_first_file_index (path[0])
+        if len (path) == 2 and first_file < path[1]:
+            tree.set_cursor ((path[0], first_file))
+            return
+        elif path <= (0, first_file):
+            return
+
+        # On parcour ensuite les doublons précédent, et si le premier fichier est
+        # trouvé, on lui donne le curseur.
+        first_file = None
+        while first_file is None:
+            path = (path[0] - 1,)
+            first_file = self._get_first_file_index (path[0])
+            if first_file is None and path[0] == 0: # Premier doublon, on sort.
+                return
+
+        tree.expand_row (path[0], False)
+        tree.set_cursor ((path[0], first_file))
 
     def on_button_prev_file_clicked(self, widget):
         """
@@ -486,7 +528,7 @@ class TabSearch():
 
                 # On enlève la ligne du modèle si l'option 'Afficher' est
                 # désactivée.
-                if not self.display_toggled_files:
+                if not self.display_toggle_files:
                     self.remove_files.append ((model[(path[0], i)][0], path[0]))
                     self.need_remove.append (model.get_iter ((path[0], i)))
 
@@ -572,7 +614,7 @@ class TabSearch():
 
         # On met à jour la variable et on enlève ou affiche tous les fichiers
         # cochés en fonction.
-        self.display_toggled_files = widget.get_active ()
+        self.display_toggle_files = widget.get_active ()
         self.set_toggled_files_visibility (widget.get_active ())
         
 
@@ -581,4 +623,4 @@ class TabSearch():
         Enabled or disabled option 'Control toggle files'.
         """
 
-        self.control_toggled_files = widget.get_active ()
+        self.control_toggle_files = widget.get_active ()
