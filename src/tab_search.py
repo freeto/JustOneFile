@@ -437,9 +437,9 @@ class TabSearch():
             # coché.
             path = (path[0] - 1,)
             while model[path][1]:
-                path = (path[0] - 1,)
                 if path == (0,):
                     return
+                path = (path[0] - 1,)
 
             iter = model.get_iter ((path[0]))
             tree.expand_row (path[0], False)
