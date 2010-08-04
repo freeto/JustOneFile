@@ -278,48 +278,13 @@
                       <placeholder/>
                     </child>
                     <child>
-                      <object class="GtkHBox" id="hbox1">
+                      <object class="GtkCheckButton" id="checkb_control_toggle_files">
+                        <property name="label" translatable="yes">Prendre en compte lors du d&#xE9;placement les fichiers coch&#xE9;s</property>
                         <property name="visible">True</property>
-                        <child>
-                          <object class="GtkLabel" id="label1">
-                            <property name="visible">True</property>
-                            <property name="tooltip_text" translatable="yes">Les options suivante s'appliqueront que pour les fichiers coch&#xE9;s</property>
-                            <property name="label" translatable="yes">Options sur les fichiers coch&#xE9;s :</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="padding">4</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkCheckButton" id="checkb_display_toggled_files">
-                            <property name="label" translatable="yes">Afficher</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">False</property>
-                            <property name="tooltip_text" translatable="yes">Afficher/Cacher les fichiers coch&#xE9;</property>
-                            <property name="draw_indicator">True</property>
-                            <signal name="toggled" handler="on_checkb_display_toggled_files_toggled"/>
-                          </object>
-                          <packing>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkCheckButton" id="checkb_control_toggled_files">
-                            <property name="label" translatable="yes">Controler</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">False</property>
-                            <property name="tooltip_text" translatable="yes">Permettre aux boutons de contr&#xF4;les de prendre en compte les fichiers coch&#xE9;s, dans le cas contraire, vous ne pourrez pas selectionner un fichier avec les boutons de contr&#xF4;les</property>
-                            <property name="draw_indicator">True</property>
-                            <signal name="toggled" handler="on_checkb_control_toggled_files_toggled"/>
-                          </object>
-                          <packing>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="draw_indicator">True</property>
+                        <signal name="toggled" handler="on_checkb_control_toggle_files_toggled"/>
                       </object>
                       <packing>
                         <property name="position">2</property>

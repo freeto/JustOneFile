@@ -53,8 +53,7 @@ class TabSearch():
 
         self.label_title = gtk.Label (title)
         self.init_treeview_dbl ()
-        self.interface.get_object ('checkb_display_toggled_files').set_active (True)
-        self.interface.get_object ('checkb_control_toggled_files').set_active (True)
+        self.interface.get_object ('checkb_control_toggle_files').set_active (True)
 
 
     def init_treeview_dbl(self):
@@ -203,80 +202,6 @@ class TabSearch():
                     model.append (iter, [file, False])
 
 
-    def set_toggled_files_visibility(self, visibility):
-        """
-        Remove or add the toggled files in the treeview_dbl.
-        
-        Arguments:
-        - `visibility`: A boolean to set the toggled files visibility.
-        """
-
-        # Les fichiers sont stockés dans self.remove_files . Chaque élément de
-        # cette liste est un tuple de cette forme :
-        # (nom_fichier, parent_path)
-
-        # On test si la fonction est inutile dans la configuration donnée.
-        if (visibility and self.remove_files == []) or (
-            not visibility and not self.remove_files == []):
-            return
-
-        model = self.interface.get_object ('treeview_dbl').get_model ()
-
-        if not visibility:      # On enlève les fichiers cochés.
-            model.foreach (self._remove_toggled_files)
-
-            # La fonction a remplit self.need_remove. Il ne reste plus qu'à
-            # enlever les lignes indiquées.
-            for row_iter in self.need_remove:
-                model.remove (row_iter)
-            self.need_remove = []
-            
-        else:                   # On met dans le modèle les fichiers enlevés.
-            # (Pour l'instant, l'ordre n'est pas conservé.)
-            for (file_name, parent_path) in self.remove_files:
-                model.insert (model.get_iter (parent_path), -1, (file_name, True))
-
-            self.remove_files = []
-
-
-
-    def _remove_toggled_files(self, model, path, iter):
-        """
-        Set self.remove_files and self.need_remove. Remove the toggle files
-        from the model.
-        
-        Arguments:
-        - `model`: A TreeModel. (Here, the treeview_dbl model.)
-        - `path`: The current path.
-        - `iter`: The TreeIter pointing to path.
-        """
-        
-        # On regarde dans le modèle tous les fichiers cochés. On les enlève
-        # et on stock les informations qui permettront de les remettre.
-
-        # On vérifie si la case à cocher est activée et si c'est bien un fichier.
-        if model[path][1] and  model.iter_depth (iter) == 1:
-            file_name = model[path][0]
-            self.remove_files.append  ((file_name, path[0]))
-            self.need_remove.append (iter)
-
-
-    def _remove_row(self, model, path):
-        """
-        Remove a row from a model, and set her information into
-        self.remove_files .
-        
-        Arguments:
-        - `model`: a gtk.TreeStore . (The treeview_dbl model)
-        - `path`: The row path.
-        """
-
-        # On regarde si ont doit enlever les lignes cochées.
-        if not self.display_toggle_files:
-            self.remove_files.append ((model[path][0], path[0]))
-            model.remove (model.get_iter (path))
-
-
     def  _toggle_file(self, model, path):
         """
         Toggle a file (and a dbl if all files was toggle).
@@ -289,7 +214,6 @@ class TabSearch():
         # Si la ligne est un doublon, on ne peut pas la cocher.
         if model.iter_depth (model.get_iter (path)) == 1:
             model[path][1] = not model[path][1]
-            self._remove_row (model, path)
 
         # Si tous les fichiers du doublon sont cochés, on désactive le doublon.
         for i in xrange (model.iter_n_children (model.get_iter (path[0]))):
@@ -619,28 +543,8 @@ class TabSearch():
             
         self.set_preferencesbar_visibility (widget.get_active ())
 
-
-    def on_checkb_display_toggled_files_toggled(self, widget):
-        """
-        Enabled or disabled option 'Display toggle files' and refresh the
-        display.
-        """
-
-        cb = self.interface.get_object ('checkb_control_toggled_files')
-
-        # On décoche et désactive 'Controler' si cette case à cocher n'est pas
-        # coché. (Car on ne peut pas controler des objets invisibles)
-        if not widget.get_active ():
-            cb.set_active (False)
-        cb.set_sensitive (widget.get_active ())
-
-        # On met à jour la variable et on enlève ou affiche tous les fichiers
-        # cochés en fonction.
-        self.display_toggle_files = widget.get_active ()
-        self.set_toggled_files_visibility (widget.get_active ())
         
-
-    def on_checkb_control_toggled_files_toggled(self, widget):
+    def on_checkb_control_toggle_files_toggled(self, widget):
         """
         Enabled or disabled option 'Control toggle files'.
         """
