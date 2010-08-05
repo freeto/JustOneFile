@@ -155,9 +155,11 @@ class WindowJustonefile():
         # Fonctions
         # -----------------------
         
-        # Fonction pour le bouton 'Nouvelle recherche'.
         def new_search (widget):
             self.interface.get_object ('notebook_main').set_current_page (4)
+
+        def show_help (widget):
+            self.interface.get_object ('notebook_main').set_current_page (2)
 
         def show_aboutdialog (widget):
             # On créé une fonction qui sera appellée lorsque la boite de dialog
@@ -229,7 +231,14 @@ class WindowJustonefile():
 
         toolbar = self.interface.get_object ("toolbar_right")
 
-        # Bouton aPropo
+        # Bouton aide
+        tb = gtk.ToolButton (gtk.STOCK_HELP)
+        tb.set_tooltip_text ("Consulter l'aide")
+        tb.connect ("clicked", show_help)
+        tb.show ()
+        toolbar.insert (tb, -1)
+
+        # Bouton à propos.
         tb = gtk.ToolButton (gtk.STOCK_ABOUT)
         tb.set_tooltip_text ('A propos de JustOneFile')
         tb.connect ("clicked", show_aboutdialog)
