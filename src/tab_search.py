@@ -461,9 +461,10 @@ class TabSearch():
 
             if not self.control_toggle_files:
                 for i in xrange (lenght, 0, -1):
-                    if not model[(path[0], i)][1]:
+                    if not model[(path[0], i)][1]: # Le fichier n'est pas coché.
                         tree.set_cursor ((path[0], i))
                         return
+
             else:
                 tree.set_cursor ((path[0], lenght))
             

@@ -143,30 +143,43 @@ class WindowJustonefile():
 
     def init_toolbar(self):
         """
-        Input buttons in toolbar
+        Set toolbar properties and buttons.
         """
         
-        toolbar = self.interface.get_object ("toolbar")
-
         # Les positions des boutons spécifiques à une recherche sont stockés
         # dans un tableau pour etre ensuite activé/désactivé par la fonction
         # set_toolbar_search_mode(). Ils sont marqués (RECHERCHE) .
         self.toolbar_search_buttons = []
 
-        # Fonctions pour les signaux 'rapide'
+        # -----------------------
+        # Fonctions
+        # -----------------------
+        
+        # Fonction pour le bouton 'Nouvelle recherche'.
         def new_search (widget):
             self.interface.get_object ('notebook_main').set_current_page (4)
 
-        # On ajoute les boutons
+        # Fonction pour ajouter un séparateur.
+        def add_separator (toolbar):
+            sep = gtk.SeparatorToolItem ()
+            sep.show ()
+            toolbar.insert (sep, -1)
+            
 
-        # Bouton nouvelle recherche
+        # -----------------------
+        # Barre de gauche
+        # -----------------------
+
+        toolbar = self.interface.get_object ("toolbar_left")
+
+        # Bouton nouvelle recherche.
         tb = gtk.ToolButton (gtk.STOCK_NEW)
         tb.set_tooltip_text ('Nouvelle recherche')
         tb.connect ("clicked", new_search)
         tb.show ()
         toolbar.insert (tb, -1)
 
-        # (RECHERCHE) Bouton 'Suprimme recherche'
+        # (RECHERCHE) Bouton 'Suprimme recherche'.
         tb = gtk.ToolButton (gtk.STOCK_REMOVE)
         tb.set_tooltip_text ('Supprime la recherche')
         tb.show ()
@@ -183,29 +196,29 @@ class WindowJustonefile():
         toolbar.insert (tb, -1)
         self.toolbar_search_buttons.append (toolbar.get_item_index (tb))
 
-        # Séparateur
-        sep = gtk.SeparatorToolItem ()
-        sep.show ()
-        toolbar.insert (sep, -1)
+        # Séparateur.
+        add_separator (toolbar)
 	
-        # Bouton UNDO (Annuler)
+        # Bouton UNDO (Annuler).
         tb = gtk.ToolButton (gtk.STOCK_UNDO)
         tb.set_tooltip_text ("Annuler l'action")
         tb.show ()
         toolbar.insert (tb, -1)
         
-        # Bouton REDO (Refaire)
+        # Bouton REDO (Refaire).
         tb = gtk.ToolButton (gtk.STOCK_REDO)
         tb.set_tooltip_text ("Refaire l'action")
         tb.show ()
         toolbar.insert (tb, -1)
-        
-        # Séparateur
-        sep = gtk.SeparatorToolItem ()
-        sep.show ()
-        toolbar.insert (sep, -1)
-        
-        # Bouton quitter
+
+
+        # -----------------------
+        # Barre de droite
+        # -----------------------
+
+        toolbar = self.interface.get_object ("toolbar_right")
+
+        # Bouton quitter.
         tb = gtk.ToolButton (gtk.STOCK_QUIT)
         tb.set_tooltip_text ('Quitter JustOneFile')
         tb.connect ("clicked", self.on_windowJustonefile_destroy)
@@ -326,7 +339,7 @@ class WindowJustonefile():
         # de la toolbar. La liste de leur position est stocké dans
         # self.toolbar_search_buttons
 
-        toolbar = self.interface.get_object ('toolbar')
+        toolbar = self.interface.get_object ('toolbar_left')
         for pos in self.toolbar_search_buttons:
             item = toolbar.get_nth_item (pos)
             item.set_sensitive (mode)
@@ -372,11 +385,14 @@ class WindowJustonefile():
 
 
         # La barre d'outils (True -> visible, False -> cachée).
-        widget = self.interface.get_object ('toolbar')
+        widget = (self.interface.get_object ('toolbar_left'),
+                  self.interface.get_object ('toolbar_right'))
         if self.prefs['tool_bar']:
-            widget.show ()
+            widget[0].show ()
+            widget[1].show ()
         else:
-            widget.hide ()
+            widget[0].hide ()
+            widget[1].hide ()
 
 
         # Mode 'Onglets' : on enlève le treeview menu et on affiche les onglets.

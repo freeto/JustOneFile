@@ -152,10 +152,31 @@
           </packing>
         </child>
         <child>
-          <object class="GtkToolbar" id="toolbar">
+          <object class="GtkHBox" id="hbox11">
             <property name="visible">True</property>
-            <property name="toolbar_style">icons</property>
-            <property name="icon_size">2</property>
+            <child>
+              <object class="GtkToolbar" id="toolbar_left">
+                <property name="visible">True</property>
+                <property name="toolbar_style">icons</property>
+                <property name="icon_size">2</property>
+                <property name="icon_size_set">True</property>
+              </object>
+              <packing>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolbar" id="toolbar_right">
+                <property name="visible">True</property>
+                <property name="toolbar_style">icons</property>
+                <property name="icon_size">2</property>
+                <property name="icon_size_set">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
