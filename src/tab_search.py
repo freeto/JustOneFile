@@ -392,21 +392,21 @@ class TabSearch():
         
         # On prend l'index du dernier fichier du doublon.
         if not self.control_toggle_files:
-            last_path = None
+            last_file = None
             for i in xrange (model.iter_n_children (model.get_iter ((path[0]))) - 1,
                              0,
                              -1):
                 if not model[(path[0], i)][1]:
-                    last_path = i
+                    last_file = i
                     break
         else:
-            last_path = model.iter_n_children (model.get_iter ((path[0]))) - 1
+            last_file = model.iter_n_children (model.get_iter ((path[0]))) - 1
 
 
-        # Si last_path est égal à None, ou que le curseur est après le dernier
+        # Si last_file est égal à None, ou que le curseur est après le dernier
         # fichier, on doit mettre le curseur sur le premier fichier du premier
         # doublon suivant non coché.
-        if last_path is None or len (path) == 1 or path[1] >= last_path:
+        if last_file is None or len (path) == 1 or path[1] >= last_file:
             nb_of_dbl = len (model) - 1
             first_file = None   # Le premier fichier du doublon.
 
@@ -444,12 +444,11 @@ class TabSearch():
         Go to the next dbl.
         """
         
-        # On sélectionne le doublon suivant.
-
         tree = self.interface.get_object ('treeview_dbl')
         path = tree.get_cursor ()[0]
         model = tree.get_model ()
         last_dbl = len (model) - 1
+        first_file = self._get_first_file_index (path[0])
         
         # 3 possibilités :
         #  -Soit on est sur un fichier du dernier doublon.
@@ -460,17 +459,39 @@ class TabSearch():
             # On est sur le dernier doublon, on place le curseur à la fin.
             iter = model.get_iter (path[0])
             lenght = model.iter_n_children (iter) - 1
-            tree.set_cursor ((path[0], lenght))
+
+            if not self.control_toggle_files:
+                for i in xrange (lenght, 0, -1):
+                    if not model[(path[0], i)][1]:
+                        tree.set_cursor ((path[0], i))
+            else:
+                tree.set_cursor ((path[0], lenght))
             
         elif len (path) == 1:
-            # On deplit la ligne et on se place à a première position.
+            # On deplit la ligne et on se place à première position.
+            while (first_file is None):
+                if path[0] == last_dbl:
+                    return
+
+                path = (path[0] + 1,)
+                first_file = self._get_first_file_index (path[0])
+                
             tree.expand_row (path[0], False)
-            tree.set_cursor ((path[0], 0))
+            tree.set_cursor ((path[0], first_file))
             
         else:
             # On deplit la ligne suivante et on ce place à la première position.
-            tree.expand_row (path[0] + 1, False)
-            tree.set_cursor ((path[0] + 1, 0))
+            first_file = None
+
+            while (first_file is None):
+                if path[0] == last_dbl:
+                    return
+
+                path = (path[0] + 1,)
+                first_file = self._get_first_file_index (path[0])
+
+            tree.expand_row (path[0], False)
+            tree.set_cursor ((path[0], first_file))
 
             
     def on_button_keep_only_clicked(self, widget):
