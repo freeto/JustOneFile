@@ -159,11 +159,22 @@ class WindowJustonefile():
         def new_search (widget):
             self.interface.get_object ('notebook_main').set_current_page (4)
 
-        # Fonction pour ajouter un séparateur.
-        def add_separator (toolbar):
+        def show_aboutdialog (widget):
+            # On créé une fonction qui sera appellée lorsque la boite de dialog
+            # sera fermée. Nous procédons de cette manière pour ne pas bloquer
+            # la fenetre principale lors de l'apparation de la boite de dialog.
+            def on_response (dialog, response):
+                dialog.hide ()
+            
+            about = self.interface.get_object ('aboutdialog')
+            about.connect ('response', on_response)
+            about.show ()
+
+        def add_separator (toolbar, pos=-1):
+            # Ajouter un séparateur.
             sep = gtk.SeparatorToolItem ()
             sep.show ()
-            toolbar.insert (sep, -1)
+            toolbar.insert (sep, pos)
             
 
         # -----------------------
@@ -217,6 +228,15 @@ class WindowJustonefile():
         # -----------------------
 
         toolbar = self.interface.get_object ("toolbar_right")
+
+        # Bouton aPropo
+        tb = gtk.ToolButton (gtk.STOCK_ABOUT)
+        tb.set_tooltip_text ('A propos de JustOneFile')
+        tb.connect ("clicked", show_aboutdialog)
+        tb.show ()
+        toolbar.insert (tb, -1)
+
+        add_separator (toolbar)
 
         # Bouton quitter.
         tb = gtk.ToolButton (gtk.STOCK_QUIT)

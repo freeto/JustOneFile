@@ -169,11 +169,13 @@
               <object class="GtkToolbar" id="toolbar_right">
                 <property name="visible">True</property>
                 <property name="toolbar_style">icons</property>
+                <property name="show_arrow">False</property>
                 <property name="icon_size">2</property>
                 <property name="icon_size_set">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="pack_type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -1049,6 +1051,51 @@
           <packing>
             <property name="expand">False</property>
             <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkAboutDialog" id="aboutdialog">
+    <property name="border_width">5</property>
+    <property name="resizable">False</property>
+    <property name="window_position">center</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="icon_name">edit-find</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="transient_for">windowJustonefile</property>
+    <property name="has_separator">False</property>
+    <property name="program_name">JustOneFile</property>
+    <property name="version">1.0b1pre</property>
+    <property name="copyright" translatable="yes">Copyright &#xA9; 2010 Olivier Radisson, Timoth&#xE9;e Vialatoux.</property>
+    <property name="comments" translatable="yes">Trouver, supprimer, g&#xE9;rer vos fichiers identiques.</property>
+    <property name="website">http://justonefile.sourceforge.net/</property>
+    <property name="license" translatable="yes">Ce programme est un logiciel libre&#xA0;; vous pouvez le redistribuer et/ou le modifier conform&#xE9;ment aux dispositions de la Licence Publique G&#xE9;n&#xE9;rale GNU, telle que publi&#xE9;e par la Free Software Foundation&#xA0;; version 2 de la licence, ou encore (&#xE0; votre choix) toute version ult&#xE9;rieure.
+
+Ce programme est distribu&#xE9; dans l'espoir qu'il sera utile, mais SANS AUCUNE GARANTIE&#xA0;; sans m&#xEA;me la garantie implicite de COMMERCIALISATION ou D'ADAPTATION &#xC0; UN OBJET PARTICULIER. Pour plus de d&#xE9;tails, voir la Licence Publique G&#xE9;n&#xE9;rale GNU.
+
+Un exemplaire de la Licence Publique G&#xE9;n&#xE9;rale GNU doit &#xEA;tre fourni avec ce programme&#xA0;; si ce n'est pas le cas, &#xE9;crivez &#xE0; la Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.</property>
+    <property name="authors">Oliver Radisson
+Timoth&#xE9;e Vialatoux</property>
+    <property name="wrap_license">True</property>
+    <child internal-child="vbox">
+      <object class="GtkVBox" id="dialog-vbox1">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area1">
+            <property name="visible">True</property>
+            <property name="layout_style">end</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </object>
