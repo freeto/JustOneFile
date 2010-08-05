@@ -564,7 +564,7 @@ class WindowJustonefile():
 
         # On test si le chemin est valide.
         if not os.path.isdir (path):
-            print 'Chemin invalide.'
+            print 'Erreur : le chemin doit etre un dossier.'
             return
 
         s = search.Search (path)
@@ -577,4 +577,4 @@ class WindowJustonefile():
         self.update_treemenu_content ()
         nb.set_current_page (-1)
 
-        s.start ()
+        s.start ()              # On commence la recherche.
