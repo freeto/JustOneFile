@@ -389,30 +389,54 @@ class TabSearch():
         tree = self.interface.get_object ('treeview_dbl')
         model = tree.get_model ()
         path = tree.get_cursor ()[0]
-        last_path = model.iter_n_children (model.get_iter ((path[0]))) - 1
         
-        # On fait une petite vérification pour éviter les déplacements inutiles.
-        if path == (len (model) - 1, last_path): return
-
-        # 3 possibilités :
-        #  -Soit le curseur est actuellement sur un doublon.
-        #  -Soit le curseur est sur le dernier fichier d'un doublon.
-        #  -Soit le curseur est sur un fichier.
-
-        if len (path) == 1:
-            # On place le curseur sur le premier fichier de ce doublon.
-            tree.expand_row (path[0], False)
-            tree.set_cursor ((path[0], 0))
-            
-        elif path[1] == last_path:
-            # On place le curseur sur le premier fichier du doublon suivant.
-            tree.expand_row (path[0] + 1, False)
-            tree.set_cursor ((path[0] + 1, 0))
-            
+        # On prend l'index du dernier fichier du doublon.
+        if not self.control_toggle_files:
+            last_path = None
+            for i in xrange (model.iter_n_children (model.get_iter ((path[0]))) - 1,
+                             0,
+                             -1):
+                if not model[(path[0], i)][1]:
+                    last_path = i
+                    break
         else:
-            # On sélectionne le fichier suivant.
-            tree.set_cursor ((path[0], path[1] + 1))
-        
+            last_path = model.iter_n_children (model.get_iter ((path[0]))) - 1
+
+
+        # Si last_path est égal à None, ou que le curseur est après le dernier
+        # fichier, on doit mettre le curseur sur le premier fichier du premier
+        # doublon suivant non coché.
+        if last_path is None or len (path) == 1 or path[1] >= last_path:
+            nb_of_dbl = model.iter_n_children (None) - 1
+            first_file = None   # Le premier fichier du doublon.
+
+            # Si on est sur un doublon, alors on doit d'abord chercher sur ce
+            # doublon avant de passer au suivant.
+            if len (path) == 1:
+                path = (path[0] -1,)
+
+            # Cherche le premier doublon qui contient au moin un fichier non
+            # coché.
+            while (first_file is None):
+                if path[0] == nb_of_dbl:
+                    return      # Il n'y a pas de fichier suivant.
+                path = (path[0] + 1,)
+                first_file = self._get_first_file_index (path[0])
+
+            tree.expand_row (path[0], False)
+            tree.set_cursor ((path[0], first_file))
+        else:
+            # On prend le fichier suivant.
+            if self.control_toggle_files:
+                tree.set_cursor ((path[0], path[1] + 1))
+                return
+
+            # On prend le premier fichier suivant qui n'est pas coché.
+            for i in xrange (path[1] + 1, model.iter_n_children (model.get_iter ((path[0],)))):
+                if not model[(path[0], i)][1]:
+                    tree.set_cursor ((path[0], i))
+                    return
+                
 
     def on_button_next_dbl_clicked(self, widget):
         """
