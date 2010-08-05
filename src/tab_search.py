@@ -93,7 +93,6 @@ class TabSearch():
         # On initialise les variables.
         self.remove_files = []  # Contiendra les donnés des fichiers enlevés.
         self.need_remove = [] # Contiendra les lignes à enlever.
-        self.display_toggle_files = True
         self.control_toggle_files = True
             
 
@@ -518,16 +517,6 @@ class TabSearch():
                 
             else:
                 model[(path[0], i)][1] = True
-
-                # On enlève la ligne du modèle si l'option 'Afficher' est
-                # désactivée.
-                if not self.display_toggle_files:
-                    self.remove_files.append ((model[(path[0], i)][0], path[0]))
-                    self.need_remove.append (model.get_iter ((path[0], i)))
-
-        # On enlève tout les fichiers à enlever.
-        for iter in self.need_remove:
-            model.remove (iter)
 
         # On met la case à cocher de l'élément parent à False puisqu'il y a un
         # fichier de coché.
