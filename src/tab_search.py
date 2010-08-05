@@ -367,23 +367,24 @@ class TabSearch():
 
             iter = model.get_iter ((path[0]))
             tree.expand_row (path[0], False)
-            lenght = model.iter_n_children (iter)
-            
+            lenght = model.iter_n_children (iter) - 1
+
             if not self.control_toggle_files:
-                for i in xrange (lenght - 1, -1, -1):
+                # On prend le premier fichier que l'ont trouve en partant de la
+                # fin qui n'est pas coché.
+                for i in xrange (lenght, -1, -1):
                     if not model[(path[0], i)][1]:
                         tree.set_cursor ((path[0], i))
                         return
             else:
-                tree.set_cursor ((path[0], lenght - 1))
+                # On met le curseur sur dernier fichier.
+                tree.set_cursor ((path[0], lenght))
             
 
     def on_button_next_file_clicked(self, widget):
         """
         Go to the next file.
         """
-
-        # On selectionne le fichier suivant.
 
         tree = self.interface.get_object ('treeview_dbl')
         model = tree.get_model ()
