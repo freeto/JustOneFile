@@ -463,6 +463,7 @@ class TabSearch():
                 for i in xrange (lenght, 0, -1):
                     if not model[(path[0], i)][1]:
                         tree.set_cursor ((path[0], i))
+                        return
             else:
                 tree.set_cursor ((path[0], lenght))
             
