@@ -535,6 +535,7 @@ class TabSearch():
         model = tree.get_model ()
 
         self._toggle_file (model, path)
+        self.on_button_next_file_clicked (None)
 
 
     def on_cell_toggled(self, cell, path, model):
