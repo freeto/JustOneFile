@@ -407,7 +407,7 @@ class TabSearch():
         # fichier, on doit mettre le curseur sur le premier fichier du premier
         # doublon suivant non coché.
         if last_path is None or len (path) == 1 or path[1] >= last_path:
-            nb_of_dbl = model.iter_n_children (None) - 1
+            nb_of_dbl = len (model) - 1
             first_file = None   # Le premier fichier du doublon.
 
             # Si on est sur un doublon, alors on doit d'abord chercher sur ce
@@ -425,6 +425,7 @@ class TabSearch():
 
             tree.expand_row (path[0], False)
             tree.set_cursor ((path[0], first_file))
+
         else:
             # On prend le fichier suivant.
             if self.control_toggle_files:
