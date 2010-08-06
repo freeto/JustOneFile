@@ -447,12 +447,11 @@ class TabSearch():
         
         tree = self.interface.get_object ('treeview_dbl')
         path = tree.get_cursor ()[0]
+        if path is None: return
         model = tree.get_model ()
         last_dbl = len (model) - 1
         first_file = self._get_first_file_index (path[0])
 
-        if path is None: return
-        
         # 3 possibilités :
         #  -Soit on est sur un fichier du dernier doublon.
         #  -Soit on est sur un doublon.
@@ -510,6 +509,8 @@ class TabSearch():
         path = tree.get_cursor ()[0]
         model = tree.get_model ()
 
+        if path is None: return
+
         # Si la ligne selectionnée est un doublon, alors on considère que c'est
         # le premier fichier qui est selectionné.
         if len (path) == 1:
@@ -537,6 +538,8 @@ class TabSearch():
         tree = self.interface.get_object ('treeview_dbl')
         path = tree.get_cursor ()[0]
         model = tree.get_model ()
+
+        if path is None: return
 
         self._toggle_file (model, path)
         self.on_button_next_file_clicked (None)
