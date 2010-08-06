@@ -299,7 +299,7 @@ class TabSearch():
         path = tree.get_cursor ()[0]
 
         # On vérifie si on est pas sur le premier doublon.
-        if path == (0,):
+        if path == (0,) or path is None:
             return
 
         # On regarde si le premier fichier est plus bas dans la liste des
@@ -334,7 +334,7 @@ class TabSearch():
         path = tree.get_cursor ()[0]
 
         # On fait une petite vérification pour éviter les déplacements inutiles.
-        if path == (0,) or path == (0, 0): return
+        if path == (0,) or path == (0, 0) or path is None: return
         
         # 2 possibilités :
         #  -Soit le curseur est sur un fichier placé après le premier fichier de
@@ -388,7 +388,9 @@ class TabSearch():
         tree = self.interface.get_object ('treeview_dbl')
         model = tree.get_model ()
         path = tree.get_cursor ()[0]
-        
+
+        if path is None: return
+
         # On prend l'index du dernier fichier du doublon.
         if not self.control_toggle_files:
             last_file = None
@@ -448,6 +450,8 @@ class TabSearch():
         model = tree.get_model ()
         last_dbl = len (model) - 1
         first_file = self._get_first_file_index (path[0])
+
+        if path is None: return
         
         # 3 possibilités :
         #  -Soit on est sur un fichier du dernier doublon.
