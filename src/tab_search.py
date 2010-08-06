@@ -210,7 +210,8 @@ class TabSearch():
         - `path`: A path pointing to the file.
         """
         
-        # Si la ligne est un doublon, on ne peut pas la cocher.
+        # Si le curseur est sur un fichier, on le coche. Si le curseur est sur
+        # un doublon, on coche si possible le premier fichier de ce doublon.
         if model.iter_depth (model.get_iter (path)) == 1:
             model[path][1] = not model[path][1]
 
@@ -218,11 +219,10 @@ class TabSearch():
         for i in xrange (model.iter_n_children (model.get_iter (path[0]))):
             iter = model.get_iter_from_string (str (path[0]) + ':' + str (i))
             if not model.get_value (iter, 1):
+                # Il reste au moin un fichier non coché.
                 model[path[0]][1] = False
                 return
         
-        # Si on arrive la, c'est que tout les fichiers sont cochés. On désactive
-        # le doublon.
         model[path[0]][1] = True
 
 

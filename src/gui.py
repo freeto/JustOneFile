@@ -284,7 +284,7 @@ class WindowJustonefile():
 
     def update_treemenu_content(self):
         """
-        Set content of the treeview menu model with the main notebook.
+        Update the treemenu content.
         """
         
         # On prend touts les titres des onglets et on les mets dans le modèle du
@@ -299,11 +299,11 @@ class WindowJustonefile():
             return
 
         # On supprime toute les recherches.
-        for i in range (1, model.iter_n_children (self.search_iter)):
+        for i in xrange (1, model.iter_n_children (self.search_iter)):
             it = model.get_iter_from_string ('3:1')
             model.remove (it)
 
-        # Et on ajoute toutes les recherche, a partir des onglets. Donc si il y en a
+        # Et on ajoute toutes les recherche, a partir des onglets. Donc si il y à
         # des nouvelles, elles seront rajoutées.
         for i in xrange (5, nb.get_n_pages ()):
             text = nb.get_tab_label_text (nb.get_nth_page (i))
@@ -348,11 +348,11 @@ class WindowJustonefile():
             model.append ([name, progress, s.nb_dbl])
 
         # On restaure le curseur.
-        if cursor is None and len (model) > 0:
-            tree.set_cursor (0)
-        elif len (model) > 0:
-            tree.set_cursor (cursor)
-
+        if len (model) > 0:
+            if cursor is None:
+                tree.set_cursor (0)
+            else:
+                tree.set_cursor (cursor)
 
 
     def set_toolbar_search_mode(self, mode):
@@ -379,16 +379,28 @@ class WindowJustonefile():
         Update the search infos and display its into the interface.
         """
 
+        # (Cette fonction est appellée à intervalles régulier.)
+
         for s in self.list_search:
             s.update_infos ()
 
-            # On met à jour l'interface sauf si la recherche est terminé
+            # Si la recherche est terminée, on enlève le processus.
             if s.done: s.join ()
-            s.tab.set_title (str (int (s.progress * 100)) + '%  ' + s.path)
+
+            # On modifie le titre de l'onglet en fonction de la progression.
+            if s.progress < 0:
+                title = '(...)'
+            else:
+                title = str (int (s.progress * 100)) + '%'
+            title += '  ' + s.path
+            s.tab.set_title (title)
+            
             s.tab.add_dbl (s.new_dbl)
 
+        # On rafraichit le menu et la liste des recherches.
         self.update_treemenu_content ()
         self.update_treeview_list_search ()
+        
         return True
 
 
