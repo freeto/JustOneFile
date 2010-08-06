@@ -29,12 +29,12 @@ import gtk, multiprocessing, Queue
 from src import algorithm, tab_search
 
 # -----------------------
-# La Recherche contient l'algorithm et des fonctions
-# pour communiquer avec lui, ainsi que ces informations associées
-# Une recherche contient donc :
-#  - l'état d'avencement de l'algo
-#  - Des fonctions pour communiquer avec l'algo
-#  - L'onglet associé avec la recherche
+# La Recherche contient l'algorithme et des fonctions pour communiquer avec lui,
+# ainsi que ces informations associées.
+# Une recherche contient en tout :
+#  - L'état d'avancement de l'algorithme.
+#  - Des fonctions pour communiquer avec l'algorithme.
+#  - L'onglet associé avec la recherche.
 # -----------------------
 
 

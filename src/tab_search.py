@@ -37,7 +37,7 @@ class TabSearch():
         Initilize the tab's search.
         
         Arguments:
-        - `title`: The tab title
+        - `title`: The tab title.
         """
         
         # On contruit l'onglet à partir du fichier 'tab_search.glade'.

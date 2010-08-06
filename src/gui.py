@@ -264,9 +264,9 @@ class WindowJustonefile():
 
         # Context à modifier, un context pour une recherche + contexte pour les
         # actions du programme (enregistrer ...)
-        self.sb_context = sb.get_context_id ('Search status bar')
+        self.sb_context_main = sb.get_context_id ('Messages généraux.')
         
-        sb.push (self.sb_context, 'Construction de la liste ...')
+        sb.push (self.sb_context_main, 'Bienvenue dans JustOneFile.')
 
 
     def init_preferences(self):
@@ -479,9 +479,8 @@ class WindowJustonefile():
         - `widget`: The widget who send the signal.
         """
 
-        # On prend le chemin de la selection et si on additionne tout les numéros,
-        # on obtient la position de la page qu'il faut afficher.
-        # (Peut-etre qu'il y a une méthode encore plus simple.)
+        # On prend le chemin de la selection et si on additionne tout les
+        # numéros, on obtient la position de la page qu'il faut afficher.
 
         path = widget.get_cursor ()[0]
         if path is None:
