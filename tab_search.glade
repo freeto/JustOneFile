@@ -279,7 +279,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="checkb_control_toggle_files">
-                        <property name="label" translatable="yes">Prendre en compte lors du d&#xE9;placement les fichiers coch&#xE9;s</property>
+                        <property name="label" translatable="yes">Prendre en compte les fichiers coch&#xE9;s</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -316,41 +316,79 @@
             <property name="visible">True</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkLabel" id="label4">
+              <object class="GtkToggleButton" id="togglebutton1">
                 <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="xpad">9</property>
-                <property name="label" translatable="yes">Aper&#xE7;u</property>
-                <attributes>
-                  <attribute name="weight" value="bold"/>
-                </attributes>
+                <property name="can_focus">False</property>
+                <property name="receives_default">True</property>
+                <property name="inconsistent">True</property>
+                <child>
+                  <object class="GtkHBox" id="hbox1">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkImage" id="image1">
+                        <property name="visible">True</property>
+                        <property name="stock">gtk-file</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="padding">2</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label1">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="xpad">3</property>
+                        <property name="label" translatable="yes">Aper&#xE7;u</property>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="padding">4</property>
                 <property name="position">0</property>
               </packing>
             </child>
             <child>
-              <object class="GtkImage" id="image1">
+              <object class="GtkImage" id="survey">
+                <property name="width_request">128</property>
+                <property name="height_request">128</property>
                 <property name="visible">True</property>
                 <property name="stock">gtk-file</property>
                 <property name="icon-size">6</property>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="padding">17</property>
                 <property name="position">1</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label5">
+              <object class="GtkLabel" id="label_file_name">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Fichier 1.txt</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="padding">3</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Fichier texte</property>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="position">2</property>
+                <property name="position">3</property>
               </packing>
             </child>
             <child>
@@ -360,7 +398,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="position">3</property>
+                <property name="position">4</property>
               </packing>
             </child>
           </object>
