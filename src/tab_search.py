@@ -25,7 +25,7 @@ The interface of a search's tab.
 """
 
 
-import gtk, pygtk, os, gobject, pango
+import gtk, pygtk, os, gobject, pango, hashlib, gnomevfs
 
 class TabSearch():
     """
@@ -596,3 +596,37 @@ class TabSearch():
         """
 
         self.control_toggle_files = widget.get_active ()
+
+
+    def on_treeview_dbl_cursor_changed(self, tree):
+        """
+        Get the mimetype of the selected file and update the survey.
+        """
+
+        path = tree.get_cursor ()[0]
+        # Si le curseur est sur un doublon, l'aperçu n'est pas actualisé.
+        if len (path) == 1: return
+
+        model = tree.get_model ()
+        file_path = model[path][0]
+        survey = self.interface.get_object ('image_survey')
+
+        # On tente d'afficher une miniature du fichier. La taille d'une
+        # miniature est au maximum : 128x128.
+        file_hash = hashlib.md5 ('file://' + file_path).hexdigest ()
+        tb_filename = os.path.join (os.path.expanduser ('~/.thumbnails/normal'),
+                                   file_hash) + '.png'
+        if os.path.exists (tb_filename):
+            survey.set_from_file (tb_filename)
+            return
+
+        # Sinon, on affiche l'image correspondant au mime-type du fichier.
+        mime = (gnomevfs.get_mime_type (file_path)).replace ('/', '-')
+        survey.set_from_icon_name (mime, gtk.ICON_SIZE_DIALOG)
+
+        # (INFO) Il faudrait trouver un moyen de savoir si le mime-type éxiste,
+        # comme ca, on pourrait quand meme afficher une image si le mime-type
+        # n'éxiste pas.
+        survey.set_pixel_size (128) # Taille non dynamique pour l'instant.
+
+        return

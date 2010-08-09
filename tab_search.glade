@@ -22,6 +22,7 @@
                   <object class="GtkTreeView" id="treeview_dbl">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <signal name="cursor_changed" handler="on_treeview_dbl_cursor_changed"/>
                     <signal name="focus_in_event" handler="on_treeview_dbl_focus_in_event"/>
                   </object>
                 </child>
@@ -355,7 +356,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkImage" id="survey">
+              <object class="GtkImage" id="image_survey">
                 <property name="width_request">128</property>
                 <property name="height_request">128</property>
                 <property name="visible">True</property>
