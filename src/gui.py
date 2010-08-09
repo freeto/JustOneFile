@@ -254,6 +254,8 @@ class WindowJustonefile():
         tb.show ()
         toolbar.insert (tb, -1)
 
+        self.set_toolbar_search_mode (False)
+
 
     def init_statusbar(self):
         """
