@@ -192,18 +192,11 @@ class WindowJustonefile():
         tb.show ()
         toolbar.insert (tb, -1)
 
-        # (RECHERCHE) Bouton 'Suprimme recherche'.
-        tb = gtk.ToolButton (gtk.STOCK_REMOVE)
-        tb.set_tooltip_text ('Supprime la recherche')
-        tb.show ()
-        toolbar.insert (tb, -1)
-        self.toolbar_search_buttons.append (toolbar.get_item_index (tb))
-
-        # (RECHERCHE) Bouton 'Stopper la recherche'. Si cliqué, ce bouton sera
+        # (RECHERCHE) Bouton 'Suspendre la recherche'. Si cliqué, ce bouton sera
         # remplacé par 'Reprendre la recherche'.
         self.tb_stop_search = True
-        tb = gtk.ToolButton (gtk.STOCK_MEDIA_STOP)
-        tb.set_tooltip_text ('Stopper la recherche')
+        tb = gtk.ToolButton (gtk.STOCK_MEDIA_PAUSE)
+        tb.set_tooltip_text ('Suspendre la recherche')
         tb.connect ("clicked", self.on_tb_stop_search_clicked)
         tb.show ()
         toolbar.insert (tb, -1)
@@ -224,6 +217,16 @@ class WindowJustonefile():
         tb.show ()
         toolbar.insert (tb, -1)
 
+        # Séparateur.
+        add_separator (toolbar)
+
+        # (RECHERCHE) Bouton 'Valider la recherche'.
+        tb = gtk.ToolButton (gtk.STOCK_APPLY)
+        tb.set_label ("Appliquer les changements")
+        tb.set_tooltip_text ('Valider la recherche')
+        tb.show ()
+        toolbar.insert (tb, -1)
+        self.toolbar_search_buttons.append (toolbar.get_item_index (tb))
 
         # -----------------------
         # Barre de droite
@@ -544,7 +547,7 @@ class WindowJustonefile():
         """
         
         # Si l'état de la recherche est stopée, on affiche 'Reprendre'
-        # sinon on affiche 'Stopper'.
+        # sinon on affiche 'Suspendre'.
         
         # Comme les mécanisme de recherche ne sont pas encore implémentés,
         # ce bouton est juste (pour le moment) un bouton de démonstration.
@@ -557,9 +560,9 @@ class WindowJustonefile():
             tb.set_tooltip_text ('Reprendre la recherche')
             self.tb_stop_search = False
         else:
-            # On affiche 'Stopper'
-            tb.set_stock_id (gtk.STOCK_MEDIA_STOP)
-            tb.set_tooltip_text ('Stopper la recherche')
+            # On affiche 'Suspendre'
+            tb.set_stock_id (gtk.STOCK_MEDIA_PAUSE)
+            tb.set_tooltip_text ('Suspendre la recherche')
             self.tb_stop_search = True
 
 

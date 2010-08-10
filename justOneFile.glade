@@ -152,12 +152,12 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="hbox11">
+          <object class="GtkHBox" id="hbox_toolbar">
             <property name="visible">True</property>
             <child>
               <object class="GtkToolbar" id="toolbar_left">
                 <property name="visible">True</property>
-                <property name="toolbar_style">icons</property>
+                <property name="toolbar_style">both-horiz</property>
                 <property name="icon_size">2</property>
                 <property name="icon_size_set">True</property>
               </object>
