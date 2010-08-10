@@ -515,6 +515,9 @@ class TabSearch():
         # le premier fichier qui est selectionné.
         if len (path) == 1:
             path = (path[0], 0)
+            # On deplie le doubon et on le selectionne.
+            tree.expand_row (path[0], False)
+            tree.set_cursor (path)
 
         # On parcour touts les fichiers du doublon et on les coche tous sauf le
         # fichier sélectionné.
@@ -528,6 +531,8 @@ class TabSearch():
         # On met la case à cocher de l'élément parent à False puisqu'il y a un
         # fichier de coché.
         model[path[0]][1] = False
+
+        self.on_button_next_dbl_clicked (None)
 
 
     def on_button_delete_file_clicked(self, widget):
