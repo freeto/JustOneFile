@@ -1053,7 +1053,7 @@
     <property name="transient_for">windowJustonefile</property>
     <property name="has_separator">False</property>
     <property name="program_name">JustOneFile</property>
-    <property name="version">1.0b1pre</property>
+    <property name="version">1 b1pre</property>
     <property name="copyright" translatable="yes">Copyright &#xA9; 2010 Olivier Radisson, Timoth&#xE9;e Vialatoux.</property>
     <property name="comments" translatable="yes">Trouver, supprimer, g&#xE9;rer vos fichiers identiques.</property>
     <property name="website">http://justonefile.sourceforge.net/</property>
