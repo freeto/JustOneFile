@@ -2,282 +2,26 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
-  <object class="GtkWindow" id="window1">
+  <object class="GtkWindow" id="window_tab_search">
     <child>
-      <object class="GtkHPaned" id="main_box">
+      <object class="GtkVBox" id="vbox">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
+        <property name="orientation">vertical</property>
         <child>
-          <object class="GtkVBox" id="vbox_tree_search">
+          <object class="GtkHBox" id="hbox3">
             <property name="visible">True</property>
-            <property name="orientation">vertical</property>
             <child>
-              <object class="GtkHBox" id="hbox3">
+              <object class="GtkToggleButton" id="tb_search">
                 <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="relief">none</property>
+                <signal name="toggled" handler="on_tb_search_toggled"/>
                 <child>
-                  <object class="GtkToggleButton" id="tb_search">
+                  <object class="GtkImage" id="image7">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Rechercher</property>
-                    <property name="relief">none</property>
-                    <signal name="toggled" handler="on_tb_search_toggled"/>
-                    <child>
-                      <object class="GtkImage" id="image7">
-                        <property name="visible">True</property>
-                        <property name="stock">gtk-find</property>
-                      </object>
-                    </child>
+                    <property name="stock">gtk-find</property>
                   </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkToggleButton" id="tb_file_preferences">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Pr&#xE9;f&#xE9;rences d'affichage et de contr&#xF4;le des doublons</property>
-                    <property name="relief">none</property>
-                    <signal name="toggled" handler="on_tb_file_preferences_toggled"/>
-                    <child>
-                      <object class="GtkImage" id="image9">
-                        <property name="visible">True</property>
-                        <property name="stock">gtk-preferences</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkNotebook" id="notebook_controlbar">
-                    <property name="visible">True</property>
-                    <property name="show_tabs">False</property>
-                    <property name="show_border">False</property>
-                    <child>
-                      <object class="GtkHBox" id="hbox_controls_buttons">
-                        <property name="visible">True</property>
-                        <child>
-                          <object class="GtkHBox" id="hbox4">
-                            <property name="visible">True</property>
-                            <child>
-                              <object class="GtkButton" id="button_prev_dbl">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="tooltip_text" translatable="yes">Doublon pr&#xE9;c&#xE9;dent</property>
-                                <property name="relief">none</property>
-                                <signal name="clicked" handler="on_button_prev_dbl_clicked"/>
-                                <child>
-                                  <object class="GtkImage" id="image4">
-                                    <property name="visible">True</property>
-                                    <property name="stock">gtk-goto-top</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="button_prev_file">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="tooltip_text" translatable="yes">Fichier pr&#xE9;c&#xE9;dent</property>
-                                <property name="relief">none</property>
-                                <signal name="clicked" handler="on_button_prev_file_clicked"/>
-                                <child>
-                                  <object class="GtkImage" id="image5">
-                                    <property name="visible">True</property>
-                                    <property name="stock">gtk-go-up</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkVSeparator" id="vseparator1">
-                                <property name="visible">True</property>
-                                <property name="orientation">vertical</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="position">2</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="button_keep_only">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="tooltip_text" translatable="yes">Ne garder que ce fichier</property>
-                                <property name="relief">none</property>
-                                <signal name="clicked" handler="on_button_keep_only_clicked"/>
-                                <child>
-                                  <object class="GtkImage" id="image8">
-                                    <property name="visible">True</property>
-                                    <property name="stock">gtk-ok</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="position">3</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="button_delete_file">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="tooltip_text" translatable="yes">Supprimer/garder ce fichier</property>
-                                <property name="relief">none</property>
-                                <signal name="clicked" handler="on_button_delete_file_clicked"/>
-                                <child>
-                                  <object class="GtkImage" id="image6">
-                                    <property name="visible">True</property>
-                                    <property name="stock">gtk-delete</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="position">4</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkVSeparator" id="vseparator2">
-                                <property name="visible">True</property>
-                                <property name="orientation">vertical</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="position">5</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="button_next_file">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="tooltip_text" translatable="yes">Fichier suivant</property>
-                                <property name="relief">none</property>
-                                <signal name="clicked" handler="on_button_next_file_clicked"/>
-                                <child>
-                                  <object class="GtkImage" id="image3">
-                                    <property name="visible">True</property>
-                                    <property name="stock">gtk-go-down</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="position">6</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="button_next_dbl">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="tooltip_text" translatable="yes">Doublon suivant</property>
-                                <property name="relief">none</property>
-                                <signal name="clicked" handler="on_button_next_dbl_clicked"/>
-                                <child>
-                                  <object class="GtkImage" id="image2">
-                                    <property name="visible">True</property>
-                                    <property name="stock">gtk-goto-bottom</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="position">7</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="fill">False</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="button6">
-                            <property name="label">gtk-apply</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <property name="use_stock">True</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="pack_type">end</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                    </child>
-                    <child type="tab">
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <object class="GtkHBox" id="hbox8">
-                        <property name="visible">True</property>
-                        <child>
-                          <object class="GtkEntry" id="entry_search">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="invisible_char">&#x25CF;</property>
-                          </object>
-                          <packing>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="button8">
-                            <property name="label">gtk-preferences</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <property name="use_stock">True</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child type="tab">
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <object class="GtkCheckButton" id="checkb_control_toggle_files">
-                        <property name="label" translatable="yes">Prendre en compte les fichiers coch&#xE9;s</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="on_checkb_control_toggle_files_toggled"/>
-                      </object>
-                      <packing>
-                        <property name="position">2</property>
-                      </packing>
-                    </child>
-                    <child type="tab">
-                      <placeholder/>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="position">2</property>
-                  </packing>
                 </child>
               </object>
               <packing>
@@ -285,6 +29,254 @@
                 <property name="position">0</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkToggleButton" id="tb_file_preferences">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="relief">none</property>
+                <signal name="toggled" handler="on_tb_file_preferences_toggled"/>
+                <child>
+                  <object class="GtkImage" id="image9">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-preferences</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkNotebook" id="notebook_controlbar">
+                <property name="visible">True</property>
+                <property name="show_tabs">False</property>
+                <property name="show_border">False</property>
+                <child>
+                  <object class="GtkHBox" id="hbox_controls_buttons">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkHBox" id="hbox4">
+                        <property name="visible">True</property>
+                        <child>
+                          <object class="GtkButton" id="button_prev_dbl">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="relief">none</property>
+                            <signal name="clicked" handler="on_button_prev_dbl_clicked"/>
+                            <child>
+                              <object class="GtkImage" id="image4">
+                                <property name="visible">True</property>
+                                <property name="stock">gtk-goto-top</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="button_prev_file">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="relief">none</property>
+                            <signal name="clicked" handler="on_button_prev_file_clicked"/>
+                            <child>
+                              <object class="GtkImage" id="image5">
+                                <property name="visible">True</property>
+                                <property name="stock">gtk-go-up</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkVSeparator" id="vseparator1">
+                            <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="button_keep_only">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="relief">none</property>
+                            <signal name="clicked" handler="on_button_keep_only_clicked"/>
+                            <child>
+                              <object class="GtkImage" id="image8">
+                                <property name="visible">True</property>
+                                <property name="stock">gtk-ok</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="button_delete_file">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="relief">none</property>
+                            <signal name="clicked" handler="on_button_delete_file_clicked"/>
+                            <child>
+                              <object class="GtkImage" id="image6">
+                                <property name="visible">True</property>
+                                <property name="stock">gtk-delete</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">4</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkVSeparator" id="vseparator2">
+                            <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="position">5</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="button_next_file">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="relief">none</property>
+                            <signal name="clicked" handler="on_button_next_file_clicked"/>
+                            <child>
+                              <object class="GtkImage" id="image3">
+                                <property name="visible">True</property>
+                                <property name="stock">gtk-go-down</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">6</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="button_next_dbl">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="relief">none</property>
+                            <signal name="clicked" handler="on_button_next_dbl_clicked"/>
+                            <child>
+                              <object class="GtkImage" id="image2">
+                                <property name="visible">True</property>
+                                <property name="stock">gtk-goto-bottom</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">7</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="button6">
+                        <property name="label">gtk-apply</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="use_stock">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="pack_type">end</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+                <child type="tab">
+                  <placeholder/>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hbox8">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkEntry" id="entry_search">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="invisible_char">&#x25CF;</property>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="button8">
+                        <property name="label">gtk-preferences</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="use_stock">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child type="tab">
+                  <placeholder/>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="checkb_control_toggle_files">
+                    <property name="label" translatable="yes">Prendre en compte les fichiers coch&#xE9;s</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="on_checkb_control_toggle_files_toggled"/>
+                  </object>
+                  <packing>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child type="tab">
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHPaned" id="hpaned">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
             <child>
               <object class="GtkScrolledWindow" id="scrolledwindow2">
                 <property name="visible">True</property>
@@ -302,87 +294,87 @@
                 </child>
               </object>
               <packing>
-                <property name="position">1</property>
+                <property name="resize">False</property>
+                <property name="shrink">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkVBox" id="vbox9">
+                <property name="width_request">130</property>
+                <property name="visible">True</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel" id="label1">
+                    <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                    <property name="xpad">4</property>
+                    <property name="label" translatable="yes">Aper&#xE7;u</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="padding">5</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkImage" id="image_survey">
+                    <property name="width_request">128</property>
+                    <property name="height_request">128</property>
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-file</property>
+                    <property name="icon-size">6</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label_file_name">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Fichier 1.txt</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="padding">3</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label2">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Fichier texte</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label6">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">09/06/10</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="resize">False</property>
+                <property name="shrink">True</property>
               </packing>
             </child>
           </object>
           <packing>
-            <property name="resize">True</property>
-            <property name="shrink">False</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkVBox" id="vbox9">
-            <property name="width_request">130</property>
-            <property name="visible">True</property>
-            <property name="orientation">vertical</property>
-            <child>
-              <object class="GtkLabel" id="label1">
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="xpad">4</property>
-                <property name="label" translatable="yes">Aper&#xE7;u</property>
-                <attributes>
-                  <attribute name="weight" value="bold"/>
-                </attributes>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="padding">5</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="image_survey">
-                <property name="width_request">128</property>
-                <property name="height_request">128</property>
-                <property name="visible">True</property>
-                <property name="stock">gtk-file</property>
-                <property name="icon-size">6</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="label_file_name">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">Fichier 1.txt</property>
-                <attributes>
-                  <attribute name="weight" value="bold"/>
-                </attributes>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="padding">3</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="label2">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">Fichier texte</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="position">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="label6">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">09/06/10</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="position">4</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="resize">False</property>
-            <property name="shrink">True</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>

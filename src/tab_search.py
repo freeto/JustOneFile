@@ -47,9 +47,10 @@ class TabSearch():
         self.interface.add_from_file ('tab_search.glade')
         self.interface.connect_signals (self)
 
-        # Le calque principale s'appelle 'main_box'.
-        self.main_box = self.interface.get_object ('main_box')
-        self.main_box.unparent () # Afin de le mettre dans un autre calque.
+        # On prend le calque principal.
+        self.main_box = self.interface.get_object ('window_tab_search')
+        self.main_box = self.main_box.get_child ()
+        self.main_box.unparent () # Pour l'inserer plus tard dans un onglet.
 
         self.label_title = gtk.Label (title)
         self.init_treeview_dbl ()
