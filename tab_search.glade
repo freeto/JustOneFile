@@ -277,6 +277,8 @@
           <object class="GtkHPaned" id="hpaned">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="position">350</property>
+            <property name="position_set">True</property>
             <child>
               <object class="GtkScrolledWindow" id="scrolledwindow2">
                 <property name="visible">True</property>
