@@ -224,6 +224,7 @@ class WindowJustonefile():
         tb = gtk.ToolButton (gtk.STOCK_APPLY)
         tb.set_label ("Appliquer les changements")
         tb.set_tooltip_text ('Valider la recherche')
+        tb.set_is_important (True)
         tb.show ()
         toolbar.insert (tb, -1)
         self.toolbar_search_buttons.append (toolbar.get_item_index (tb))
