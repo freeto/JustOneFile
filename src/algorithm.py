@@ -146,7 +146,6 @@ class Algorithm(multiprocessing.Process):
         - `file_path`: The file to get size.
         """
 
-        # On prend sa taille si on peut.
         try:
             file_size = os.path.getsize (file_path)
         except:
@@ -157,7 +156,6 @@ class Algorithm(multiprocessing.Process):
         
 
 
-
     # -----------------------
     # Run function
     # -----------------------
@@ -166,7 +164,8 @@ class Algorithm(multiprocessing.Process):
         """
         Call when the start function is called.
 
-        Return a list of duplicate's file.
+        Search duplicates files and communic the new duplicates files to the
+        gui.
         """
 
         # La fonction 'run' est en fait appellé implicitement lorsque l'on
@@ -179,31 +178,28 @@ class Algorithm(multiprocessing.Process):
         # -----------------------
         # Fonctionement de l'algorithme :
         # 
-        # 1 - On fait un tableau organisé des fichiers qui ont la meme taille.
+        # 1 - Fait un tableau organisé des fichiers qui ont la meme taille.
         #     Tout les fichiers qui ont une taille unique sur l'ensemble des
         #     fichiers à tester sont donc obligatoirement unique, il n'y à pas
         #     besoin de les tester avec une somme md5. Le tableau est un
-        #     dictionnaire qui associe à chaque taille une liste de fichier
+        #     dictionnaire qui associe à chaque taille une liste de fichiers.
         # 
-        # 2 - On recherche les fichiers qui ont une meme somme md5.
-        #     Si il ont une meme somme md5, alors ce sont des doublons.
-        #     Ont les stock dans un tableau et on enverat régulièrement les infos
-        #     dans la queue.
+        # 2 - Pour tous les fichiers restant, recherche les fichiers qui ont une
+        #     meme somme md5. Si il ont une meme somme md5, alors ce sont des
+        #     doublons. Créé alors une liste qui sera envoyé dans la queue.
         # -----------------------
 
 
         # -----------------------
-        # 1 - On garde que les fichiers qui ont la meme taille.
+        # 1 - Garde que les fichiers qui ont la meme taille.
         # -----------------------
 
         self.action = 'Construction de la liste'
         self.progress = -1
-
         self.update_infos ()
 
-        # Associe une taille à un/des chemins de fichiers.
         dico_filesize = {}
-        allfiles_size = 0       # La taille de l'ensemble des fichiers à tester.
+        allfiles_size = 0       # Pour faire la progression plus précisément.
 
         # On parcour l'arbre des fichiers ...
         for file_path in self.gen_all_files_paths (self.path):
@@ -220,14 +216,13 @@ class Algorithm(multiprocessing.Process):
             dico_filesize[file_size].append (file_path)
             
 
-        # On enlève les éléments qui sont unique, pour garder que les fichiers
-        # qui ont au moin un autre fichier de meme taille.
+        # Enlève les fichiers qui ont une taille unique.
         list_filesize = []
-        for item in dico_filesize.values ():
-            if len (item) > 1:    # Si plusieurs fichiers ont la meme taille ..
-                list_filesize.append (item)
+        for (size, list_files) in dico_filesize.items ():
+            if len (list_files) > 1:
+                list_filesize.append (list_files)
             else:
-                allfiles_size -= self.get_size (item[0])
+                allfiles_size -= int (size)
             
 
         # -----------------------
