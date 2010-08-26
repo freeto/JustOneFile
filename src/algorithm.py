@@ -29,12 +29,12 @@ import multiprocessing, os, hashlib, time, gtk
 
 
 # -----------------------
-# Cette classe sera dans un processus à part.
+# Cette classe représente un processus géré par la bibliothèque multiprocessing.
 # -----------------------
 
 class Algorithm(multiprocessing.Process):
     """
-    Search duplicates files
+    Search duplicates files.
     """
     
     def __init__(self, queue_send, path, options={}):
@@ -84,15 +84,15 @@ class Algorithm(multiprocessing.Process):
 
     def gen_all_files_paths(self, dir_path):
         """
-        Generates all files path
+        Generates all files path.
         
         Arguments:
-        - `dir_path`: The base directories
+        - `dir_path`: The base directories.
         """
 
-        # Cette fonction est un générateur, elle donne à chaque 'appel'
+        # Cette fonction est un générateur, elle donne à chaque appel
         # le chemin d'un fichier à tester. (Afin d'éviter d'avoir une
-        # variable qui contient touts les noms de fichier.)
+        # variable qui contient tous les noms de fichier.)
 
         # On explore toute l'arborescence à l'aide de la fonction os.walk ()
         # elle explore toute l'arborécense des fichiers à partir d'un chemin
@@ -106,41 +106,34 @@ class Algorithm(multiprocessing.Process):
 
     def get_md5sum(self, file_path):
         """
-        Return md5 sum of a file.
+        Return the md5 sum of a file.
         
         Arguments:
-        - `file_path`: The path of the file
+        - `file_path`: The path of the file.
         """
-        
-        # On prend un descripteur de fichier pour pouvoir tester si le fichier
-        # est bloquant ou pas (comme par exemple '/dev/null').
+
+        # Obtient si possible un objet file en lecture seul si le fichier n'est
+        # pas bloquant.
         try:
             file_des = os.open (file_path, os.O_RDONLY|os.O_NONBLOCK)
+            file_obj = os.fdopen (file_des)
         except:
             print "Impossible d'ouvrir le fichier", file_path
             return False
 
-        # On convertit le descripteur de fichier en object file.
-        file_obj = os.fdopen (file_des)
-
-        # On lit le fichier par block de 1 Mo (1024*1024), pour éviter de
-        # prendre trop de RAM.
+        # On lit le fichier par block de 1048576 bytes (1024*1024), pour éviter
+        # de prendre trop de RAM. Chaque somme md5 d'un block est placer dans la
+        # variable md5_string. Puis on fait a nouveau une somme md5 de cette
+        # variable.
 
         md5_string = ""
-        content = True
+        content = file_obj.read (1048576)
 
         while content:
-            content = file_obj.read (1048576) # 1048576 = 1024*1024
-            if not content: break             # Fin du fichier.
-
-            # On Hash le block, et on place la somme md5 dans la variable
-            # qui contient toutes les sommes md5 des blocks.
             md5_string += hashlib.md5 (content).hexdigest ()
+            content = file_obj.read (1048576)
 
         file_obj.close ()
-
-        # On retourne la somme md5 de la chaine qui contient toutes les sommes
-        # md5 des blocks.
         return hashlib.md5 (md5_string).hexdigest ()
         
 
@@ -150,7 +143,7 @@ class Algorithm(multiprocessing.Process):
         Return size of a file.
         
         Arguments:
-        - `file_path`: The file to get size
+        - `file_path`: The file to get size.
         """
 
         # On prend sa taille si on peut.
