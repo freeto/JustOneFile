@@ -232,7 +232,6 @@ class Algorithm(multiprocessing.Process):
         self.action = 'Recherche des doublons'
         self.progress = 0
         progress = 0
-        
         self.update_infos ()
 
         dico_md5 = {}
@@ -270,11 +269,9 @@ class Algorithm(multiprocessing.Process):
         # Recherche finie
         # -----------------------
 
-        self.action = 'Finit'
+        self.action = 'Terminée'
         self.progress = 1.0
         self.done = True
-
         self.update_infos ()
 
-        print 'Terminated !'
         return
