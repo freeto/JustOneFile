@@ -385,6 +385,7 @@ class WindowJustonefile():
                 title = str (int (s.progress * 100)) + '%'
 
             s.tab.set_pb (s.progress)
+            s.tab.set_action (s.action)
             title += '  ' + s.path
             s.tab.set_title (title)
             

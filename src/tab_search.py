@@ -55,6 +55,8 @@ class TabSearch():
         self.label_title = gtk.Label (title)
         self.init_treeview_dbl ()
         self.interface.get_object ('checkb_control_toggle_files').set_active (True)
+        self.context = self.interface.get_object ('statusbar').get_context_id (
+            title)
 
 
     def init_treeview_dbl(self):
@@ -168,6 +170,18 @@ class TabSearch():
         else:
             pb.set_fraction (progress)
             pb.set_text (str (int (progress * 100)) + '%')
+
+
+    def set_action(self, action):
+        """
+        Set the statusbar message.
+        
+        Arguments:
+        - `action`: The new statusbar message.
+        """
+
+        sb = self.interface.get_object ('statusbar')
+        sb.push (self.context, action)
 
 
 
