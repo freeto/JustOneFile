@@ -615,6 +615,7 @@ class TabSearch():
 
         model = tree.get_model ()
         file_path = model[path][0]
+        file_path = os.path.abspath (file_path)
         survey = self.interface.get_object ('image_survey')
 
         # On tente d'afficher une miniature du fichier. La taille d'une
