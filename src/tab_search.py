@@ -675,9 +675,8 @@ class TabSearch():
         """
 
         def remove_checked_files(model, path, iter):
-            """
-            Remove the checked files.
-            """
+            """Remove the checked files."""
+
             if len (path) > 1 and model[path][1]:
                 # La corbeille sous Gnome est situé dans ~/.local/share/Trash .
                 # Un fichier d'infos pour une possible restauration est stocké
@@ -704,8 +703,12 @@ class TabSearch():
 
                 # Déplace le fichier.
                 shutil.move (file_path, trash_dir + 'files/' + file_name)
+                need_remove.append (iter)
 
             
-        # Déplace chaque fichiers cochés dans la corbeille.
+        need_remove = []
         model = self.interface.get_object ('treeview_dbl').get_model ()
         model.foreach (remove_checked_files)
+
+        for iter in need_remove:
+            model.remove (iter)
