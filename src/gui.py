@@ -49,7 +49,6 @@ class WindowJustonefile():
         self.init_toolbar ()
         self.init_treeview_menu ()
         self.init_treeview_list_search ()
-        self.init_statusbar ()
 
         self.apply_prefs ()
 
@@ -259,20 +258,6 @@ class WindowJustonefile():
         toolbar.insert (tb, -1)
 
         self.set_toolbar_search_mode (False)
-
-
-    def init_statusbar(self):
-        """
-        Initialize the windows status bar
-        """
-        
-        sb = self.interface.get_object ('statusbar')
-
-        # Context à modifier, un context pour une recherche + contexte pour les
-        # actions du programme (enregistrer ...)
-        self.sb_context_main = sb.get_context_id ('Messages généraux.')
-        
-        sb.push (self.sb_context_main, 'Bienvenue dans JustOneFile.')
 
 
     def init_preferences(self):
