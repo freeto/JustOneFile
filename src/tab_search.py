@@ -154,6 +154,23 @@ class TabSearch():
             nb.set_current_page (0)
 
 
+    def set_pb(self, progress):
+        """
+        Set the progress bar with a new value.
+        
+        Arguments:
+        - `progress`: The new value.
+        """
+
+        pb = self.interface.get_object ('pb_search')
+        if progress < 0:
+            pb.pulse ()
+        else:
+            pb.set_fraction (progress)
+            pb.set_text (str (int (progress * 100)) + '%')
+
+
+
     def set_label(self, text):
         """
         Set the label_search_path text.

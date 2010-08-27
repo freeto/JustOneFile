@@ -390,14 +390,13 @@
                     <property name="visible">True</property>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkAlignment" id="alignment1">
                     <property name="width_request">100</property>
-                    <property name="height_request">14</property>
+                    <property name="height_request">16</property>
                     <property name="visible">True</property>
                     <property name="top_padding">2</property>
                     <child>
