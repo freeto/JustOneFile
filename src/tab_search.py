@@ -25,7 +25,7 @@ The interface of a search's tab.
 """
 
 
-import gtk, pygtk, os, gobject, pango, hashlib, gnomevfs
+import gtk, pygtk, os, gobject, pango, hashlib, gnomevfs, datetime, shutil
 
 class TabSearch():
     """
@@ -182,7 +182,6 @@ class TabSearch():
 
         sb = self.interface.get_object ('statusbar')
         sb.push (self.context, action)
-
 
 
     def set_label(self, text):
@@ -668,3 +667,45 @@ class TabSearch():
         survey.set_pixel_size (128) # Taille non dynamique pour l'instant.
 
         return
+
+
+    def on_button_apply_clicked(self, widget):
+        """
+        Apply change : remove the checked files.
+        """
+
+        def remove_checked_files(model, path, iter):
+            """
+            Remove the checked files.
+            """
+            if len (path) > 1 and model[path][1]:
+                # La corbeille sous Gnome est situé dans ~/.local/share/Trash .
+                # Un fichier d'infos pour une possible restauration est stocké
+                # fans le dossier info. Les fichiers sont quand à eux dans le
+                # dossier files.
+                # Le fichier d'infos est sous cette forme :
+                # [Trash Info]
+                # path=/home/timothee/Documents/Projet/Glista Python/file
+                # DeletionDate=2010-08-28T00:13:59
+
+                file_path = os.path.abspath (model[path][0])
+                file_name = os.path.basename (file_path)
+                trash_dir = os.path.expanduser ('~/.local/share/Trash/')
+
+                # On écrit le fichier d'info.
+                with open (trash_dir + 'info/' + file_name + '.trashinfo', 'w') as f:
+                    d = datetime.datetime
+                    date_t = str (d.today ()).split (' ')
+                    date_t[1] = date_t[1].split ('.')[0]
+
+                    f.write ('[Trash Info]\n')
+                    f.write ('Path=' + file_path + '\n')
+                    f.write ('DeletionDate={0[0]}T{0[1]}\n'.format (date_t))
+
+                # Déplace le fichier.
+                shutil.move (file_path, trash_dir + 'files/' + file_name)
+
+            
+        # Déplace chaque fichiers cochés dans la corbeille.
+        model = self.interface.get_object ('treeview_dbl').get_model ()
+        model.foreach (remove_checked_files)
