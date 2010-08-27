@@ -711,4 +711,8 @@ class TabSearch():
         model.foreach (remove_checked_files)
 
         for iter in need_remove:
-            model.remove (iter)
+            # Si le doublon n'a plus qu'un fichier, on le supprime.
+            if model.iter_n_children (model.iter_parent (iter)) < 3:
+                model.remove (model.iter_parent (iter))
+            else:
+                model.remove (iter)
