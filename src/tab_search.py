@@ -318,6 +318,8 @@ class TabSearch():
             self.interface.get_object ('tb_search').clicked ()
         if ac == 2:
             self.interface.get_object ('tb_file_preferences').clicked ()
+        else:
+            self.interface.get_object ('notebook_controlbar').set_current_page (0)
             
 
     def on_button_prev_dbl_clicked(self, widget):
@@ -671,6 +673,28 @@ class TabSearch():
 
     def on_button_apply_clicked(self, widget):
         """
+        Show the confirmation.
+        """
+
+        # Change le message de confirmation en mettant le nb de fichiers à
+        # supprimer, puis montre le tout en changant la page du notebook.
+        model = self.interface.get_object ('treeview_dbl').get_model ()        
+        label = self.interface.get_object ('label_delete_message')
+
+        self.nb = 0
+        def get_nb_checked_files (model, path, iter):
+            if len (path) > 1 and model[path][1]:
+                self.nb += 1
+        model.foreach (get_nb_checked_files)
+
+        if self.nb > 0:
+            label.set_text ('Suprimmer ' + str (self.nb) + ' fichiers ?')
+            self.interface.get_object ('notebook_controlbar').set_current_page (3)
+        del self.nb
+            
+    
+    def on_button_delete_apply_clicked(self, widget):
+        """
         Apply change : remove the checked files.
         """
 
@@ -716,3 +740,14 @@ class TabSearch():
                 model.remove (model.iter_parent (iter))
             else:
                 model.remove (iter)
+
+        # On remet les boutons de controle.
+        self.interface.get_object ('notebook_controlbar').set_current_page (0)                
+
+
+    def on_button_delete_cancel_clicked(self, widget):
+        """
+        Show the controls buttons.
+        """
+
+        self.interface.get_object ('notebook_controlbar').set_current_page (0)
