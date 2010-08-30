@@ -25,7 +25,7 @@ The interface of a search's tab.
 """
 
 
-import gtk, pygtk, os, gobject, pango, hashlib, gnomevfs, datetime, shutil
+import gtk, pygtk, os, gobject, pango, hashlib, gnomevfs, datetime, shutil, time
 
 class TabSearch():
     """
@@ -670,6 +670,26 @@ class TabSearch():
         # n'éxiste pas.
         survey.set_pixel_size (128) # Taille non dynamique pour l'instant.
 
+
+        # Détermine et affiche le type de fichier.
+        ext = file_name.split ('.')
+        if len (ext) == 1: ext = 'Fichier texte'
+        else:
+            ext = ext[1]
+            if ext in ('png', 'jpg', 'gif', 'xcf', 'jpeg', 'bmp'):
+                ext = 'Image ' + ext.upper ()
+            elif ext == 'bin': ext = 'Exécutable'
+            else:
+                ext = 'Fichier ' + ext.upper ()
+
+        self.interface.get_object ('label_file_type').set_text (ext)
+
+        # Affiche la date de dernière modification du fichier.
+        lastdate = time.localtime (os.path.getctime (file_path))
+        lastdate = '{0}/{1}/{2}'.format (lastdate.tm_mday,
+                                         lastdate.tm_mon,
+                                         lastdate.tm_year)
+        self.interface.get_object ('label_file_lastdate').set_text (lastdate)
         return
 
 

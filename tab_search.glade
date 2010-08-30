@@ -402,7 +402,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="label3">
+                      <object class="GtkLabel" id="label_file_type">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Fichier texte</property>
                       </object>
@@ -412,7 +412,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="label6">
+                      <object class="GtkLabel" id="label_file_lastdate">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">09/06/10</property>
                       </object>
@@ -457,6 +457,7 @@
                     <property name="visible">True</property>
                   </object>
                   <packing>
+                    <property name="expand">False</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
