@@ -642,14 +642,16 @@ class TabSearch():
         """
 
         path = tree.get_cursor ()[0]
-        # Si le curseur est sur un doublon, l'aperçu n'est pas actualisé.
         if len (path) == 1: return
 
         model = tree.get_model ()
-        file_path = model[path][0]
-        file_path = os.path.abspath (file_path)
         survey = self.interface.get_object ('image_survey')
+        file_path = os.path.abspath (model[path][0])
+        file_name = os.path.basename (file_path)
 
+        # Affiche les informations a propo du fichier.
+        self.interface.get_object ('label_file_name').set_text (file_name)
+        
         # On tente d'afficher une miniature du fichier. La taille d'une
         # miniature est au maximum : 128x128.
         file_hash = hashlib.md5 ('file://' + file_path).hexdigest ()

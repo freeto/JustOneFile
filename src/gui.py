@@ -21,7 +21,7 @@
 #	MA 02110-1301, USA.
 
 """
-Gui class with functions
+Class for manage GUI.
 """
 
 import pygtk, gtk, os, gobject, pango
