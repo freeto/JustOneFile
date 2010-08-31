@@ -265,7 +265,7 @@ class WindowJustonefile():
         Initialize the self.prefs variable.
         """
 
-        self.prefs = preferences.load ('./preferences.cfg')
+        self.prefs = preferences.load ('./.preferences.cfg')
         
         if not self.prefs:
             print 'Impossible de charger la configuration.'
