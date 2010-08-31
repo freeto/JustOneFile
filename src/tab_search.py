@@ -46,7 +46,7 @@ class TabSearch():
         # On prend juste les widgets qu'il y a dans la fenetre.
 
         self.interface = gtk.Builder ()
-        self.interface.add_from_file ('tab_search.glade')
+        self.interface.add_from_file ('src/glade/tab_search.glade')
         self.interface.connect_signals (self)
 
         # On prend le calque principal.
