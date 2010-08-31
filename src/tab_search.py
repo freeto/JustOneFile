@@ -32,6 +32,8 @@ class TabSearch():
     Function of a search's tab
     """
     
+    apercu = None
+    
     def __init__(self, title='Recherche'):
         """
         Initilize the tab's search.
@@ -640,7 +642,7 @@ class TabSearch():
         """
         Get the mimetype of the selected file and update the survey.
         """
-
+		
         path = tree.get_cursor ()[0]
         if len (path) == 1: return
 
@@ -662,7 +664,7 @@ class TabSearch():
             return
 
         # Sinon, on affiche l'image correspondant au mime-type du fichier.
-        mime = (gnomevfs.get_mime_type (file_path)).replace ('/', '-')
+        mime = str(gnomevfs.get_mime_type (str(file_path))).replace ('/', '-')
         survey.set_from_icon_name (mime, gtk.ICON_SIZE_DIALOG)
 
         # (INFO) Il faudrait trouver un moyen de savoir si le mime-type éxiste,
