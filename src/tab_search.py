@@ -26,6 +26,7 @@ The interface of a search's tab.
 
 
 import gtk, pygtk, os, gobject, pango, hashlib, gnomevfs, datetime, shutil, time
+import survey
 
 class TabSearch():
     """
@@ -647,31 +648,12 @@ class TabSearch():
         if len (path) == 1: return
 
         model = tree.get_model ()
-        survey = self.interface.get_object ('image_survey')
+        image_survey = self.interface.get_object ('image_survey')
         file_path = os.path.abspath (model[path][0])
         file_name = os.path.basename (file_path)
 
         # Affiche les informations a propo du fichier.
         self.interface.get_object ('label_file_name').set_text (file_name)
-        
-        # On tente d'afficher une miniature du fichier. La taille d'une
-        # miniature est au maximum : 128x128.
-        file_hash = hashlib.md5 ('file://' + file_path).hexdigest ()
-        tb_filename = os.path.join (os.path.expanduser ('~/.thumbnails/normal'),
-                                   file_hash) + '.png'
-        if os.path.exists (tb_filename):
-            survey.set_from_file (tb_filename)
-            return
-
-        # Sinon, on affiche l'image correspondant au mime-type du fichier.
-        mime = str(gnomevfs.get_mime_type (str(file_path))).replace ('/', '-')
-        survey.set_from_icon_name (mime, gtk.ICON_SIZE_DIALOG)
-
-        # (INFO) Il faudrait trouver un moyen de savoir si le mime-type éxiste,
-        # comme ca, on pourrait quand meme afficher une image si le mime-type
-        # n'éxiste pas.
-        survey.set_pixel_size (128) # Taille non dynamique pour l'instant.
-
 
         # Détermine et affiche le type de fichier.
         ext = file_name.split ('.')
@@ -692,6 +674,11 @@ class TabSearch():
                                          lastdate.tm_mon,
                                          lastdate.tm_year)
         self.interface.get_object ('label_file_lastdate').set_text (lastdate)
+
+        thumbnail_path = survey.get_thumbnail (file_path)
+        if not thumbnail_path is False:
+            image_survey.set_from_file (thumbnail_path)
+
         return
 
 

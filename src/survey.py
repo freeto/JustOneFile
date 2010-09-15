@@ -1,0 +1,67 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+#	survey.py
+#	
+#	Copyright 2010 Draless <draless@mailoo.org>
+#	
+#	This program is free software; you can redistribute it and/or modify
+#	it under the terms of the GNU general Public License as published by
+#	the Free Software Foundation; either version 2 of the License, or
+#	(at your options) any later version.
+#	
+#	This program is distributed in the hope that it will be useful,
+#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#	Gnu General Public License for more details.
+#
+#	You should have received a copy of the Gnu General Public License
+#	along with this program; if not; write to the Free Software
+#	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#	MA 02110-1301, USA.
+
+"""
+Functions for get informations of the selected file.
+"""
+
+import Image, os, hashlib
+
+def get_thumbnail(file_path):
+    """
+    Return the thumbnail path of a file.
+    
+    Arguments:
+    - `file_path`: The file to get the thumbnail.
+    """
+
+    file_path = os.path.expanduser (file_path)
+
+    # Vérifie tout d'abord si le fichier éxiste.
+    if not os.path.exists (file_path): return False
+    # Vérifie que l'on ne veut pas créer une miniature d'une miniature.
+    if file_path.find ('.thumbnails/') > 0: return False
+    
+    file_name = os.path.basename (file_path)
+
+    # Vérifie si la miniature éxiste déjà.
+    file_hash = hashlib.md5 ('file://' + file_path).hexdigest ()
+    tb_filename = os.path.join (os.path.expanduser ('~/.thumbnails/normal'),
+                               file_hash) + '.png'
+    if os.path.exists (tb_filename):
+        return tb_filename
+
+    # Dans le cas contraire, on tente de la créer.
+    file_ext = os.path.splitext (file_path)[1]
+    if file_ext in ('.jpg', '.png'):
+        # (INFO) Il serait plus efficace de tester tout simplement si le module
+        # 'Image' est capable de fournir une miniature pour ce fichier ou non.
+        try:
+            im = Image.open (file_path)
+            im.thumbnail ((128, 128), Image.ANTIALIAS)
+            im.save (tb_filename, 'PNG')
+        except IOError:
+            return False
+        return tb_filename
+
+    else:
+        return False
