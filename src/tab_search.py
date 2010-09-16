@@ -645,10 +645,17 @@ class TabSearch():
         """
 		
         path = tree.get_cursor ()[0]
-        if len (path) == 1: return
+        image_survey = self.interface.get_object ('image_survey')
+
+        # Si le curseur est sur un doublon, on affiche rien dans l'aperçu.
+        if len (path) == 1:
+            self.interface.get_object ('label_file_lastdate').set_text ('')
+            self.interface.get_object ('label_file_type').set_text ('')
+            self.interface.get_object ('label_file_name').set_text ('')
+            image_survey.set_from_file (None)
+            return
 
         model = tree.get_model ()
-        image_survey = self.interface.get_object ('image_survey')
         file_path = os.path.abspath (model[path][0])
         file_name = os.path.basename (file_path)
 
