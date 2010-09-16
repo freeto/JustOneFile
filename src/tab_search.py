@@ -232,7 +232,7 @@ class TabSearch():
                 
                 # On affiche tout les doublons.
                 for file in list_file:
-                    model.append (iter, [file, False])
+                    model.append (iter, [os.path.normpath (file), False])
 
 
     def  _toggle_file(self, model, path):
@@ -659,7 +659,7 @@ class TabSearch():
         file_path = os.path.abspath (model[path][0])
         file_name = os.path.basename (file_path)
 
-        # Affiche les informations a propo du fichier.
+        # Affiche les informations à propo du fichier.
         self.interface.get_object ('label_file_name').set_text (file_name)
 
         # Détermine et affiche le type de fichier.
