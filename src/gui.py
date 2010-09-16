@@ -49,6 +49,7 @@ class WindowJustonefile():
         self.init_toolbar ()
         self.init_treeview_menu ()
         self.init_treeview_list_search ()
+        self.init_newsearch ()
 
         self.apply_prefs ()
 
@@ -271,6 +272,26 @@ class WindowJustonefile():
             print 'Impossible de charger la configuration.'
             print 'Arret du programme.'
             exit (0)
+
+
+    def init_newsearch(self):
+        """
+        Initialize the new search tab widgets.
+        """
+
+        # On ajoute un FileChooserButton au notebook_choosedir.
+        dialog = gtk.FileChooserDialog ('Choisir un dossier',
+                                        None,
+                                        gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER,
+                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
+                                         gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
+
+        button = gtk.FileChooserButton (dialog)
+        button.show ()
+
+        nb = self.interface.get_object ('notebook_choosedir')
+        nb.prepend_page (button)
+        nb.set_current_page (0)
 
 
     def update_treemenu_content(self):
@@ -586,17 +607,6 @@ class WindowJustonefile():
     # -----------------------
     # Onglet 'Nouvelle recherche'
     # -----------------------
-
-    def on_entry_search_path_activate(self, widget):
-        """
-        Start a new search.
-        
-        Arguments:
-        - `widget`:
-        """
-
-        self.on_button_start_search_clicked (None)
-
     
     def on_button_start_search_clicked(self, widget):
         """
@@ -610,7 +620,8 @@ class WindowJustonefile():
         # de la barre de texte 'entry_search_path'.
 
         nb = self.interface.get_object ('notebook_main')
-        path = self.interface.get_object ('entry_search_path').get_text ()
+        path = self.interface.get_object ('notebook_choosedir').get_nth_page (0)
+        path = path.get_filename ()
 
         # On test si le chemin est valide.
         if not os.path.isdir (path):

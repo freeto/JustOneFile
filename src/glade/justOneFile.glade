@@ -816,31 +816,49 @@
                             <property name="visible">True</property>
                             <property name="left_padding">10</property>
                             <child>
-                              <object class="GtkHBox" id="hbox7">
+                              <object class="GtkHBox" id="hbox_choosedir">
                                 <property name="visible">True</property>
                                 <child>
-                                  <object class="GtkEntry" id="entry_search_path">
+                                  <object class="GtkNotebook" id="notebook_choosedir">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="invisible_char">&#x25CF;</property>
-                                    <property name="text" translatable="yes">/lib</property>
-                                    <signal name="activate" handler="on_entry_search_path_activate"/>
+                                    <property name="show_tabs">False</property>
+                                    <property name="show_border">False</property>
+                                    <child>
+                                      <object class="GtkEntry" id="entry1">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="invisible_char">&#x25CF;</property>
+                                      </object>
+                                    </child>
+                                    <child type="tab">
+                                      <object class="GtkLabel" id="label6">
+                                        <property name="visible">True</property>
+                                        <property name="label" translatable="yes">page 1</property>
+                                      </object>
+                                      <packing>
+                                        <property name="tab_fill">False</property>
+                                      </packing>
+                                    </child>
                                   </object>
                                   <packing>
                                     <property name="position">0</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkButton" id="button13">
-                                    <property name="label" translatable="yes">Parcourir...</property>
+                                  <object class="GtkToggleButton" id="togglebutton1">
                                     <property name="visible">True</property>
-                                    <property name="sensitive">False</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
+                                    <child>
+                                      <object class="GtkImage" id="image1">
+                                        <property name="visible">True</property>
+                                        <property name="stock">gtk-edit</property>
+                                      </object>
+                                    </child>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
-                                    <property name="padding">3</property>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
