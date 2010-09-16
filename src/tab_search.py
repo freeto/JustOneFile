@@ -60,6 +60,7 @@ class TabSearch():
         self.interface.get_object ('checkb_control_toggle_files').set_active (True)
         self.context = self.interface.get_object ('statusbar').get_context_id (
             title)
+        self._last_selected_dbl = None
 
 
     def init_treeview_dbl(self):
@@ -682,12 +683,16 @@ class TabSearch():
                                          lastdate.tm_year)
         self.interface.get_object ('label_file_lastdate').set_text (lastdate)
 
-        thumbnail_path = survey.get_thumbnail (file_path)
-        if not thumbnail_path is False:
-            image_survey.set_from_file (thumbnail_path)
-        else:
-            image_survey.set_from_file (None)
-            
+        # Si le fichier selectionné est un doublon du précédent, on ne créé pas
+        # la miniature car elle est la meme que le fichier précédent.
+        if self._last_selected_dbl != path[0]:
+            thumbnail_path = survey.get_thumbnail (file_path)
+            if not thumbnail_path is False:
+                image_survey.set_from_file (thumbnail_path)
+            else:
+                image_survey.set_from_file (None)
+
+        self._last_selected_dbl = path[0]
         return
 
 
