@@ -678,7 +678,9 @@ class TabSearch():
         thumbnail_path = survey.get_thumbnail (file_path)
         if not thumbnail_path is False:
             image_survey.set_from_file (thumbnail_path)
-
+        else:
+            image_survey.set_from_file (None)
+            
         return
 
 

@@ -24,7 +24,7 @@
 Functions for get informations of the selected file.
 """
 
-import Image, os, hashlib
+import Image, os, hashlib, subprocess
 
 def get_thumbnail(file_path):
     """
@@ -43,25 +43,31 @@ def get_thumbnail(file_path):
     
     file_name = os.path.basename (file_path)
 
-    # Vérifie si la miniature éxiste déjà.
+    # Cherche si la miniature éxiste déjà.
     file_hash = hashlib.md5 ('file://' + file_path).hexdigest ()
     tb_filename = os.path.join (os.path.expanduser ('~/.thumbnails/normal'),
                                file_hash) + '.png'
     if os.path.exists (tb_filename):
         return tb_filename
 
-    # Dans le cas contraire, on tente de la créer.
-    file_ext = os.path.splitext (file_path)[1]
-    if file_ext in ('.jpg', '.png'):
-        # (INFO) Il serait plus efficace de tester tout simplement si le module
-        # 'Image' est capable de fournir une miniature pour ce fichier ou non.
+    try:
+        # Marchera si le fichier est une image.
+        im = Image.open (file_path)
+        im.thumbnail ((128, 128), Image.ANTIALIAS)
+        im.save (tb_filename, 'PNG')
+    except IOError:
         try:
-            im = Image.open (file_path)
-            im.thumbnail ((128, 128), Image.ANTIALIAS)
-            im.save (tb_filename, 'PNG')
-        except IOError:
+            # Marchera si le fichier est une vidéo.
+            # On fait appelle si possible au programme 'totem-video-thumbnailer'.
+            result = subprocess.Popen (['totem-video-thumbnailer',
+                                       file_path, tb_filename],
+                                       stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE).wait ()
+            if result != 0: return False
+        except OSError:
             return False
-        return tb_filename
+        
 
-    else:
-        return False
+    # On retourne le chemin de la miniature.
+    return tb_filename
+
