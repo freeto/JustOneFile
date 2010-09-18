@@ -686,11 +686,11 @@ class TabSearch():
         # Si le fichier selectionné est un doublon du précédent, on ne créé pas
         # la miniature car elle est la meme que le fichier précédent.
         if self._last_selected_dbl != path[0]:
-            thumbnail_path = survey.get_thumbnail (file_path)
-            if not thumbnail_path is False:
-                image_survey.set_from_file (thumbnail_path)
-            else:
-                image_survey.set_from_pixbuf (survey.get_mimeicon (file_path))
+            icon = survey.get_thumbnail (file_path)
+            if icon is False:
+                icon = survey.get_mimeicon (file_path)
+
+            image_survey.set_from_pixbuf (icon)
 
         self._last_selected_dbl = path[0]
 

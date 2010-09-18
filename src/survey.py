@@ -28,13 +28,14 @@ import Image, os, hashlib, subprocess, mimetypes, gio, gtk
 
 def get_thumbnail(file_path):
     """
-    Return the thumbnail path of a file.
+    Return a gtk.gdk.pixbuf who contain the thumbnail of the file.
     
     Arguments:
     - `file_path`: The file to get the thumbnail.
     """
 
     file_path = os.path.expanduser (file_path)
+    file_path = os.path.abspath (file_path)
 
     # Vérifie tout d'abord si le fichier éxiste.
     if not os.path.exists (file_path): return False
@@ -68,14 +69,17 @@ def get_thumbnail(file_path):
             return False
         
 
-    # On retourne le chemin de la miniature.
-    return tb_filename
+    # Retourne un objet de type gtk.gdk.Pixbuf.
+    return gtk.Image ().set_from_file (tb_filename).get_pixbuf ()
 
 
 
 def get_mimeicon(file_path):
     """
     Return a gtk.gdk.Pixbuf who contain the mime-type icon.
+
+    Arguments:
+    - `file_path`: The file to get the icon.
     """
     
     if not os.path.exists (file_path): return False
