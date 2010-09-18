@@ -24,7 +24,7 @@
 Functions for get informations of the selected file.
 """
 
-import Image, os, hashlib, subprocess
+import Image, os, hashlib, subprocess, mimetypes, gio, gtk
 
 def get_thumbnail(file_path):
     """
@@ -71,3 +71,26 @@ def get_thumbnail(file_path):
     # On retourne le chemin de la miniature.
     return tb_filename
 
+
+
+def get_mimeicon(file_path):
+    """
+    Return a gtk.gdk.Pixbuf who contain the mime-type icon.
+    """
+    
+    if not os.path.exists (file_path): return False
+
+    # Prend le mimetype du fichier.
+    mime = mimetypes.guess_type (os.path.basename (file_path))[0]
+    if mime is None:
+        mime = 'text/plain'
+
+    theme = gtk.icon_theme_get_default () # Charge le thème.
+    icon = gio.content_type_get_icon (mime)
+    icon = theme.lookup_by_gicon (icon, 128, gtk.ICON_LOOKUP_USE_BUILTIN)
+
+    if icon is None:            # L'icone n'éxiste pas.
+        icon = gio.content_type_get_icon ('text/plain')
+        icon = theme.lookup_by_gicon (icon, 128, gtk.ICON_LOOKUP_USE_BUILTIN)
+
+    return icon.load_icon ()

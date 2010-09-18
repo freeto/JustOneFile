@@ -690,10 +690,9 @@ class TabSearch():
             if not thumbnail_path is False:
                 image_survey.set_from_file (thumbnail_path)
             else:
-                image_survey.set_from_file (None)
+                image_survey.set_from_pixbuf (survey.get_mimeicon (file_path))
 
         self._last_selected_dbl = path[0]
-        return
 
 
     def on_button_apply_clicked(self, widget):
