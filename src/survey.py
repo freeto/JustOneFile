@@ -24,7 +24,7 @@
 Functions for get informations of the selected file.
 """
 
-import Image, os, hashlib, subprocess, mimetypes, gio, gtk
+import Image, os, hashlib, subprocess, mimetypes, gio, gtk, urllib
 
 def get_thumbnail(file_path):
     """
@@ -42,14 +42,15 @@ def get_thumbnail(file_path):
     # Vérifie que l'on ne veut pas créer une miniature d'une miniature.
     if file_path.find ('.thumbnails/') > 0: return False
     
-    file_name = os.path.basename (file_path)
-
-    # Cherche si la miniature éxiste déjà.
-    file_hash = hashlib.md5 ('file://' + file_path).hexdigest ()
+    # Détermine le nom de la miniature.
+    file_hash = hashlib.md5 ('file://' + urllib.quote (file_path)).hexdigest ()
     tb_filename = os.path.join (os.path.expanduser ('~/.thumbnails/normal'),
                                file_hash) + '.png'
+
     if os.path.exists (tb_filename):
-        return tb_filename
+        image = gtk.Image ()
+        image.set_from_file (tb_filename)
+        return image.get_pixbuf ()
 
     try:
         # Marchera si le fichier est une image.
@@ -68,9 +69,10 @@ def get_thumbnail(file_path):
         except OSError:
             return False
         
-
     # Retourne un objet de type gtk.gdk.Pixbuf.
-    return gtk.Image ().set_from_file (tb_filename).get_pixbuf ()
+    image = gtk.Image ()
+    image.set_from_file (tb_filename)
+    return image.get_pixbuf ()
 
 
 
