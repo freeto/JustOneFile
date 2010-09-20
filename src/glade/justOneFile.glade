@@ -216,7 +216,6 @@
               <object class="GtkNotebook" id="notebook_main">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="show_tabs">False</property>
                 <property name="show_border">False</property>
                 <signal name="switch_page" handler="on_notebook_main_switch_page"/>
                 <child>
@@ -556,25 +555,6 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="label_help">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Bienvenue dans l'aide. (A faire)</property>
-                  </object>
-                  <packing>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
-                <child type="tab">
-                  <object class="GtkLabel" id="label12">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Aide</property>
-                  </object>
-                  <packing>
-                    <property name="position">2</property>
-                    <property name="tab_fill">False</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkVBox" id="vbox3">
                     <property name="visible">True</property>
                     <child>
@@ -719,7 +699,7 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="position">3</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
                 <child type="tab">
@@ -728,7 +708,7 @@
                     <property name="label" translatable="yes">Recherches</property>
                   </object>
                   <packing>
-                    <property name="position">3</property>
+                    <property name="position">2</property>
                     <property name="tab_fill">False</property>
                   </packing>
                 </child>
@@ -928,7 +908,7 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="position">4</property>
+                    <property name="position">3</property>
                   </packing>
                 </child>
                 <child type="tab">
@@ -937,7 +917,7 @@
                     <property name="label" translatable="yes">Nouvelle recherche</property>
                   </object>
                   <packing>
-                    <property name="position">4</property>
+                    <property name="position">3</property>
                     <property name="tab_fill">False</property>
                   </packing>
                 </child>

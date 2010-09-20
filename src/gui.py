@@ -86,18 +86,18 @@ class WindowJustonefile():
         
         # On parcour tous les onglets et on prend son titre, que l'on place dans le
         # modèle. Les 4 premiers onglets sont à la base  0, les autre dans le 4em.
-        for i in xrange (0, 4):
+        for i in xrange (0, 3):
             text = nb.get_tab_label_text (nb.get_nth_page (i))
             self.search_iter = model.append  (None, [text])
 
         # On liste toutes les recherches. A noté que le premier onglet sera
         # toujour 'Nouvelle recherche'.
-        for i in xrange (4, nb.get_n_pages ()):
+        for i in xrange (3, nb.get_n_pages ()):
             text = nb.get_tab_label_text (nb.get_nth_page (i))
             model.append (self.search_iter, [text])
 
         # On deplit l'onglet 'Recherches'.
-        tree.expand_row (3, False)
+        tree.expand_row (2, False)
         # On affiche l'onglet de démarrage (A partir de la boite à onglet, car
         # ca évite de faire des conversions de position, ex : 5 -> (3, 1) )
         self.interface.get_object ('notebook_main').set_current_page (self.prefs['tab_start'])
@@ -156,10 +156,7 @@ class WindowJustonefile():
         # -----------------------
         
         def new_search (widget):
-            self.interface.get_object ('notebook_main').set_current_page (4)
-
-        def show_help (widget):
-            self.interface.get_object ('notebook_main').set_current_page (2)
+            self.interface.get_object ('notebook_main').set_current_page (3)
 
         def show_aboutdialog (widget):
             # On créé une fonction qui sera appellée lorsque la boite de dialog
@@ -235,13 +232,6 @@ class WindowJustonefile():
 
         toolbar = self.interface.get_object ("toolbar_right")
 
-        # Bouton aide
-        tb = gtk.ToolButton (gtk.STOCK_HELP)
-        tb.set_tooltip_text ("Consulter l'aide")
-        tb.connect ("clicked", show_help)
-        tb.show ()
-        toolbar.insert (tb, -1)
-
         # Bouton à propos.
         tb = gtk.ToolButton (gtk.STOCK_ABOUT)
         tb.set_tooltip_text ('A propos de JustOneFile')
@@ -307,17 +297,17 @@ class WindowJustonefile():
         model = tree.get_model ()
         cursor = tree.get_cursor ()[0]
 
-        if not tree.row_expanded (3):
+        if not tree.row_expanded (2):
             return
 
         # On supprime toute les recherches.
         for i in xrange (1, model.iter_n_children (self.search_iter)):
-            it = model.get_iter_from_string ('3:1')
+            it = model.get_iter_from_string ('2:1')
             model.remove (it)
 
         # Et on ajoute toutes les recherche, a partir des onglets. Donc si il y à
         # des nouvelles, elles seront rajoutées.
-        for i in xrange (5, nb.get_n_pages ()):
+        for i in xrange (4, nb.get_n_pages ()):
             text = nb.get_tab_label_text (nb.get_nth_page (i))
             model.append (self.search_iter, [text])
 
@@ -513,7 +503,7 @@ class WindowJustonefile():
 
         # On active ou désactive le toolbar search mode si l'onglet est
         # un onglet de recherche.
-        if pos > 4:
+        if pos > 3:
             self.set_toolbar_search_mode (True)
         else:
             self.set_toolbar_search_mode (False)
@@ -532,11 +522,11 @@ class WindowJustonefile():
         tree = self.interface.get_object ('treeview_menu')
         # Si la position est plus petite que 4, alors le chemin est simple
         # Sinon, cela veut dire que le chemin serait alors (3, page_index - 4)
-        if page_index < 4:
+        if page_index < 3:
             path = (page_index,)
         else:
             tree.expand_row ((3), False)
-            path = (3, page_index - 4)
+            path = (2, page_index - 3)
 
         # Si on ne gère pas sa, on a un appelle récursif (car le changement
         # de surseur ordonne un changement d'onglet, qui ordonne a nouveau un
@@ -589,7 +579,7 @@ class WindowJustonefile():
         """
 
         # L'onglet 'Nouvelle recherche' est toujour en 5èm position.
-        self.interface.get_object ('notebook_main').set_current_page (4)
+        self.interface.get_object ('notebook_main').set_current_page (3)
 
 
     def on_button_home_preferences_clicked(self, widget):
