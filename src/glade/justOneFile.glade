@@ -825,7 +825,7 @@
                                     <property name="show_tabs">False</property>
                                     <property name="show_border">False</property>
                                     <child>
-                                      <object class="GtkEntry" id="entry1">
+                                      <object class="GtkEntry" id="entry_textpath">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="invisible_char">&#x25CF;</property>
@@ -846,10 +846,11 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkToggleButton" id="togglebutton1">
+                                  <object class="GtkToggleButton" id="tb_textpath">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
+                                    <signal name="toggled" handler="on_tb_textpath_toggled"/>
                                     <child>
                                       <object class="GtkImage" id="image1">
                                         <property name="visible">True</property>

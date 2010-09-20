@@ -616,12 +616,16 @@ class WindowJustonefile():
         - `widget`: The widget who send the signal.
         """
 
-        # On déclare une nouvelle recherche avec comme chemin le contenu
-        # de la barre de texte 'entry_search_path'.
-
         nb = self.interface.get_object ('notebook_main')
-        path = self.interface.get_object ('notebook_choosedir').get_nth_page (0)
-        path = path.get_filename ()
+        nb_path = self.interface.get_object ('notebook_choosedir')
+
+        # Selon la page active, on prend la valeur du champ de texte ou la valeur
+        # du filechooserbutton.
+        if nb_path.get_current_page () == 0:
+            path = nb_path.get_nth_page (0).get_filename ()
+        else:
+            path = self.interface.get_object ('entry_textpath').get_text ()
+
 
         # On test si le chemin est valide.
         if not os.path.isdir (path):
@@ -639,3 +643,19 @@ class WindowJustonefile():
         nb.set_current_page (-1)
 
         s.start ()              # On commence la recherche.
+
+
+    def on_tb_textpath_toggled(self, widget):
+        """
+        Display/hide the entry 'textpath' and set his value.
+        """
+
+        if widget.get_active ():
+            self.interface.get_object ('notebook_choosedir').set_current_page (1)
+        else:
+            self.interface.get_object ('notebook_choosedir').set_current_page (0)
+
+        # On change le chemin.
+        cb = self.interface.get_object ('notebook_choosedir').get_nth_page (0)
+        self.interface.get_object ('entry_textpath').set_text (cb.get_filename ())
+ 
