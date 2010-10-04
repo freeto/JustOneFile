@@ -155,25 +155,20 @@ class WindowJustonefile():
         # Fonctions
         # -----------------------
         
-        def new_search (widget):
+        def new_search (tb):
             self.interface.get_object ('notebook_main').set_current_page (3)
 
+        def call_set_search_state (tb):
+            self.set_search_state (tb.get_active ())
+            
         def show_aboutdialog (widget):
-            # On créé une fonction qui sera appellée lorsque la boite de dialog
-            # sera fermée. Nous procédons de cette manière pour ne pas bloquer
-            # la fenetre principale lors de l'apparation de la boite de dialog.
+            # Méthode qui permet de rendre la boite de dialogue non-bloquante.
             def on_response (dialog, response):
                 dialog.hide ()
             
             about = self.interface.get_object ('aboutdialog')
             about.connect ('response', on_response)
             about.show ()
-
-        def add_separator (toolbar, pos=-1):
-            # Ajouter un séparateur.
-            sep = gtk.SeparatorToolItem ()
-            sep.show ()
-            toolbar.insert (sep, pos)
             
 
         # -----------------------
@@ -182,48 +177,18 @@ class WindowJustonefile():
 
         toolbar = self.interface.get_object ("toolbar_left")
 
-        # Bouton nouvelle recherche.
-        tb = gtk.ToolButton (gtk.STOCK_NEW)
-        tb.set_tooltip_text ('Nouvelle recherche')
-        tb.connect ("clicked", new_search)
-        tb.show ()
-        toolbar.insert (tb, -1)
+        # Bouton 'Nouvelle recherche'
+        tb = self.interface.get_object ('left_tb_new_search')
+        tb.connect ('clicked', new_search)
 
-        # (RECHERCHE) Bouton 'Suspendre la recherche'. Si cliqué, ce bouton sera
-        # remplacé par 'Reprendre la recherche'.
-        self.tb_stop_search = True
-        tb = gtk.ToolButton (gtk.STOCK_MEDIA_PAUSE)
-        tb.set_tooltip_text ('Suspendre la recherche')
-        tb.connect ("clicked", self.on_tb_stop_search_clicked)
-        tb.show ()
-        toolbar.insert (tb, -1)
-        self.toolbar_search_buttons.append (toolbar.get_item_index (tb))
+        # (RECHERCHE) Bouton 'Mettre en pause la recherche'
+        tb = self.interface.get_object ('left_tb_control_search')
+        tb.connect ('toggled', call_set_search_state)
+        self.set_search_state (False)
+        self.toolbar_search_buttons.append (toolbar.get_item_index (tb))        
 
-        # Séparateur.
-        add_separator (toolbar)
-	
-        # Bouton UNDO (Annuler).
-        tb = gtk.ToolButton (gtk.STOCK_UNDO)
-        tb.set_tooltip_text ("Annuler l'action")
-        tb.show ()
-        toolbar.insert (tb, -1)
-        
-        # Bouton REDO (Refaire).
-        tb = gtk.ToolButton (gtk.STOCK_REDO)
-        tb.set_tooltip_text ("Refaire l'action")
-        tb.show ()
-        toolbar.insert (tb, -1)
-
-        # Séparateur.
-        add_separator (toolbar)
-
-        # (RECHERCHE) Bouton 'Valider la recherche'.
-        tb = gtk.ToolButton (gtk.STOCK_APPLY)
-        tb.set_label ("Appliquer les changements")
-        tb.set_tooltip_text ('Valider la recherche')
-        tb.set_is_important (True)
-        tb.show ()
-        toolbar.insert (tb, -1)
+        # (RECHERCHE) Bouton 'Valider la recherche'
+        tb = self.interface.get_object ('left_tb_apply')
         self.toolbar_search_buttons.append (toolbar.get_item_index (tb))
 
         # -----------------------
@@ -232,21 +197,13 @@ class WindowJustonefile():
 
         toolbar = self.interface.get_object ("toolbar_right")
 
-        # Bouton à propos.
-        tb = gtk.ToolButton (gtk.STOCK_ABOUT)
-        tb.set_tooltip_text ('A propos de JustOneFile')
+        # Bouton 'À propos'
+        tb = self.interface.get_object ('right_tb_about')
         tb.connect ("clicked", show_aboutdialog)
-        tb.show ()
-        toolbar.insert (tb, -1)
 
-        add_separator (toolbar)
-
-        # Bouton quitter.
-        tb = gtk.ToolButton (gtk.STOCK_QUIT)
-        tb.set_tooltip_text ('Quitter JustOneFile')
+        # Bouton 'Quitter'
+        tb = self.interface.get_object ('right_tb_quit')
         tb.connect ("clicked", self.on_windowJustonefile_destroy)
-        tb.show ()
-        toolbar.insert (tb, -1)
 
         self.set_toolbar_search_mode (False)
 
@@ -452,6 +409,29 @@ class WindowJustonefile():
             widget.show ()
 
 
+    def set_search_state(self, state):
+        """
+        Set the selected search state's.
+        
+        Arguments:
+        - `state`: The new search state's.
+        """        
+
+        # Si l'état de la recherche est stopée, on affiche 'Reprendre'
+        # sinon on affiche 'Suspendre'.
+        
+        # Comme les mécanisme de recherche ne sont pas encore implémentés,
+        # ce bouton est juste (pour le moment) un bouton de démonstration.
+        # On vas donc juste inverser l'état du bouton lors du clic.
+        # Penser à une meilleure implémentation.
+
+        tb = self.interface.get_object ('left_tb_control_search')
+        if state:
+            tb.set_tooltip_text ('Reprendre la recherche')
+        else:
+            tb.set_tooltip_text ('Suspendre la recherche')
+
+
     # -----------------------
     # Signaux
     # -----------------------
@@ -535,35 +515,6 @@ class WindowJustonefile():
             return
 
         tree.set_cursor (path)
-
-
-    # -----------------------
-    # Onglet de recherche
-    # -----------------------
-
-    def on_tb_stop_search_clicked(self, tb):
-        """
-        Call when the Stop search toolbutton's was clicked.
-        """
-        
-        # Si l'état de la recherche est stopée, on affiche 'Reprendre'
-        # sinon on affiche 'Suspendre'.
-        
-        # Comme les mécanisme de recherche ne sont pas encore implémentés,
-        # ce bouton est juste (pour le moment) un bouton de démonstration.
-        # On vas donc juste inverser l'état du bouton lors du clic.
-        # Penser à une meilleure implémentation.
-
-        if self.tb_stop_search:
-            # On affiche 'Reprendre'
-            tb.set_stock_id (gtk.STOCK_MEDIA_PLAY)
-            tb.set_tooltip_text ('Reprendre la recherche')
-            self.tb_stop_search = False
-        else:
-            # On affiche 'Suspendre'
-            tb.set_stock_id (gtk.STOCK_MEDIA_PAUSE)
-            tb.set_tooltip_text ('Suspendre la recherche')
-            self.tb_stop_search = True
 
 
     # -----------------------

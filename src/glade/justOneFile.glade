@@ -159,6 +159,85 @@
                 <property name="toolbar_style">both-horiz</property>
                 <property name="icon_size">2</property>
                 <property name="icon_size_set">True</property>
+                <child>
+                  <object class="GtkToolButton" id="left_tb_new_search">
+                    <property name="visible">True</property>
+                    <property name="tooltip_text" translatable="yes">Nouvelle recherche</property>
+                    <property name="use_underline">True</property>
+                    <property name="stock_id">gtk-new</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToggleToolButton" id="left_tb_control_search">
+                    <property name="visible">True</property>
+                    <property name="use_underline">True</property>
+                    <property name="stock_id">gtk-media-pause</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSeparatorToolItem" id="left_sep1">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="left_tb_undo">
+                    <property name="visible">True</property>
+                    <property name="tooltip_text" translatable="yes">Annuler</property>
+                    <property name="use_underline">True</property>
+                    <property name="stock_id">gtk-undo</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="left_tb_redo">
+                    <property name="visible">True</property>
+                    <property name="tooltip_text" translatable="yes">Refaire</property>
+                    <property name="use_underline">True</property>
+                    <property name="stock_id">gtk-redo</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSeparatorToolItem" id="left_sep2">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="left_tb_apply">
+                    <property name="visible">True</property>
+                    <property name="tooltip_text" translatable="yes">Supprime les fichiers selectionn&#xE9;s</property>
+                    <property name="is_important">True</property>
+                    <property name="label" translatable="yes">Appliquer les changements</property>
+                    <property name="use_underline">True</property>
+                    <property name="stock_id">gtk-apply</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="position">0</property>
@@ -171,6 +250,39 @@
                 <property name="show_arrow">False</property>
                 <property name="icon_size">2</property>
                 <property name="icon_size_set">True</property>
+                <child>
+                  <object class="GtkToolButton" id="right_tb_about">
+                    <property name="visible">True</property>
+                    <property name="tooltip_text" translatable="yes">A propos de JustOneFile</property>
+                    <property name="use_underline">True</property>
+                    <property name="stock_id">gtk-about</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSeparatorToolItem" id="right_sep1">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="right_tb_quit">
+                    <property name="visible">True</property>
+                    <property name="tooltip_text" translatable="yes">Quitter JustOneFile</property>
+                    <property name="use_underline">True</property>
+                    <property name="stock_id">gtk-quit</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
