@@ -50,14 +50,14 @@ class TreeMenu():
         Initialize and construct the model.
         """
 
-        # Titre, Position de l'onglet associé, sensitivité.  
-        self._model = gtk.ListStore (str, int, bool)
+        # Titre, Position de l'onglet associé, stock-icone, sensitivité.  
+        self._model = gtk.ListStore (str, int, str, bool)
 
         # Remplit le modèle.
         for page_num in range (0, self._notebook.get_n_pages ()):
             child = self._notebook.get_nth_page (page_num)
             title = self._notebook.get_tab_label_text (child)
-            self._model.append ([title, page_num, False])
+            self._model.append ([title, page_num, "", False])
 
 
     def init_treeview(self):
@@ -79,6 +79,7 @@ class TreeMenu():
         column.pack_start (cell_pix, False)
         column.pack_start (cell_text, True)
         column.set_cell_data_func (cell_text, self._data_func_cell_text)
+        column.set_cell_data_func (cell_pix, self._data_func_cell_pix)
 
         treeview.append_column (column)
         treeview.set_model (self._model)
@@ -123,8 +124,28 @@ class TreeMenu():
 
         # Ajoute une entré dans le modèle.
         title = notebook.get_tab_label_text (child)
-        self._model.insert (page_num, [title, page_num, False])
+        self._model.insert (page_num, [title, page_num, "", False])
 
+
+    def _data_func_cell_pix(self, column, cell, model, iter):
+        """
+        Call when the cell_pix is renderer.
+        
+        Arguments:
+        - `column`: The cell's TreeViewColumn.
+        - `cell`: The renderer cell.
+        - `model`: The model of the cell's Treeview.
+        - `iter`: The iter pointing to the row.
+        """
+
+        stock = model.get_value (iter, 2)
+        if stock != "":
+            pb = self._treeview.render_icon (stock, gtk.ICON_SIZE_BUTTON, None)
+            cell.set_property ('pixbuf', pb)
+        else:
+            cell.set_property ('pixbuf', None)
+
+        
 
     def _data_func_cell_text(self, column, cell, model, iter):
         """
@@ -148,3 +169,14 @@ class TreeMenu():
         """
         # Redissiner le treeview entrainera la fonction data_cell.
         self._treeview.queue_draw ()
+
+
+    def set_item_stock(self, pos, stock):
+        """
+        Set the item's icon with the stock icon 'stock'.
+        
+        Arguments:
+        - `pos`: The item's position.
+        - `stock`: The stock icon.
+        """
+        self._model[pos][2] = stock
