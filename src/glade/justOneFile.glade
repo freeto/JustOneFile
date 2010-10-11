@@ -303,20 +303,14 @@
             <property name="position">200</property>
             <property name="position_set">True</property>
             <child>
-              <object class="GtkScrolledWindow" id="scrolledwindow1">
+              <object class="GtkScrolledWindow" id="scrolledwin_menu">
                 <property name="width_request">200</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="hscrollbar_policy">automatic</property>
                 <property name="vscrollbar_policy">automatic</property>
-                <property name="shadow_type">in</property>
                 <child>
-                  <object class="GtkTreeView" id="treeview_menu">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="headers_visible">False</property>
-                    <signal name="cursor_changed" handler="on_treeview_menu_cursor_changed"/>
-                  </object>
+                  <placeholder/>
                 </child>
               </object>
               <packing>
@@ -330,7 +324,6 @@
                 <property name="can_focus">True</property>
                 <property name="show_tabs">False</property>
                 <property name="show_border">False</property>
-                <signal name="switch_page" handler="on_notebook_main_switch_page"/>
                 <child>
                   <object class="GtkVBox" id="vbox4">
                     <property name="visible">True</property>

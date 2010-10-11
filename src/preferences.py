@@ -56,7 +56,7 @@ def load(file_path):
     prefs = {}
     # La liste des options (value) par section (key).
     options = {}
-    options['Display'] = ['menu_bar', 'tool_bar', 'tab_start', 'tabs_mode']
+    options['Display'] = ['menu_bar', 'tool_bar', 'tab_start']
 
     # Pour chaque section, on vérifie si elle éxiste, puis on vérifie si toute
     # les options sont présentent et si tout est bon, on prend leur valeur.
@@ -87,7 +87,7 @@ def format_prefs(prefs):
     """
 
     integer = ['tab_start']
-    boolean = ['menu_bar', 'tool_bar', 'tabs_mode']
+    boolean = ['menu_bar', 'tool_bar']
 
     for option_name in boolean:
         if prefs[option_name].lower () in ['true', '1', 'yes']:

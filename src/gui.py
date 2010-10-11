@@ -25,7 +25,7 @@ Class for manage GUI.
 """
 
 import pygtk, gtk, os, gobject, pango
-from src import search, preferences
+from src import search, preferences, treemenu
 
 
 class WindowJustonefile():
@@ -60,47 +60,13 @@ class WindowJustonefile():
         """
         Init the window's treeview menu
         """
-        
-        # Le treeview_menu est en fait le treeview a gauche qui sert de menu.
-        # A ne pas confondre avec le menu du haut.
-        tree = self.interface.get_object ('treeview_menu')
 
-        # On créé le modèle du menu.
-        model = gtk.TreeStore (str)
-        tree.set_model (model)
+        treeview = treemenu.TreeMenu (self.interface.get_object ('notebook_main'))
+        self._treemenu = treeview
+        treeview = treeview.get_treeview ()
 
-        # On créée la colone (texte).
-        cell = gtk.CellRendererText ()
-        cell.set_property ('ellipsize', pango.ELLIPSIZE_END)
-        col = gtk.TreeViewColumn ("", cell, text=0)
-        col.set_expand (True)
-        tree.append_column (col)
-
-        # On modifi ces propriétés.
-        tree.set_headers_visible (False)
-
-        # On le remplit et on selectionne le premier item.
-        # On prend touts les titres des onglets et on les mets dans le modèle du
-        # treeview 'menu'.
-        nb = self.interface.get_object ('notebook_main')
-        
-        # On parcour tous les onglets et on prend son titre, que l'on place dans le
-        # modèle. Les 4 premiers onglets sont à la base  0, les autre dans le 4em.
-        for i in xrange (0, 3):
-            text = nb.get_tab_label_text (nb.get_nth_page (i))
-            self.search_iter = model.append  (None, [text])
-
-        # On liste toutes les recherches. A noté que le premier onglet sera
-        # toujour 'Nouvelle recherche'.
-        for i in xrange (3, nb.get_n_pages ()):
-            text = nb.get_tab_label_text (nb.get_nth_page (i))
-            model.append (self.search_iter, [text])
-
-        # On deplit l'onglet 'Recherches'.
-        tree.expand_row (2, False)
-        # On affiche l'onglet de démarrage (A partir de la boite à onglet, car
-        # ca évite de faire des conversions de position, ex : 5 -> (3, 1) )
-        self.interface.get_object ('notebook_main').set_current_page (self.prefs['tab_start'])
+        self.interface.get_object ('scrolledwin_menu').add_with_viewport (treeview)
+        return
 
 
     def init_treeview_list_search(self):
@@ -241,40 +207,6 @@ class WindowJustonefile():
         nb.set_current_page (0)
 
 
-    def update_treemenu_content(self):
-        """
-        Update the treemenu content.
-        """
-        
-        # On prend touts les titres des onglets et on les mets dans le modèle du
-        # treeview 'menu'.
-
-        nb = self.interface.get_object ('notebook_main')
-        tree = self.interface.get_object ('treeview_menu')
-        model = tree.get_model ()
-        cursor = tree.get_cursor ()[0]
-
-        if not tree.row_expanded (2):
-            return
-
-        # On supprime toute les recherches.
-        for i in xrange (1, model.iter_n_children (self.search_iter)):
-            it = model.get_iter_from_string ('2:1')
-            model.remove (it)
-
-        # Et on ajoute toutes les recherche, a partir des onglets. Donc si il y à
-        # des nouvelles, elles seront rajoutées.
-        for i in xrange (4, nb.get_n_pages ()):
-            text = nb.get_tab_label_text (nb.get_nth_page (i))
-            model.append (self.search_iter, [text])
-
-        # On replace le curseur. Si il n'y en avais pas, on le met au début.
-        if cursor is None:
-            tree.set_cursor (0)
-        else:
-            tree.set_cursor (cursor)
-
-
     def update_treeview_list_search(self):
         """
         Get the list of all search and display it in the treeview.
@@ -359,10 +291,9 @@ class WindowJustonefile():
             
             s.tab.add_dbl (s.new_dbl)
 
-        # On rafraichit le menu et la liste des recherches.
-        self.update_treemenu_content ()
+        # Met à jour la liste des recherches.
         self.update_treeview_list_search ()
-        
+        self._treemenu.refresh ()
         return True
 
 
@@ -396,17 +327,6 @@ class WindowJustonefile():
         else:
             widget[0].hide ()
             widget[1].hide ()
-
-
-        # Mode 'Onglets' : on enlève le treeview menu et on affiche les onglets.
-        widget = self.interface.get_object ('notebook_main')
-        widget.set_show_tabs (self.prefs['tabs_mode'])
-
-        widget = self.interface.get_object ('treeview_menu')
-        if self.prefs['tabs_mode']:
-            widget.hide ()
-        else:
-            widget.show ()
 
 
     def set_search_state(self, state):
@@ -454,67 +374,6 @@ class WindowJustonefile():
             s.terminate ()
 
         gtk.main_quit ()
-
-
-    def on_treeview_menu_cursor_changed(self, widget):
-        """
-        Display the associated page in the main notebook.
-        
-        Arguments:
-        - `widget`: The widget who send the signal.
-        """
-
-        # On prend le chemin de la selection et si on additionne tout les
-        # numéros, on obtient la position de la page qu'il faut afficher.
-
-        path = widget.get_cursor ()[0]
-        if path is None:
-            return
-
-        pos = (path[0])
-        if len (path) > 1:
-            pos += (path[1] + 1)
-
-        nb = self.interface.get_object ('notebook_main')
-        if pos == nb.get_current_page ():
-            return
-
-        nb.set_current_page (pos)
-
-        # On active ou désactive le toolbar search mode si l'onglet est
-        # un onglet de recherche.
-        if pos > 3:
-            self.set_toolbar_search_mode (True)
-        else:
-            self.set_toolbar_search_mode (False)
-
-
-    def on_notebook_main_switch_page(self, widget, page, page_index):
-        """
-        Refresh and select the treeview menu.
-        
-        Arguments:
-        - `widget`: The widget who send the signal.
-        """
-        
-        # On prend la page et on construit le chemin en fonction.
-
-        tree = self.interface.get_object ('treeview_menu')
-        # Si la position est plus petite que 4, alors le chemin est simple
-        # Sinon, cela veut dire que le chemin serait alors (3, page_index - 4)
-        if page_index < 3:
-            path = (page_index,)
-        else:
-            tree.expand_row ((3), False)
-            path = (2, page_index - 3)
-
-        # Si on ne gère pas sa, on a un appelle récursif (car le changement
-        # de surseur ordonne un changement d'onglet, qui ordonne a nouveau un
-        # changement de curseur ...).
-        if tree.get_cursor ()[0] == path:
-            return
-
-        tree.set_cursor (path)
 
 
     # -----------------------
@@ -568,7 +427,7 @@ class WindowJustonefile():
             path = self.interface.get_object ('entry_textpath').get_text ()
 
 
-        # On test si le chemin est valide.
+        # Test si le chemin est valide.
         if not os.path.isdir (path):
             print 'Erreur : le chemin doit etre un dossier.'
             return
@@ -579,11 +438,8 @@ class WindowJustonefile():
 
         nb.append_page (s.tab.main_box, s.tab.label_title)
 
-        # On selectionne la page
-        self.update_treemenu_content ()
-        nb.set_current_page (-1)
-
-        s.start ()              # On commence la recherche.
+        nb.set_current_page (-1) # Selectionne la page.
+        s.start ()               # Démarre la recherche.
 
 
     def on_tb_textpath_toggled(self, widget):
