@@ -21,7 +21,7 @@
 #	MA 02110-1301, USA.
 
 """
-Class for manage algorithm and communicate with her
+Class for manage algorithm and communicate with him
 """
 
 import gtk, multiprocessing, Queue
@@ -43,6 +43,12 @@ class Search():
     Contain functions for communicate with the algorithm.
     """
     
+    progress = 0.0
+    action = 'Initilize'
+    done = False
+    new_dbl = []
+    nb_dbl = 0
+
     def __init__(self, path):
         """
         Initialize attributs and algorithm
@@ -52,12 +58,6 @@ class Search():
         """
 
         self.path = path
-
-        self.progress = 0.0
-        self.action = 'Initilize'
-        self.done = False
-        self.new_dbl = []
-        self.nb_dbl = 0         # Le nombre de doublons.
 
         self.tab = tab_search.TabSearch ()  # L'onglet associé.
         self._queue_send = multiprocessing.Queue ()
@@ -80,7 +80,6 @@ class Search():
         while not self._queue_send.empty ():
             infos = self._queue_send.get ()
             
-            # On regarde si il y a des nouveaux doublons.
             if not infos['dbl']: continue
             self.new_dbl.append (infos['dbl'])
 
@@ -100,29 +99,20 @@ class Search():
         self.progress = infos['progress']
         self.action = infos['action']
         self.done = infos['done']
-        for dbl in self.new_dbl:        # On compte le nombre de doublons.
+        for dbl in self.new_dbl:        # Compte le nombre de doublons.
             self.nb_dbl += len (dbl)
 
 
     def start(self):
-        """
-        Run algorithm
-        """
-        
+        """ Start algorithm """
         self.algorithm.start ()
 
 
     def join(self):
-        """
-        Join processus
-        """
-        
+        """ Join processus """
         self.algorithm.join ()
 
 
     def terminate(self):
-        """
-        Terminate algorithm
-        """
-        
+        """ Terminate algorithm """
         self.algorithm.terminate ()

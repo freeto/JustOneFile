@@ -36,7 +36,12 @@ class Algorithm(multiprocessing.Process):
     """
     Search duplicates files.
     """
-    
+
+    progress = 0.0
+    list_dbl = []
+    action = 'Initialisation'
+    done = False
+
     def __init__(self, queue_send, path, options={}):
         """
         Initilize algorithm.
@@ -51,12 +56,6 @@ class Algorithm(multiprocessing.Process):
         self.queue_send = queue_send
         self.path = path
         
-        self.progress = 0.0
-        self.list_dbl = []
-        self.action = 'Initialisation'
-        self.done = False
-
-
 
     def update_infos(self):
         """
@@ -77,7 +76,7 @@ class Algorithm(multiprocessing.Process):
         self.queue_send.put (infos)
 
         # On retourne 'True' pour indiquer à gobject que la fonction c'est bien
-        # déroulée, sinon sa bloque le programme.
+        # déroulée, sinon le programme bloque.
         return True
 
         
@@ -226,7 +225,7 @@ class Algorithm(multiprocessing.Process):
             
 
         # -----------------------
-        # On recherche les fichiers qui ont une meme somme md5.
+        # 2 - Recherche les fichiers qui ont une meme somme md5.
         # -----------------------
 
         self.action = 'Recherche des doublons'
