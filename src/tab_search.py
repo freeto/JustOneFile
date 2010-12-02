@@ -61,6 +61,7 @@ class TabSearch():
         self.context = self.interface.get_object ('statusbar').get_context_id (
             title)
         self._last_selected_dbl = None
+        self.interface.get_object ('image_survey').set_from_file (None)
 
 
     def init_treeview_dbl(self):
