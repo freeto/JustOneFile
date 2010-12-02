@@ -56,7 +56,7 @@ def load(file_path):
     prefs = {}
     # La liste des options (value) par section (key).
     options = {}
-    options['Display'] = ['menu_bar', 'tool_bar', 'tab_start']
+    options['Display'] = ['menu_bar', 'tool_bar']
 
     # Pour chaque section, on vérifie si elle éxiste, puis on vérifie si toute
     # les options sont présentent et si tout est bon, on prend leur valeur.
@@ -86,7 +86,6 @@ def format_prefs(prefs):
     - `prefs`: The préférences dict.
     """
 
-    integer = ['tab_start']
     boolean = ['menu_bar', 'tool_bar']
 
     for option_name in boolean:
@@ -94,6 +93,3 @@ def format_prefs(prefs):
             prefs[option_name] = True
         else:
             prefs[option_name] = False
-
-    for option_name in integer:
-        prefs[option_name] = int (prefs[option_name])

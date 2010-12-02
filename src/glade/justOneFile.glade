@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
@@ -76,7 +76,7 @@
             <child>
               <object class="GtkMenuItem" id="menuitem2">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">&#xC9;_dition</property>
+                <property name="label" translatable="yes">É_dition</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu2">
@@ -227,7 +227,7 @@
                 <child>
                   <object class="GtkToolButton" id="left_tb_apply">
                     <property name="visible">True</property>
-                    <property name="tooltip_text" translatable="yes">Supprime les fichiers selectionn&#xE9;s</property>
+                    <property name="tooltip_text" translatable="yes">Supprime les fichiers selectionnés</property>
                     <property name="is_important">True</property>
                     <property name="label" translatable="yes">Appliquer les changements</property>
                     <property name="use_underline">True</property>
@@ -390,7 +390,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="tooltip_text" translatable="yes">D&#xE9;marer une nouvelle recherche</property>
+                                <property name="tooltip_text" translatable="yes">Démarer une nouvelle recherche</property>
                                 <signal name="clicked" handler="on_button_home_begin_new_search_clicked"/>
                                 <child>
                                   <object class="GtkHBox" id="hbox5">
@@ -428,7 +428,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="tooltip_text" translatable="yes">Changer mes pr&#xE9;f&#xE9;rences</property>
+                                <property name="tooltip_text" translatable="yes">Changer mes préférences</property>
                                 <signal name="clicked" handler="on_button_home_preferences_clicked"/>
                                 <child>
                                   <object class="GtkHBox" id="hbox6">
@@ -446,7 +446,7 @@
                                     <child>
                                       <object class="GtkLabel" id="label7">
                                         <property name="visible">True</property>
-                                        <property name="label" translatable="yes">Ajuster mes pr&#xE9;f&#xE9;rences</property>
+                                        <property name="label" translatable="yes">Ajuster mes préférences</property>
                                       </object>
                                       <packing>
                                         <property name="position">1</property>
@@ -492,7 +492,7 @@
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
                         <property name="xpad">2</property>
-                        <property name="label" translatable="yes">Pr&#xE9;f&#xE9;rences</property>
+                        <property name="label" translatable="yes">Préférences</property>
                         <attributes>
                           <attribute name="weight" value="bold"/>
                           <attribute name="scale" value="2,000000"/>
@@ -552,45 +552,6 @@
                                         <property name="position">1</property>
                                       </packing>
                                     </child>
-                                    <child>
-                                      <object class="GtkCheckButton" id="checkb_display_tabs">
-                                        <property name="label" translatable="yes">Ne plus afficher les onglets sous forme d'arborescence</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="receives_default">False</property>
-                                        <property name="draw_indicator">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="position">2</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkHBox" id="hbox4">
-                                        <property name="visible">True</property>
-                                        <child>
-                                          <object class="GtkLabel" id="label5">
-                                            <property name="visible">True</property>
-                                            <property name="xalign">0</property>
-                                            <property name="label" translatable="yes">Onglet au d&#xE9;marage :</property>
-                                          </object>
-                                          <packing>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkComboBox" id="combobox_tab_start">
-                                            <property name="visible">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="padding">4</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="position">3</property>
-                                      </packing>
-                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -627,7 +588,7 @@
                 <child type="tab">
                   <object class="GtkLabel" id="label11">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">Pr&#xE9;f&#xE9;rences</property>
+                    <property name="label" translatable="yes">Préférences</property>
                   </object>
                   <packing>
                     <property name="position">1</property>
@@ -678,11 +639,11 @@
                             </child>
                             <child>
                               <object class="GtkToggleButton" id="tb_search_done">
-                                <property name="label" translatable="yes">Termin&#xE9;es</property>
+                                <property name="label" translatable="yes">Terminées</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="tooltip_text" translatable="yes">Afficher/Cacher les recherches termin&#xE9;es</property>
+                                <property name="tooltip_text" translatable="yes">Afficher/Cacher les recherches terminées</property>
                                 <property name="relief">none</property>
                                 <property name="active">True</property>
                               </object>
@@ -888,7 +849,7 @@
                                       <object class="GtkEntry" id="entry_textpath">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="invisible_char">&#x25CF;</property>
+                                        <property name="invisible_char">●</property>
                                       </object>
                                     </child>
                                     <child type="tab">
@@ -952,7 +913,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="tooltip_text" translatable="yes">Remettre les param&#xE8;tres par defaut</property>
+                                <property name="tooltip_text" translatable="yes">Remettre les paramètres par defaut</property>
                                 <property name="use_stock">True</property>
                               </object>
                               <packing>
@@ -1024,19 +985,18 @@
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="transient_for">windowJustonefile</property>
-    <property name="has_separator">False</property>
     <property name="program_name">JustOneFile</property>
     <property name="version">1 b1pre</property>
-    <property name="copyright" translatable="yes">Copyright &#xA9; 2010 Olivier Radisson, Timoth&#xE9;e Vialatoux.</property>
-    <property name="comments" translatable="yes">Trouver, supprimer, g&#xE9;rer vos fichiers identiques.</property>
+    <property name="copyright" translatable="yes">Copyright © 2010 Olivier Radisson, Timothée Vialatoux.</property>
+    <property name="comments" translatable="yes">Trouver, supprimer, gérer vos fichiers identiques.</property>
     <property name="website">http://justonefile.sourceforge.net/</property>
-    <property name="license" translatable="yes">Ce programme est un logiciel libre&#xA0;; vous pouvez le redistribuer et/ou le modifier conform&#xE9;ment aux dispositions de la Licence Publique G&#xE9;n&#xE9;rale GNU, telle que publi&#xE9;e par la Free Software Foundation&#xA0;; version 2 de la licence, ou encore (&#xE0; votre choix) toute version ult&#xE9;rieure.
+    <property name="license" translatable="yes">Ce programme est un logiciel libre ; vous pouvez le redistribuer et/ou le modifier conformément aux dispositions de la Licence Publique Générale GNU, telle que publiée par la Free Software Foundation ; version 2 de la licence, ou encore (à votre choix) toute version ultérieure.
 
-Ce programme est distribu&#xE9; dans l'espoir qu'il sera utile, mais SANS AUCUNE GARANTIE&#xA0;; sans m&#xEA;me la garantie implicite de COMMERCIALISATION ou D'ADAPTATION &#xC0; UN OBJET PARTICULIER. Pour plus de d&#xE9;tails, voir la Licence Publique G&#xE9;n&#xE9;rale GNU.
+Ce programme est distribué dans l'espoir qu'il sera utile, mais SANS AUCUNE GARANTIE ; sans même la garantie implicite de COMMERCIALISATION ou D'ADAPTATION À UN OBJET PARTICULIER. Pour plus de détails, voir la Licence Publique Générale GNU.
 
-Un exemplaire de la Licence Publique G&#xE9;n&#xE9;rale GNU doit &#xEA;tre fourni avec ce programme&#xA0;; si ce n'est pas le cas, &#xE9;crivez &#xE0; la Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.</property>
+Un exemplaire de la Licence Publique Générale GNU doit être fourni avec ce programme ; si ce n'est pas le cas, écrivez à la Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.</property>
     <property name="authors">Oliver Radisson
-Timoth&#xE9;e Vialatoux</property>
+Timothée Vialatoux</property>
     <property name="wrap_license">True</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
