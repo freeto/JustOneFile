@@ -24,7 +24,19 @@
 A function for load preferences.
 """
 
-import os, ConfigParser
+import os, ConfigParser, gtk
+
+
+# Le dictionnaire des options.
+_options = {}
+_options['Display'] = [{'name': 'menu_bar',
+                       'def': 'Afficher/Cacher la barre de menu',
+                       'type': bool},
+                      {'name': 'tool_bar',
+                       'def': 'Afficher/Cacher la barre d\'outils',
+                       'type': bool}
+                      ]
+
 
 def load(file_path):
     """
@@ -54,24 +66,15 @@ def load(file_path):
         return False
 
     prefs = {}
-    # La liste des options (value) par section (key).
-    options = {}
-    options['Display'] = [{'name': 'menu_bar',
-                           'def': 'Afficher/Cacher la barre de menu',
-                           'type': bool},
-                          {'name': 'tool_bar',
-                           'def': 'Afficher/Cacher la barre d\'outils',
-                           'type': bool}
-                          ]
 
     # Pour chaque section, on vérifie si elle éxiste, puis on vérifie si toute
     # les options sont présentent et si tout est bon, on prend leur valeur.
-    for section_name in options.keys ():
+    for section_name in _options.keys ():
         if not config.has_section (section_name):
             print "La section '" + section_name + "' n'éxiste pas."
             return False
 
-        for option_dict in options[section_name]:
+        for option_dict in _options[section_name]:
             if not config.has_option (section_name, option_dict['name']):
                 print "L'option '" + option_dict['name'] + "' est manquante."
                 return False
@@ -88,3 +91,38 @@ def load(file_path):
 
     return prefs
 
+
+def get_vbox():
+    """
+    Construct a graphical view for prefs.
+    """
+
+    vbox = gtk.VBox ()
+    vbox.show ()
+
+    for section_name, option_list in _options.iteritems ():
+        vbox_expand = gtk.VBox ()
+        vbox_expand.show ()
+
+        expander = gtk.Expander ()
+        expander.set_label (section_name)
+        expander.add (vbox_expand)
+        expander.set_expanded (True)
+        expander.show ()
+
+        for option_dict in option_list:
+
+            if option_dict['type'] == bool:
+                widget = gtk.CheckButton (option_dict['def'])
+            else:
+                return False
+
+            widget.show ()
+            vbox_expand.pack_start (widget, False)
+
+        vbox.pack_start (expander)
+
+    return vbox
+                
+                
+        

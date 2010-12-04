@@ -51,6 +51,7 @@ class WindowJustonefile():
         self.init_treeview_list_search ()
         self.init_newsearch ()
 
+        self.interface.get_object ('vbox_prefs').pack_end (preferences.get_vbox ())
         self.apply_prefs ()
 
         gobject.timeout_add (200, self.update_searchs_infos)

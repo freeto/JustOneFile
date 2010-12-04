@@ -485,7 +485,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkVBox" id="vbox6">
+                  <object class="GtkVBox" id="vbox_prefs">
                     <property name="visible">True</property>
                     <child>
                       <object class="GtkLabel" id="label9">
@@ -514,71 +514,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkVBox" id="vbox9">
-                        <property name="visible">True</property>
-                        <child>
-                          <object class="GtkExpander" id="expander1">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="expanded">True</property>
-                            <child>
-                              <object class="GtkAlignment" id="alignment5">
-                                <property name="visible">True</property>
-                                <property name="left_padding">13</property>
-                                <child>
-                                  <object class="GtkVBox" id="vbox10">
-                                    <property name="visible">True</property>
-                                    <child>
-                                      <object class="GtkCheckButton" id="checkb_display_menu">
-                                        <property name="label" translatable="yes">Afficher la barre de menu</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="receives_default">False</property>
-                                        <property name="draw_indicator">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="position">0</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkCheckButton" id="checkb_hide_toolbar">
-                                        <property name="label" translatable="yes">Afficher la barre d'outils</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="receives_default">False</property>
-                                        <property name="draw_indicator">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="position">1</property>
-                                      </packing>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child type="label">
-                              <object class="GtkLabel" id="label4">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">Affichage</property>
-                                <attributes>
-                                  <attribute name="weight" value="bold"/>
-                                  <attribute name="scale" value="1,000000"/>
-                                </attributes>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="position">2</property>
-                      </packing>
+                      <placeholder/>
                     </child>
                   </object>
                   <packing>
