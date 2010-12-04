@@ -97,6 +97,10 @@ def get_vbox():
     Construct a graphical view for prefs.
     """
 
+    # [ > Expander 1 (Section_name) ]
+    #   [Alignement]
+    #     [Widget (CheckButton, RadioButtons ...]
+    
     vbox = gtk.VBox ()
     vbox.show ()
 
@@ -104,9 +108,14 @@ def get_vbox():
         vbox_expand = gtk.VBox ()
         vbox_expand.show ()
 
+        align = gtk.Alignment ()
+        align.set_padding (0, 0, 10, 0)
+        align.add (vbox_expand)
+        align.show ()
+
         expander = gtk.Expander ()
         expander.set_label (section_name)
-        expander.add (vbox_expand)
+        expander.add (align)
         expander.set_expanded (True)
         expander.show ()
 
