@@ -56,7 +56,13 @@ def load(file_path):
     prefs = {}
     # La liste des options (value) par section (key).
     options = {}
-    options['Display'] = ['menu_bar', 'tool_bar']
+    options['Display'] = [{'name': 'menu_bar',
+                           'def': 'Afficher/Cacher la barre de menu',
+                           'type': bool},
+                          {'name': 'tool_bar',
+                           'def': 'Afficher/Cacher la barre d\'outils',
+                           'type': bool}
+                          ]
 
     # Pour chaque section, on vérifie si elle éxiste, puis on vérifie si toute
     # les options sont présentent et si tout est bon, on prend leur valeur.
@@ -65,31 +71,20 @@ def load(file_path):
             print "La section '" + section_name + "' n'éxiste pas."
             return False
 
-        for option_name in options[section_name]:
-            if not config.has_option (section_name, option_name):
-                print "L'option '" + option_name + "' est manquante."
+        for option_dict in options[section_name]:
+            if not config.has_option (section_name, option_dict['name']):
+                print "L'option '" + option_dict['name'] + "' est manquante."
                 return False
 
-            prefs[option_name] = config.get (section_name, option_name)
+            prefs[option_dict['name']] = {'value': config.get (section_name, option_dict['name']),
+                                          'def': option_dict['def']}
 
-    # On formate les préférences (Conversion entier, boolean, ...).
-    format_prefs (prefs)
-    
+            # Convertit la valeur.
+            if option_dict['type'] == bool: # Boolean
+                if prefs[option_dict['name']]['value'] in (0, 'False'):
+                    prefs[option_dict['name']]['value'] = False
+                else:
+                    prefs[option_dict['name']]['value'] = True
+
     return prefs
 
-
-def format_prefs(prefs):
-    """
-    Convert the préférences's type (Integer, Boolean, ...).
-    
-    Arguments:
-    - `prefs`: The préférences dict.
-    """
-
-    boolean = ['menu_bar', 'tool_bar']
-
-    for option_name in boolean:
-        if prefs[option_name].lower () in ['true', '1', 'yes']:
-            prefs[option_name] = True
-        else:
-            prefs[option_name] = False
