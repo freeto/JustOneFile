@@ -24,7 +24,13 @@
 Functions for get informations of the selected file.
 """
 
-import Image, os, hashlib, subprocess, mimetypes, gio, gtk, urllib
+import os, hashlib, subprocess, mimetypes, gio, gtk, urllib
+
+try:
+    import Image
+except ImportError:
+    print "Module : 'python imaging' not found. (import Image)"
+    exit ()
 
 def get_thumbnail(file_path):
     """
