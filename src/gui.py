@@ -65,7 +65,7 @@ class WindowJustonefile():
         treeview = treemenu.TreeMenu (self.interface.get_object ('notebook_main'))
         treeview.set_item_stock (0, gtk.STOCK_HOME)
         treeview.set_item_stock (1, gtk.STOCK_PREFERENCES)
-        treeview.set_item_stock (2, gtk.STOCK_FIND)
+        treeview.set_important (2, True)
         treeview.set_item_stock (3, gtk.STOCK_NEW)
         self._treemenu = treeview
         treeview = treeview.get_treeview ()
