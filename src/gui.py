@@ -315,14 +315,6 @@ class WindowJustonefile():
         # Affichage
         # -----------------------
 
-        # La barre de menu (True -> visible, False -> cachée).
-        widget = self.interface.get_object ('menubar')
-        if self.prefs['menu_bar']['value']:
-            widget.show ()
-        else:
-            widget.hide ()
-
-
         # La barre d'outils (True -> visible, False -> cachée).
         widget = (self.interface.get_object ('toolbar_left'),
                   self.interface.get_object ('toolbar_right'))

@@ -29,13 +29,9 @@ import os, ConfigParser, gtk
 
 # Le dictionnaire des options.
 _options = {}
-_options['Display'] = [{'name': 'menu_bar',
-                       'def': 'Afficher/Cacher la barre de menu',
-                       'type': bool},
-                      {'name': 'tool_bar',
-                       'def': 'Afficher/Cacher la barre d\'outils',
-                       'type': bool}
-                      ]
+_options['Display'] = [{'name': 'tool_bar',
+                        'def': 'Afficher/Cacher la barre d\'outils',
+                        'type': bool}]
 
 
 def load(file_path):
