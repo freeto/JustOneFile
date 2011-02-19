@@ -53,7 +53,6 @@ class TreeMenu():
         # Titre, stock-icone, weight.  
         self._model = gtk.ListStore (str, str, int)
 
-        # Remplit le modèle.
         for page_num in range (0, self._notebook.get_n_pages ()):
             child = self._notebook.get_nth_page (page_num)
             title = self._notebook.get_tab_label_text (child)

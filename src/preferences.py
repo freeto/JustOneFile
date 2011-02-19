@@ -46,7 +46,6 @@ def load(file_path):
     - `file_path`: A path to the preferences's file.
     """
 
-    # On vérifie que le fichier éxiste.
     if not os.path.exists (file_path):
         print "Le fichier de configuration '" + file_path + "' n'éxiste pas."
         return False
@@ -68,7 +67,7 @@ def load(file_path):
     prefs = {}
 
     # Pour chaque section, on vérifie si elle éxiste, puis on vérifie si toute
-    # les options sont présentent et si tout est bon, on prend leur valeur.
+    # les options sont présentes et prend leur valeur.
     for section_name in _options.keys ():
         if not config.has_section (section_name):
             print "La section '" + section_name + "' n'éxiste pas."
@@ -120,7 +119,6 @@ def get_vbox():
         expander.show ()
 
         for option_dict in option_list:
-
             if option_dict['type'] == bool:
                 widget = gtk.CheckButton (option_dict['def'])
             else:

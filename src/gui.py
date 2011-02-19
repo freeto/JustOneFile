@@ -82,32 +82,29 @@ class WindowJustonefile():
         # Le treeview 'list_search' est le treeview de l'onglet 'Recherches', qui
         # contient une liste détaillé de toutes les recherches.
 
+        # Colones : Recherche (str), Progression (str), Doublons (int)
+
         tree = self.interface.get_object ('treeview_list_search')
 
-        # On créé le modèle du menu
         model = gtk.ListStore (str, str, int)
         tree.set_model (model)
 
-        # On créée la première colone (texte)
         cell = gtk.CellRendererText ()
         col = gtk.TreeViewColumn ("Recherches", cell, text=0)
         col.set_expand (True)
         tree.append_column (col)
 
-        # On créée deuxième colone (texte)
         cell = gtk.CellRendererText ()
         col = gtk.TreeViewColumn ("Progression", cell, text=1)
         tree.append_column (col)
 
-        # On créée la colone (texte)
         cell = gtk.CellRendererText ()
         col = gtk.TreeViewColumn ("Doublons", cell, text=2)
         tree.append_column (col)
 
-        # On met en couleur une ligne sur 2.
+        # Met en couleur une ligne sur 2.
         tree.set_rules_hint (True)
 
-        # On le remplit et on selectionne le premier élément.
         self.update_treeview_list_search ()
 
 
@@ -136,7 +133,7 @@ class WindowJustonefile():
             # Méthode qui permet de rendre la boite de dialogue non-bloquante.
             def on_response (dialog, response):
                 dialog.hide ()
-            
+
             about = self.interface.get_object ('aboutdialog')
             about.connect ('response', on_response)
             about.show ()
@@ -188,7 +185,6 @@ class WindowJustonefile():
         
         if not self.prefs:
             print 'Impossible de charger la configuration.'
-            print 'Arret du programme.'
             exit (0)
 
 
@@ -217,33 +213,26 @@ class WindowJustonefile():
         Get the list of all search and display it in the treeview.
         """
         
-        tree = self.interface.get_object ('treeview_list_search')
-        model = tree.get_model ()
-        show_done = self.interface.get_object ('tb_search_done').get_active ()
+        tree        = self.interface.get_object ('treeview_list_search')
+        show_done   = self.interface.get_object ('tb_search_done').get_active ()
         show_runing = self.interface.get_object ('tb_search_runing').get_active ()
-        
-        # On sauvegarde le curseur
-        cursor = tree.get_cursor ()[0]
+        model       = tree.get_model ()
+        cursor      = tree.get_cursor ()[0] # Sauvegarde la position du curseur
 
-        # On liste toutes les recherches et ont les affiches dans le treeview
-        # avec les informations nécéssaires.
         model.clear ()
-        for s in self.list_search:
-            # On détermine si la recherche doit etre afficher selon les critères
-            # de tri.
+        for s in self.list_search: # Liste toutes les recherches
             if s.done and show_done: pass
             elif not s.done and show_runing: pass
             else: continue
 
-            # Et construit les informations à afficher.
             name = s.path
-            if s.done: name += ' (Terminée)'
-            else: name += ' (En cours ...)'
             progress = str (int (s.progress * 100)) + '%'
+            if s.done: name += ' (Terminée)'
+            else:      name += ' (En cours ...)'
             
             model.append ([name, progress, s.nb_dbl])
 
-        # On restaure le curseur.
+        # Restaure le curseur
         if len (model) > 0:
             if cursor is None:
                 tree.set_cursor (0)
@@ -275,7 +264,7 @@ class WindowJustonefile():
         Update the search infos and display its into the interface.
         """
 
-        # (Cette fonction est appellée à intervalles régulier.)
+        # (Cette fonction est appellée à intervalles réguliers.)
 
         for s in self.list_search:
             s.update_infos ()
@@ -288,12 +277,11 @@ class WindowJustonefile():
                 title = '(...)'
             else:
                 title = str (int (s.progress * 100)) + '%'
+            title += '  ' + s.path
 
             s.tab.set_pb (s.progress)
             s.tab.set_action (s.action)
-            title += '  ' + s.path
             s.tab.set_title (title)
-            
             s.tab.add_dbl (s.new_dbl)
 
         # Met à jour la liste des recherches.
@@ -307,7 +295,7 @@ class WindowJustonefile():
         Apply the préférences.
         """
 
-        # On applique les préférences.
+        # Applique les préférences.
         # Pour chaque entrée dans self.prefs, on change les choses associées en
         # fonction de la valeur.
         
@@ -351,10 +339,8 @@ class WindowJustonefile():
         # Penser à une meilleure implémentation.
 
         tb = self.interface.get_object ('left_tb_control_search')
-        if state:
-            tb.set_tooltip_text ('Reprendre la recherche')
-        else:
-            tb.set_tooltip_text ('Suspendre la recherche')
+        if state: tb.set_tooltip_text ('Reprendre la recherche')
+        else:     tb.set_tooltip_text ('Suspendre la recherche')
 
 
     # -----------------------
@@ -369,12 +355,8 @@ class WindowJustonefile():
     def on_windowJustonefile_destroy(self, widget):
         """
         Call when the window was destroy
-        
-        Arguments:
-        - `widget`: The widget who send the signal
         """
 
-        # On termine toutes les recherches
         for s in self.list_search:
             s.terminate ()
 
@@ -388,21 +370,15 @@ class WindowJustonefile():
     def on_button_home_begin_new_search_clicked(self, widget):
         """
         Display the new search's tab.
-        
-        Arguments:
-        - `widget`: The widget who send the signal.
         """
 
-        # L'onglet 'Nouvelle recherche' est toujour en 5èm position.
+        # L'onglet 'Nouvelle recherche' est toujour en 4èm position.
         self.interface.get_object ('notebook_main').set_current_page (3)
 
 
     def on_button_home_preferences_clicked(self, widget):
         """
         Display the préférences tab's
-        
-        Arguments:
-        - `widget`: The widget who send the signal.
         """
         
         # L'onglet 'Préférence' est toujour en 2èm position.
@@ -416,23 +392,17 @@ class WindowJustonefile():
     def on_button_start_search_clicked(self, widget):
         """
         Start a new search : add a tab and lauch search.
-        
-        Arguments:
-        - `widget`: The widget who send the signal.
         """
 
-        nb = self.interface.get_object ('notebook_main')
+        nb      = self.interface.get_object ('notebook_main')
         nb_path = self.interface.get_object ('notebook_choosedir')
 
-        # Selon la page active, on prend la valeur du champ de texte ou la valeur
-        # du filechooserbutton.
+        # Prend la valeur selon le champ actif.
         if nb_path.get_current_page () == 0:
             path = nb_path.get_nth_page (0).get_filename ()
         else:
             path = self.interface.get_object ('entry_textpath').get_text ()
 
-
-        # Test si le chemin est valide.
         if not os.path.isdir (path):
             print 'Erreur : le chemin doit etre un dossier.'
             return
@@ -443,13 +413,13 @@ class WindowJustonefile():
 
         nb.append_page (s.tab.main_box, s.tab.label_title)
 
-        nb.set_current_page (-1) # Selectionne la page.
-        s.start ()               # Démarre la recherche.
+        nb.set_current_page (-1)
+        s.start ()
 
 
     def on_tb_textpath_toggled(self, widget):
         """
-        Display/hide the entry 'textpath' and set his value.
+        Display/hide the entry 'textpath' and set her value.
         """
 
         if widget.get_active ():
@@ -457,7 +427,6 @@ class WindowJustonefile():
         else:
             self.interface.get_object ('notebook_choosedir').set_current_page (0)
 
-        # On change le chemin.
         cb = self.interface.get_object ('notebook_choosedir').get_nth_page (0)
         self.interface.get_object ('entry_textpath').set_text (cb.get_filename ())
  
