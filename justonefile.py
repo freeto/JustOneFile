@@ -25,8 +25,9 @@ Lauch JustOneFile.
 """
 
 import gtk
+from src.setting import Preference
 from src import gui
 
 if __name__ == '__main__':
-    window = gui.WindowJustonefile ()
-    gtk.main ()
+  window = gui.WindowJustonefile ()
+  gtk.main ()
