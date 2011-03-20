@@ -25,48 +25,12 @@
                   <object class="GtkMenu" id="menu1">
                     <property name="visible">True</property>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem1">
-                        <property name="label">gtk-new</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem2">
-                        <property name="label">gtk-open</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem3">
-                        <property name="label">gtk-save</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem4">
-                        <property name="label">gtk-save-as</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
-                        <property name="visible">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem5">
+                      <object class="GtkImageMenuItem" id="menu_quitter">
                         <property name="label">gtk-quit</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_windowJustonefile_destroy"/>
                       </object>
                     </child>
                   </object>
@@ -113,15 +77,17 @@
                         <property name="use_stock">True</property>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="imagemenuitem1">
+                        <property name="label">gtk-preferences</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_button_home_preferences_clicked"/>
+                      </object>
+                    </child>
                   </object>
                 </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="menuitem3">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">_Affichage</property>
-                <property name="use_underline">True</property>
               </object>
             </child>
             <child>
@@ -277,6 +243,7 @@
                     <property name="tooltip_text" translatable="yes">Quitter JustOneFile</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">gtk-quit</property>
+                    <signal name="clicked" handler="on_windowJustonefile_destroy"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
