@@ -56,7 +56,6 @@ class WindowJustonefile():
 
         gobject.timeout_add (200, self.update_searchs_infos)
 
-
     def init_treeview_menu(self):
         """
         Init the window's treeview menu
