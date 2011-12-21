@@ -44,15 +44,15 @@ class WindowJustonefile():
         self.interface.connect_signals (self)
 
         # Initialisation des widgets de la fenetre
-        self.init_preferences ()
+        #self.init_preferences ()
         self.list_search = []
         self.init_toolbar ()
         self.init_treeview_menu ()
         self.init_treeview_list_search ()
         self.init_newsearch ()
 
-        self.interface.get_object ('vbox_prefs').pack_end (preferences.get_vbox ())
-        self.apply_prefs ()
+        #self.interface.get_object ('vbox_prefs').pack_end (preferences.get_vbox ())
+        #self.apply_prefs ()
 
         gobject.timeout_add (200, self.update_searchs_infos)
 
@@ -63,9 +63,10 @@ class WindowJustonefile():
 
         treeview = treemenu.TreeMenu (self.interface.get_object ('notebook_main'))
         treeview.set_item_stock (0, gtk.STOCK_HOME)
-        treeview.set_item_stock (1, gtk.STOCK_PREFERENCES)
-        treeview.set_important (2, True)
-        treeview.set_item_stock (3, gtk.STOCK_NEW)
+        #Suppression temporaire des option de préférence ( changer 1, 2 .. etc )
+        #treeview.set_item_stock (1, gtk.STOCK_PREFERENCES)
+        treeview.set_important (1, True)
+        treeview.set_item_stock (2, gtk.STOCK_NEW)
         self._treemenu = treeview
         treeview = treeview.get_treeview ()
 
@@ -142,35 +143,35 @@ class WindowJustonefile():
         # Barre de gauche
         # -----------------------
 
-        toolbar = self.interface.get_object ("toolbar_left")
+        #toolbar = self.interface.get_object ("toolbar_left")
 
         # Bouton 'Nouvelle recherche'
-        tb = self.interface.get_object ('left_tb_new_search')
-        tb.connect ('clicked', new_search)
+        #tb = self.interface.get_object ('left_tb_new_search')
+        #tb.connect ('clicked', new_search)
 
         # (RECHERCHE) Bouton 'Mettre en pause la recherche'
-        tb = self.interface.get_object ('left_tb_control_search')
-        tb.connect ('toggled', call_set_search_state)
-        self.set_search_state (False)
-        self.toolbar_search_buttons.append (toolbar.get_item_index (tb))        
+        #tb = self.interface.get_object ('left_tb_control_search')
+        #tb.connect ('toggled', call_set_search_state)
+        #self.set_search_state (False)
+        #self.toolbar_search_buttons.append (toolbar.get_item_index (tb))        
 
         # (RECHERCHE) Bouton 'Valider la recherche'
-        tb = self.interface.get_object ('left_tb_apply')
-        self.toolbar_search_buttons.append (toolbar.get_item_index (tb))
+        #tb = self.interface.get_object ('left_tb_apply')
+        #self.toolbar_search_buttons.append (toolbar.get_item_index (tb))
 
         # -----------------------
         # Barre de droite
         # -----------------------
 
-        toolbar = self.interface.get_object ("toolbar_right")
+        #toolbar = self.interface.get_object ("toolbar_right")
 
         # Bouton 'À propos'
-        tb = self.interface.get_object ('right_tb_about')
-        tb.connect ("clicked", show_aboutdialog)
+        #tb = self.interface.get_object ('right_tb_about')
+        #tb.connect ("clicked", show_aboutdialog)
 
         # Bouton 'Quitter'
-        tb = self.interface.get_object ('right_tb_quit')
-        tb.connect ("clicked", self.on_windowJustonefile_destroy)
+        #tb = self.interface.get_object ('right_tb_quit')
+        #tb.connect ("clicked", self.on_windowJustonefile_destroy)
 
         self.set_toolbar_search_mode (False)
 
