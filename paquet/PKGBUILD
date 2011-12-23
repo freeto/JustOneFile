@@ -1,0 +1,35 @@
+# Maintainer: Olivier Radisson <takuyozora@gmail.com>
+# Contributor: Timothé Vialatoux, Olivier Radisson
+pkgname=justonefile
+pkgver=0.1
+pkgrel=2
+pkgdesc="Help you to find and delete duplicate files"
+arch=(any)
+url="http://justonefile.sourceforge.net"
+license=('GPL')
+groups=
+provides=
+depends=('python>=2.4','pygtk')
+optdepends=
+makedepends=
+conflicts=
+replaces=
+backup=
+install=
+source=(http://justonefile.sourceforge.net/file/dev/$pkgname-$pkgver-arch.tar.gz)
+md5sums=('c6bea824f46317ed0a2e9604c290dc89')
+
+build() {
+	cd $srcdir/$pkgname-$pkgver-arch
+}
+
+package(){
+	cd $srcdir/$pkgname-$pkgver-arch
+	mkdir -p $pkgdir/usr/share/$pkgname/
+	mkdir -p $pkgdir/usr/bin
+	cp -Ra * $pkgdir/usr/share/$pkgname/
+	cd $pkgdir/usr/share/$pkgname/
+	chmod +x $pkgname.py
+	chmod +x $pkgname
+	mv $pkgname $pkgdir/usr/bin
+}

@@ -1,0 +1,10 @@
+Package: justeonfile
+Version: 0.1
+Section: utils
+Priority: optional
+Architecture: all
+Depends: python (>=2.4), python-gtk2
+Maintainer: Olivier Radisson <takuyozora@gmail.com>
+Description: Help you to find and delete duplicate files
+Homepage: justonefile.sourceforge.net
+

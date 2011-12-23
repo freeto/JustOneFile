@@ -1,0 +1,18 @@
+Pour créer un paquet DEBIAN :
+
+  * Tenir à jour le fichier control
+  * Créer un répertoir vide
+  * Se placer dans ce répertoire
+  * Créer un répertoire DEBIAN et y placer le fichier control
+  * Créer une arboressance correspondant à là où les fichiers doivent s'installer
+  * Sortir de ce répetoir et le choisir comme cible à la commande dpkg-deb --build **rep**
+  
+Pour créer un paquet ArchLinux
+
+  * Tenir à jour le fichier PKGBUILD
+  * Créer une archive .tar.gz des fichiers à installer
+  * Décrire dans package() ( dans PKGBUILD ) la façon de placer ces fichiers
+  * Uploader l'archive à la destination indiquée par source ( dans PKGBUILD )
+  * Indiquer sa somme md5 dans PKGBUILD
+  * Se placer dans le repertoir où se situe PKGBUILD et lancer 
+  
