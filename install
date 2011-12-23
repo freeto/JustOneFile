@@ -1,0 +1,9 @@
+#!/bin/bash
+# JustOneFile Installer
+
+DEST="/usr/share/justonefile"
+
+mkdir $DEST
+cp -aR ./* $DEST
+rm $DEST/install
+mv $DEST/justonefile /usr/bin/justonefile

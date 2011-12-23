@@ -1,0 +1,7 @@
+#!/bin/bash
+# JustOneFile Launcher
+
+DEST="/usr/share/justonefile"
+
+cd $DEST
+$DEST/justonefile.py
